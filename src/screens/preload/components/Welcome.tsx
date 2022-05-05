@@ -55,7 +55,7 @@ const Welcome: React.FC<props> = ({navigation}) => {
                 <BottonSection>
                     <BigText textStyles={{width:"70%", marginBottom:25}}>The Cleaner App</BigText>
                     <SmallText textStyles={{width:"70%", marginBottom:25}}>Sistema de agendamento e exceução de diárias profissional.</SmallText>
-                    <RegularButton textStyles={{color:Colors.Background}} btnStyles={{marginBottom:50}} onPress={()=>{navigation.navigate("SignIn")}}>Vamos começar!</RegularButton>
+                    <RegularButton textStyles={{color:Colors.Background}} btnStyles={{marginBottom:50}} onPress={()=>{navigation.navigate("Comecar")}}>Vamos começar!</RegularButton>
                     <SmallText textStyles={{color:Colors.White, textAlign:'center'}}>Build {versao}</SmallText>
                 </BottonSection>
             </WelcomeContainer>

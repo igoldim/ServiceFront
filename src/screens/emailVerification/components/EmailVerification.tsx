@@ -20,7 +20,7 @@ import PressableText from '../../../components/Texts/PressableText';
 
 import RowContainer from '../../../components/RowContainer';
 
-const SignInContainer = styled(Container)`
+const EmailVerificationContainer = styled(Container)`
     background-color: ${Colors.Background};
     width: 100%;
     flex: 1;
@@ -33,7 +33,7 @@ type InitialValues = {
     password:''
 }
 
-const SignIn: React.FC<props> = ({navigation})  => {
+const EmailVerification: React.FC<props> = ({navigation})  => {
     const [message, setMessage] = React.useState('');
     const [isMessageSucess, setIsMessageSucess] = React.useState(false);
     
@@ -58,7 +58,7 @@ const SignIn: React.FC<props> = ({navigation})  => {
         } 
     }
     return (
-        <SignInContainer>         
+        <EmailVerificationContainer>         
             <KeyboardAvoidingConatainer>
                 <RegularText textStyles={{marginBottom: 25}}>Identificação</RegularText>
                 <Formik 
@@ -105,16 +105,12 @@ const SignIn: React.FC<props> = ({navigation})  => {
                                 textStyles={{color:Colors.White}} 
                                 btnStyles={{width:"80%", marginBottom:10, alignSelf: 'center'}}>
                                 <ActivityIndicator size={30} color={Colors.White} /></RegularButton>}
-                            <RowContainer >
-                                <PressableText onPress={()=> navigation.navigate('Welcome')}>Novo Cadastro</PressableText>
-                                <PressableText onPress={()=> navigation.navigate('Welcome')}>Recuperear Senha</PressableText>
-                            </RowContainer>
                         </>
                     )}
                 </Formik>
             </KeyboardAvoidingConatainer>
-        </SignInContainer>
+        </EmailVerificationContainer>
     );
 };  
 
-export default SignIn;
+export default EmailVerification;

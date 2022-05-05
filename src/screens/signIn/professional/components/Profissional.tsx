@@ -33,12 +33,12 @@ const Profissional: React.FC<props> = ({navigation})  => {
             <RegularButton 
                 textStyles={{color:Colors.Background}} 
                 btnStyles={{width:"75%", marginBottom:25}} 
-                onPress={()=>{navigation.navigate("Cadastro")}}>Iniciar cadastro</RegularButton>           
+                onPress={()=>{navigation.navigate("SignUp")}}>Iniciar cadastro</RegularButton>           
             <SmallText textStyles={{width:"80%", marginBottom:25}}>Ou se já possui cadastro, basta clicar no botão abaixo.</SmallText>
             <RegularButton 
                 textStyles={{color:Colors.White}} 
                 btnStyles={{width:"75%", marginBottom:50, backgroundColor: Colors.DarkBlue}} 
-                onPress={()=>{navigation.navigate("SignUp")}}>Entrar</RegularButton>           
+                onPress={()=>{navigation.navigate("SignIn")}}>Entrar</RegularButton>           
         </ProfissionalContainer>
     );
 };  

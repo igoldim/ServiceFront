@@ -5,19 +5,23 @@ import { Colors } from '../Colors';
 
 import Welcome from '../../screens/preload/components/Welcome';
 import SignIn from '../../screens/signIn/components/SignIn';
+import Comecar from '../../screens/signIn/components/Comecar';
+
 import SignUp from '../../screens/signUp/components/SignUp';
 import Profissional from '../../screens/signIn/professional/components/Profissional';
 import User from '../../screens/signIn/user/components/User';
-import CadastroP from  '../../screens/signIn/professional/components/Cadastro';
+import EmailVerification from '../../screens/emailVerification/components/EmailVerification';
 
 export type RootStackParamList = {
     Welcome : undefined,
     SignIn: undefined,
     Profissional: undefined,
     User: undefined,
-    CadastroP : undefined,
+    Comecar : undefined,
     SignUp : undefined,
+    EmailVerification : undefined,
 }
+
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -49,23 +53,28 @@ const RootStack: React.FC = () => {
                     options={{headerShown:false }} />
 
                 <Stack.Screen 
+                    name="Comecar" 
+                    component={Comecar} 
+                    options={{headerShown:false }} />                
+
+                <Stack.Screen 
                     name="Profissional" 
                     component={Profissional} 
                     options={{headerShown:false }} />
+
                 <Stack.Screen 
                     name="User" 
                     component={User} 
                     options={{headerShown:false }} />
 
-
-                <Stack.Screen 
-                    name="CadastroP" 
-                    component={CadastroP} 
-                    options={{headerShown:false }} />
-                
                 <Stack.Screen 
                     name="SignUp" 
                     component={SignUp} 
+                    options={{headerShown:false }} />
+
+                <Stack.Screen 
+                    name="EmailVerification" 
+                    component={EmailVerification} 
                     options={{headerShown:false }} />
 
             </Stack.Navigator> 
