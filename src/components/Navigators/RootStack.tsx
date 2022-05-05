@@ -5,14 +5,18 @@ import { Colors } from '../Colors';
 
 import Welcome from '../../screens/preload/components/Welcome';
 import SignIn from '../../screens/signIn/components/SignIn';
+import SignUp from '../../screens/signUp/components/SignUp';
 import Profissional from '../../screens/signIn/professional/components/Profissional';
 import User from '../../screens/signIn/user/components/User';
+import CadastroP from  '../../screens/signIn/professional/components/Cadastro';
 
 export type RootStackParamList = {
     Welcome : undefined,
     SignIn: undefined,
     Profissional: undefined,
-    User: undefined
+    User: undefined,
+    CadastroP : undefined,
+    SignUp : undefined,
 }
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -51,6 +55,17 @@ const RootStack: React.FC = () => {
                 <Stack.Screen 
                     name="User" 
                     component={User} 
+                    options={{headerShown:false }} />
+
+
+                <Stack.Screen 
+                    name="CadastroP" 
+                    component={CadastroP} 
+                    options={{headerShown:false }} />
+                
+                <Stack.Screen 
+                    name="SignUp" 
+                    component={SignUp} 
                     options={{headerShown:false }} />
 
             </Stack.Navigator> 

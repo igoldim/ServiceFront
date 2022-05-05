@@ -38,7 +38,7 @@ const User: React.FC<props> = ({navigation})  => {
             <RegularButton 
                 textStyles={{color:Colors.White}} 
                 btnStyles={{width:"75%", marginBottom:50, backgroundColor: Colors.DarkBlue}} 
-                onPress={()=>{navigation.navigate("Welcome")}}>Entrar</RegularButton>           
+                onPress={()=>{navigation.navigate("SignUp")}}>Entrar</RegularButton>           
         </UserContainer>
     );
 };  
