@@ -8,8 +8,9 @@ const ButtonView = styled.TouchableOpacity`
     align-items: center;
     background-color: ${Colors.Orange};
     width: 100%;
-    padding: 20px;
+    padding: 10px;
     border-radius: 20px;
+    height: 50px;
 `;
 
 interface ButtonProps{
