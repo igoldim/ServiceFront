@@ -1,37 +1,16 @@
 import React from 'react';
-import styled from 'styled-components/native';
 import { Colors } from '../../../components/Colors';
-import { Container } from '../../../components/Shared';
-import { RootStackParamList } from '../../../components/Navigators/RootStack';
-import { StackScreenProps } from '@react-navigation/stack';
-
 import RegularInput from '../../../components/Input/RegularInput';
 import KeyboardAvoidingConatainer from '../../../components/KeyboardAvoidingConatainer';
-
 import { Formik } from 'formik';
-
 import RegularText from '../../../components/Texts/RegularText';
 import RegularButton from '../../../components/Buttons/RegularButton';
-
 import Messagebox from '../../../components/Messagebox';
 import { ActivityIndicator } from 'react-native';
+import { InitialValues, SignUpProps } from './SignUp.t';
+import { SignUpContainer } from './SignUp.s';
 
-const SignUpContainer = styled(Container)`
-    background-color: ${Colors.Background};
-    width: 100%;
-    flex: 1;
-`;
-
-type props = StackScreenProps<RootStackParamList, "Welcome">;
-
-type InitialValues = {
-    fullName: '',
-    email: '', 
-    password:'',
-    rePassword:'',
-}
-
-const SignUp: React.FC<props> = ({navigation})  => {
+const SignUp: React.FC<SignUpProps> = ({navigation})  => {
     const [message, setMessage] = React.useState('');
     const [isMessageSucess, setIsMessageSucess] = React.useState(false);
     
@@ -39,15 +18,8 @@ const SignUp: React.FC<props> = ({navigation})  => {
         try {
             setMessage('');            
             //call backend
-            if (credentials.email == "igoldim@gmail.com" && credentials.password == "002274"){
-
-            }
-            else{
-                setMessage('Credênciais inválidas');
-            }
+            navigation.navigate('EmailVerification');
             //move to next page
-
-
             setSubmitting(false);
         } catch (error) {
             setMessage('Cadastro falhou!');

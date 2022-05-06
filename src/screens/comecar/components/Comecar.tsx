@@ -1,26 +1,12 @@
 import React from 'react';
-import styled from 'styled-components/native';
 import { Colors } from '../../../components/Colors';
-import { Container } from '../../../components/Shared';
-
 import BigText from '../../../components/Texts/BigText';
 import SmallText from '../../../components/Texts/SmallText';
 import RegularButton from '../../../components/Buttons/RegularButton';
+import { ComecarProps } from './Comecar.t';
+import { ComecarContainer } from './Comecar.s';
 
-
-const ComecarContainer = styled(Container)`
-    background-color: ${Colors.Background};
-    width: 100%;
-    flex: 1;
-`;
-
-
-import { RootStackParamList } from '../../../components/Navigators/RootStack';
-import { StackScreenProps } from '@react-navigation/stack';
-
-type props = StackScreenProps<RootStackParamList, "Welcome">;
-
-const Comecar: React.FC<props> = ({navigation})  => {
+const Comecar: React.FC<ComecarProps> = ({navigation})  => {
     return (
         <ComecarContainer>          
             <BigText textStyles={{marginTop:55, marginBottom:25}}>Vamos começar!</BigText>

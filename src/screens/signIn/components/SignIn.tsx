@@ -1,39 +1,18 @@
 import React from 'react';
-import styled from 'styled-components/native';
 import { Colors } from '../../../components/Colors';
-import { Container } from '../../../components/Shared';
-import { RootStackParamList } from '../../../components/Navigators/RootStack';
-import { StackScreenProps } from '@react-navigation/stack';
-
 import RegularInput from '../../../components/Input/RegularInput';
 import KeyboardAvoidingConatainer from '../../../components/KeyboardAvoidingConatainer';
-
 import { Formik } from 'formik';
-
 import RegularText from '../../../components/Texts/RegularText';
 import RegularButton from '../../../components/Buttons/RegularButton';
-
 import Messagebox from '../../../components/Messagebox';
 import { ActivityIndicator } from 'react-native';
-
 import PressableText from '../../../components/Texts/PressableText';
-
 import RowContainer from '../../../components/RowContainer';
+import { SignInProps } from './SignIn.t';
+import { SignInContainer } from './SignIn.s';
 
-const SignInContainer = styled(Container)`
-    background-color: ${Colors.Background};
-    width: 100%;
-    flex: 1;
-`;
-
-type props = StackScreenProps<RootStackParamList, "Welcome">;
-
-type InitialValues = {
-    email: '', 
-    password:''
-}
-
-const SignIn: React.FC<props> = ({navigation})  => {
+const SignIn: React.FC<SignInProps> = ({navigation})  => {
     const [message, setMessage] = React.useState('');
     const [isMessageSucess, setIsMessageSucess] = React.useState(false);
     
@@ -43,7 +22,7 @@ const SignIn: React.FC<props> = ({navigation})  => {
 
             //call backend
             if (credentials.email == "igoldim@gmail.com" && credentials.password == "002274"){
-
+                navigation.navigate('Home');
             }
             else{
                 setMessage('Credenciais inválidas');
@@ -106,7 +85,7 @@ const SignIn: React.FC<props> = ({navigation})  => {
                                 btnStyles={{width:"80%", marginBottom:10, alignSelf: 'center'}}>
                                 <ActivityIndicator size={30} color={Colors.White} /></RegularButton>}
                             <RowContainer >
-                                <PressableText onPress={()=> navigation.navigate('Welcome')}>Novo Cadastro</PressableText>
+                                <PressableText onPress={()=> navigation.navigate('Comecar')}>Novo Cadastro</PressableText>
                                 <PressableText onPress={()=> navigation.navigate('Welcome')}>Recuperear Senha</PressableText>
                             </RowContainer>
                         </>

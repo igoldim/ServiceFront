@@ -1,113 +1,122 @@
 import React from 'react';
-import styled from 'styled-components/native';
 import { Colors } from '../../../components/Colors';
-import { Container } from '../../../components/Shared';
-import { RootStackParamList } from '../../../components/Navigators/RootStack';
-import { StackScreenProps } from '@react-navigation/stack';
-
-import RegularInput from '../../../components/Input/RegularInput';
 import KeyboardAvoidingConatainer from '../../../components/KeyboardAvoidingConatainer';
-
-import { Formik } from 'formik';
-
 import RegularText from '../../../components/Texts/RegularText';
 import RegularButton from '../../../components/Buttons/RegularButton';
-
-import Messagebox from '../../../components/Messagebox';
 import { ActivityIndicator } from 'react-native';
+import IconHeader from '../../../components/Icons/IconHeader';
+import CodeInput from '../../../components/Input/CodeInput';
+import ResendTimer from '../../../components/Timers/ResendTimer';
+import MessageModal from '../../../components/Modals/MessageModal';
+import { EmailVerificationProps } from './EmailVerification.t';
+import { EmailVerificationContainer } from './EmailVerification.s';
 
-import PressableText from '../../../components/Texts/PressableText';
+const EmailVerification: React.FC<EmailVerificationProps> = ({navigation})  => {
 
-import RowContainer from '../../../components/RowContainer';
+    const MAX_CODE_LENGTH = 4;
+    const [code, setCode] = React.useState('');
+    const [pinRead, setPinRead] = React.useState(false);
+    const [isVerify, setIsVerify] = React.useState(false);
+    const [resendingEmail, setResendingEmail] = React.useState(false);
+    const [activeResend, setActiveResend] = React.useState(false);
+    const [resendStatus, setResendStatus] = React.useState("Reenviar");
+    const [visible, setVisible] = React.useState(false);
+    const [messageModal, setMessageModal] = React.useState(''); //Email Validado com sucesso!
+    const [messageType, setMessageType] = React.useState('');
+    const [messageHeadding, setMessageHeadding] = React.useState('');
+    const [modalButtonText, setmodalButtonText] = React.useState('');     
 
-const EmailVerificationContainer = styled(Container)`
-    background-color: ${Colors.Background};
-    width: 100%;
-    flex: 1;
-`;
 
-type props = StackScreenProps<RootStackParamList, "Welcome">;
-
-type InitialValues = {
-    email: '', 
-    password:''
-}
-
-const EmailVerification: React.FC<props> = ({navigation})  => {
-    const [message, setMessage] = React.useState('');
-    const [isMessageSucess, setIsMessageSucess] = React.useState(false);
-    
-    const handleLogin = async (credentials, setSubmitting) =>{
+    const resendEmail = async (triggerTimer : any) => {
         try {
-            setMessage('');
+            setResendingEmail(true);
 
+            //make request to backend to send email
+
+            setResendStatus('Failed!'); // 'Failed!' or 'Sent!'
+
+
+            setResendingEmail(false);
+            //hold on briefly
+            setTimeout(() =>{
+                setResendStatus('Reenviar');
+                setActiveResend(false);
+                triggerTimer();
+            }, 5000);
+        } catch (error) {
+            setResendStatus('Failed!');
+            setResendingEmail(false);   
+        }
+    };
+
+    const handleEmailVerification = async () =>{
+        try {
+            setIsVerify(true);
             //call backend
-            if (credentials.email == "igoldim@gmail.com" && credentials.password == "002274"){
-
+            if (code === "1234"){
+                setIsVerify(false);
+                return showModal('success', 'All Good!', 'Seu email foi verificado com sucesso.', 'Processado');
             }
             else{
-                setMessage('Credenciais inválidas');
+                setIsVerify(false);
+                return showModal('failed', 'Failed!', 'Codigo inválido', 'Fechar');
             }
             //move to next page
-
-
-            setSubmitting(false);
         } catch (error) {
-            setMessage('Login falhou!');
-            setSubmitting(false);
+            setIsVerify(false);
+            return showModal('failed', 'Failed!', 'Erro ao Verificar email', 'Fechar');
         } 
     }
+
+    const modalButtonHandle = () =>{
+        if (messageType === "success"){
+            //chamar pagina de complemento de cadastro
+            navigation.navigate('SignIn');
+        }
+        setVisible(false);
+    }
+
+    const showModal = (type, message, headText, buttonLabel) => {
+        setMessageType(type);
+        setMessageModal(message);
+        setMessageHeadding(headText);
+        setmodalButtonText(buttonLabel);
+        setVisible(true);
+    }
+
     return (
         <EmailVerificationContainer>         
             <KeyboardAvoidingConatainer>
-                <RegularText textStyles={{marginBottom: 25}}>Identificação</RegularText>
-                <Formik 
-                        initialValues={{
-                            email: '', 
-                            password:''
-                        }} 
-                        onSubmit={(values, {setSubmitting})=>{
-                            if (values.email == "" && values.password == "") {
-                                setMessage('Por favor, verifique os dados digitados.');
-                                setSubmitting(false);
-                            }
-                            else{
-                                handleLogin(values, setSubmitting);
-                            }
-                        }}>
-                    {({handleChange, handleBlur, handleSubmit, values, isSubmitting}) => (
-                        <>
-                            <RegularInput 
-                                title='E-mail Address' 
-                                iconeName="email-variant"  
-                                placeholder='email@teste.com'
-                                keyboardType='email-address'
-                                onChangeText={handleChange('email')}
-                                onBlur={handleBlur('email')}
-                                value={values.email}
-                            />
-                            <RegularInput 
-                                title='Password' 
-                                iconeName="form-textbox-password"  
-                                placeholder="* * * * * *"
-                                onChangeText={handleChange('password')}
-                                onBlur={handleBlur('password')}
-                                value={values.password}
-                                isPassword={true}
-                            />
-                            <Messagebox textStyle={{ marginBottom: 25}} success={isMessageSucess}>{ message || " " }</Messagebox>
-                            {!isSubmitting &&  <RegularButton 
+                <IconHeader iconeName='lock-open'/>
+                <RegularText textStyles={{marginBottom: 25, textAlign: 'center'}}>Identificação</RegularText>
+                
+                <CodeInput code={code} setCode={setCode} maxLength={MAX_CODE_LENGTH} setPinRead={setPinRead}/>
+                
+                {!isVerify &&  pinRead && <RegularButton 
                                 textStyles={{color:Colors.White}} 
-                                btnStyles={{width:"80%", marginBottom:10, alignSelf: 'center'}} 
-                                onPress={handleSubmit}>Acessar</RegularButton>}
-                             
-                             {isSubmitting &&  <RegularButton 
-                                textStyles={{color:Colors.White}} 
-                                btnStyles={{width:"80%", marginBottom:10, alignSelf: 'center'}}>
-                                <ActivityIndicator size={30} color={Colors.White} /></RegularButton>}
-                        </>
-                    )}
-                </Formik>
+                                btnStyles={{width:"80%", marginBottom:5, alignSelf: 'center'}} 
+                                onPress={handleEmailVerification}>Verificar</RegularButton>}
+
+                {!isVerify &&  !pinRead && <RegularButton 
+                                textStyles={{color:Colors.LightGrey}} 
+                                btnStyles={{width:"80%", marginBottom:5, alignSelf: 'center', backgroundColor: Colors.Gray}}
+                                disabled={true} 
+                                >Verificar</RegularButton>}
+
+                {isVerify &&  <RegularButton 
+                    textStyles={{color:Colors.White}} 
+                    btnStyles={{width:"80%", marginBottom:5, alignSelf: 'center'}}>
+                    <ActivityIndicator size={30} color={Colors.White} /></RegularButton>}
+                <ResendTimer activeResend={activeResend} setActiveResend={setActiveResend} resendStatus={resendStatus} resendingEmail={resendingEmail} resendEmail={resendEmail} />    
+            <MessageModal 
+                visible={visible} 
+                setVisible={setVisible} 
+                heading={messageHeadding} 
+                message={messageModal} 
+                btnTitle={modalButtonText} 
+                type={messageType}
+                onPress={modalButtonHandle}
+                />
             </KeyboardAvoidingConatainer>
         </EmailVerificationContainer>
     );

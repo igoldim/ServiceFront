@@ -1,14 +1,27 @@
 import React from 'react';
+import styled from 'styled-components/native';
 import { Colors } from '../../../../components/Colors';
+import { Container } from '../../../../components/Shared';
+import { RootStackParamList } from '../../../../components/Navigators/RootStack';
+import { StackScreenProps } from '@react-navigation/stack';
 
 import BigText from '../../../../components/Texts/BigText';
-import SmallText, { SpanBold } from '../../../../components/Texts/SmallText';
+import SmallText from '../../../../components/Texts/SmallText';
 import RegularButton from '../../../../components/Buttons/RegularButton';
-import { ProfissionalProps } from './Profissional.t';
-import { ProfissionalContainer } from './Profissional.s';
 
 
-const Profissional: React.FC<ProfissionalProps> = ({navigation})  => {
+const SpanBold = styled(SmallText)``;
+
+
+const ProfissionalContainer = styled(Container)`
+    background-color: ${Colors.Background};
+    width: 100%;
+    flex: 1;
+`;
+
+type props = StackScreenProps<RootStackParamList, "Welcome">;
+
+const Profissional: React.FC<props> = ({navigation})  => {
     return (
         <ProfissionalContainer>   
             <BigText textStyles={{marginTop:55, marginBottom:25}}>Bem vindo(a) profissional.</BigText>

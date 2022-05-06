@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components/native';
 import { Colors } from '../Colors';
 import SmallText from '../Texts/SmallText';
-import { GestureResponderEvent, StyleProp, TextStyle, ViewStyle } from "react-native";
+import { Dimensions, GestureResponderEvent, StyleProp, TextStyle, ViewStyle } from "react-native";
 
 const StyledPressable = styled.Pressable`
     align-self: center;
@@ -14,12 +14,13 @@ interface PressableProps{
     onPress?: ((event:GestureResponderEvent) => void | undefined);
     textStyles?: StyleProp<TextStyle>;
     children: React.ReactNode;
+    disabled?: boolean | null | undefined;
 }
 
 
 const PressableText: React.FC<PressableProps> = (props) => {
     return(
-        <StyledPressable onPress={props.onPress} style={props.btnStyles}>
+        <StyledPressable onPress={props.onPress} style={props.btnStyles} disabled={props.disabled}>
             <SmallText textStyles={props.textStyles} >{props.children}</SmallText>
         </StyledPressable>)
     ;
