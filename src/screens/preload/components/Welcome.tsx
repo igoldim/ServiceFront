@@ -10,7 +10,7 @@ import { BottonSection, TopImage, TopSection, WelcomeContainer } from './Welcome
 
 const Welcome: React.FC<WelcomeProps> = ({navigation}) => {
 
-    const [versao] = React.useState("0.0.0.010");
+    const [versao] = React.useState("0.0.022");
 
     return (
         <>           
@@ -22,7 +22,7 @@ const Welcome: React.FC<WelcomeProps> = ({navigation}) => {
                     <BigText textStyles={{width:"70%", marginBottom:25}}>The Cleaner App</BigText>
                     <SmallText textStyles={{width:"70%", marginBottom:25}}>Sistema de agendamento e exceução de diárias profissional.</SmallText>
                     <RegularButton textStyles={{color:Colors.Background}} btnStyles={{marginBottom:50}} onPress={()=>{navigation.navigate("Comecar")}}>Vamos começar!</RegularButton>
-                        <SmallText textStyles={{color:Colors.White, textAlign:'center'}} >Build {versao}</SmallText>
+                        <SmallText textStyles={{color:Colors.White, textAlign:'center'}} >Versão {versao}</SmallText>
                 </BottonSection>
             </WelcomeContainer>
         </>

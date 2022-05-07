@@ -10,6 +10,7 @@ import ResendTimer from '../../../components/Timers/ResendTimer';
 import MessageModal from '../../../components/Modals/MessageModal';
 import { EmailVerificationProps } from './EmailVerification.t';
 import { EmailVerificationContainer } from './EmailVerification.s';
+import SmallText from '../../../components/Texts/SmallText';
 
 const EmailVerification: React.FC<EmailVerificationProps> = ({navigation})  => {
 
@@ -88,7 +89,8 @@ const EmailVerification: React.FC<EmailVerificationProps> = ({navigation})  => {
         <EmailVerificationContainer>         
             <KeyboardAvoidingConatainer>
                 <IconHeader iconeName='lock-open'/>
-                <RegularText textStyles={{marginBottom: 25, textAlign: 'center'}}>Identificação</RegularText>
+                <RegularText textStyles={{marginBottom: 5, textAlign: 'center'}}>Estamos verificando seu email.</RegularText>
+                <SmallText textStyles={{marginBottom: 25, textAlign: 'center'}}>Digite o código recebido em seu email.</SmallText>
                 
                 <CodeInput code={code} setCode={setCode} maxLength={MAX_CODE_LENGTH} setPinRead={setPinRead}/>
                 
