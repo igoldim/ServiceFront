@@ -7,18 +7,30 @@ import RegularText from '../../../components/Texts/RegularText';
 import RegularButton from '../../../components/Buttons/RegularButton';
 import Messagebox from '../../../components/Messagebox';
 import { ActivityIndicator } from 'react-native';
-import { InitialValues, SignUpProps } from './SignUp.t';
+
 import { SignUpContainer } from './SignUp.s';
+import { fetchRegister } from '../services';
+import AsyncStorage from '@react-native-community/async-storage';
+import { IUserRegister } from '../../signIn/components/SignIn.t';
 
 const SignUp: React.FC<SignUpProps> = ({navigation})  => {
     const [message, setMessage] = React.useState('');
     const [isMessageSucess, setIsMessageSucess] = React.useState(false);
-    
-    const handleSignUp = async (credentials: InitialValues, setSubmitting) =>{
+
+    const handleSignUp = async (credentials: IUserRegister, setSubmitting) =>{
         try {
             setMessage('');            
             //call backend
-            navigation.navigate('EmailVerification');
+            var { sucessful, data, message} = await fetchRegister(credentials);
+
+            if (sucessful){
+                await AsyncStorage.setItem("email", data!.email);
+
+                navigation.navigate('EmailVerification');
+            }
+            else{
+                setMessage(message);
+            }            
             //move to next page
             setSubmitting(false);
         } catch (error) {
@@ -32,13 +44,13 @@ const SignUp: React.FC<SignUpProps> = ({navigation})  => {
                 <RegularText textStyles={{marginBottom: 25}}>Novo Cadastro</RegularText>
                 <Formik 
                         initialValues={{
-                            fullName: '',
+                            name: '',
                             email: '', 
                             password:'',
                             rePassword:'',
                         }} 
                         onSubmit={(values, {setSubmitting})=>{
-                            if (values.fullName == "" || values.email == "" || values.password == "" || values.rePassword == "") {
+                            if (values.name == "" || values.email == "" || values.password == "" || values.rePassword == "") {
                                 setMessage('Por favor, verifique os dados digitados.');
                                 setSubmitting(false);
                             }
@@ -56,9 +68,9 @@ const SignUp: React.FC<SignUpProps> = ({navigation})  => {
                                 title='Nome completo' 
                                 iconeName="account"  
                                 placeholder='Nome completo'
-                                onChangeText={handleChange('fullName')}
-                                onBlur={handleBlur('fullName')}
-                                value={values.fullName}
+                                onChangeText={handleChange('name')}
+                                onBlur={handleBlur('name')}
+                                value={values.name}
                             />
                             <RegularInput 
                                 title='E-mail Address' 

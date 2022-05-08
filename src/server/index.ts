@@ -1,7 +1,8 @@
 import axios from "axios";
+import AsyncStorage from '@react-native-community/async-storage';
 
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL,
+  baseURL: "https://api.thecleaner.app.br/v1",
 });
 
 const apiCEP = axios.create({
@@ -16,8 +17,8 @@ const bigdatacloud = axios.create({
   baseURL: "https://api.bigdatacloud.net/data/reverse-geocode-client",
 });
 
-api.interceptors.request.use((config) => {
-  const  token = "token do usuario"; //store.getState().user user reducer
+api.interceptors.request.use(async (config) => {
+  const token = await AsyncStorage.getItem('token');
 
   if (token) {
     config.headers = {
@@ -28,14 +29,15 @@ api.interceptors.request.use((config) => {
 });
 
 api.interceptors.response.use(undefined, (error) => {
-  if (error.response) {
+  /*if (error.response) {
     //trata erro da api
     //this.toastify.show(error.response.data.error);
-  }
+  }*/
 
-  if (error.response.status === 401) {
+ if (error.response.status === 401) {
     //chama tela de login
     //window.location.href = "/?notAuthorized=true";
+    return Promise.reject(error);
   }
 
   return Promise.reject(error);

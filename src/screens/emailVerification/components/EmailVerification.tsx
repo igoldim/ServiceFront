@@ -12,6 +12,9 @@ import { EmailVerificationProps } from './EmailVerification.t';
 import { EmailVerificationContainer } from './EmailVerification.s';
 import SmallText from '../../../components/Texts/SmallText';
 
+import AsyncStorage from '@react-native-community/async-storage';
+import { fetchConfirmEmail } from '../../signUp/services';
+
 const EmailVerification: React.FC<EmailVerificationProps> = ({navigation})  => {
 
     const MAX_CODE_LENGTH = 4;
@@ -54,14 +57,17 @@ const EmailVerification: React.FC<EmailVerificationProps> = ({navigation})  => {
         try {
             setIsVerify(true);
             //call backend
-            if (code === "1234"){
+            const email = await AsyncStorage.getItem("email");
+            var { sucessful, message} = await fetchConfirmEmail({email: email!.toString(), token: code!.toString()});
+
+            if (sucessful){
                 setIsVerify(false);
-                return showModal('success', 'All Good!', 'Seu email foi verificado com sucesso.', 'Processado');
+                return showModal('success', 'Muito bom!', 'Seu email foi verificado com sucesso.', 'Processado');
             }
             else{
                 setIsVerify(false);
-                return showModal('failed', 'Failed!', 'Codigo inválido', 'Fechar');
-            }
+                return showModal('failed', 'Failed!', message, 'Fechar');
+            }            
             //move to next page
         } catch (error) {
             setIsVerify(false);

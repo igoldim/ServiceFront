@@ -9,30 +9,34 @@ import Messagebox from '../../../components/Messagebox';
 import { ActivityIndicator } from 'react-native';
 import PressableText from '../../../components/Texts/PressableText';
 import RowContainer from '../../../components/RowContainer';
-import { SignInProps } from './SignIn.t';
+import { SignInProps, IUserLogin } from './SignIn.t';
 import { SignInContainer } from './SignIn.s';
+import { fetchLogin } from '../services';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const SignIn: React.FC<SignInProps> = ({navigation})  => {
     const [message, setMessage] = React.useState('');
     const [isMessageSucess, setIsMessageSucess] = React.useState(false);
-    
-    const handleLogin = async (credentials, setSubmitting) =>{
+   
+    const handleLogin = async (credentials: IUserLogin, setSubmitting) =>{
         try {
             setMessage('');
-
             //call backend
-            if (credentials.email == "igoldim@gmail.com" && credentials.password == "002274"){
+            var { sucessful, data, message, token } = await fetchLogin(credentials);
+
+            if (sucessful){
+                await AsyncStorage.setItem("Name", data!.name);
+                await AsyncStorage.setItem("token", token!.toString());
+                await AsyncStorage.setItem("isLogged", "true");
                 navigation.navigate('Home');
             }
             else{
-                setMessage('Credenciais inválidas');
+                await AsyncStorage.setItem("isLogged", "false");
+                setMessage(message);
             }
-            //move to next page
-
-
             setSubmitting(false);
         } catch (error) {
-            setMessage('Login falhou!');
+            setMessage("Login falhou!");
             setSubmitting(false);
         } 
     }

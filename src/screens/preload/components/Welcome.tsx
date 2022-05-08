@@ -7,10 +7,28 @@ import RegularButton from '../../../components/Buttons/RegularButton';
 import backgraoundImage from "../../../assets/images/logo.png";
 import { WelcomeProps } from './Welcome.t';
 import { BottonSection, TopImage, TopSection, WelcomeContainer } from './Welcome.s';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const Welcome: React.FC<WelcomeProps> = ({navigation}) => {
 
-    const [versao] = React.useState("0.0.022");
+    const [versao, setVersao] = React.useState("0.0.022");
+    const [isLogged, setIsLogged] = React.useState(false);
+
+    React.useEffect(()=>{
+        const handleIsLogged = async () =>{
+            const res = await AsyncStorage.getItem('isLogged');
+            if (res === "true") {
+                setIsLogged(true);
+                navigation.navigate("Home");
+            }
+            else{
+                setIsLogged(false);
+                navigation.navigate("Welcome");
+            }            
+        };
+        handleIsLogged();
+        return () => { setIsLogged(false); }
+    }, [isLogged]);
 
     return (
         <>           

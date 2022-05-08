@@ -5,5 +5,5 @@ export interface ProfileProps {
     img: ImageSourcePropType;
     imageStyle?: StyleProp<ImageStyle>;
     imageContainerStyle?: StyleProp<ViewStyle>;
-    onPress?: ((event: GestureResponderEvent) => void | undefined)
+    onPress?: ((event: GestureResponderEvent) => void | undefined) | undefined;
 }

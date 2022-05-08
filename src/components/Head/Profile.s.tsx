@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 
 export const StyledView = styled.TouchableOpacity`
-    flex-direction: column;
+    background-color: #FFF;
     height: 45px;
     width: 45px;
     border-radius: 50px;

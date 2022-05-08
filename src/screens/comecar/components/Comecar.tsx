@@ -6,7 +6,24 @@ import RegularButton from '../../../components/Buttons/RegularButton';
 import { ComecarProps } from './Comecar.t';
 import { ComecarContainer } from './Comecar.s';
 
+import AsyncStorage from '@react-native-community/async-storage';
+
 const Comecar: React.FC<ComecarProps> = ({navigation})  => {
+
+    React.useEffect(()=>{
+        const handleIsLogged= async () => {
+            const res = await AsyncStorage.getItem('isLogged');
+            if (res === "true") {
+                navigation.navigate("Home");
+            }
+            else{
+            }       
+        };    
+        handleIsLogged();
+        return () => { }
+    }, []);
+
+
     return (
         <ComecarContainer>          
             <BigText textStyles={{marginTop:55, marginBottom:25}}>Vamos começar!</BigText>

@@ -1,11 +1,47 @@
 import React from 'react';
 import CardSection from '../../../components/Cards/CardSection';
-import { HomeContainer } from './Home.s';
+import { HomeContainer, HeaderStyled } from './Home.s';
 import { HomeProps } from './Home.t';
 import avatar from '../../../assets/images/avatar.png';
 import TransactionSection from '../../../components/Transaction/TransactionSection';
 
+import avi from '../../../assets/images/avatar.png'
+
+import { Colors } from '../../../components/Colors';
+
+import AsyncStorage from '@react-native-community/async-storage';
+import Greeting from '../../../components/Head/Greeting';
+import Profile from '../../../components/Head/Profile';
+
 const Home: React.FC<HomeProps> = ({navigation}) => {
+    const [name, setName] = React.useState("Igor");
+
+    React.useEffect(()=>{
+        const handleUserName = async () => {
+            const userName = await AsyncStorage.getItem("Name");
+            setName(userName!.toString());
+            const res = await AsyncStorage.getItem('isLogged');
+            if (res === "true") {
+                navigation.navigate("Home");
+            }
+            else{
+                navigation.navigate("Welcome");
+            }       
+        };    
+        handleUserName();
+        return () => { setName(""); }
+    }, []);
+
+
+    const handlePerfil = () => {
+        AsyncStorage.setItem("Name", "");
+        AsyncStorage.setItem("token", "");
+        AsyncStorage.setItem("isLogged", "false");
+        navigation.navigate('Welcome');
+    }
+
+   
+
     const cardData = [
         {
             id: "2cb32ade-ac5d-40b5-bf25-b135c85af097",
@@ -45,7 +81,17 @@ const Home: React.FC<HomeProps> = ({navigation}) => {
         },
     ];
     return (
-        <>           
+        <> 
+            <HeaderStyled>
+                <Greeting 
+                    mainText={"Olá, " + name.split(' ')[0]}
+                    subtext='Que bom ter você de volta!' />
+                <Profile 
+                        img={avi} 
+                        imageContainerStyle={{backgroundColor: Colors.Gray}}
+                        onPress={handlePerfil}
+                />
+            </HeaderStyled>        
             <HomeContainer>
                <CardSection data={cardData} />
                <TransactionSection data={[]}/>
