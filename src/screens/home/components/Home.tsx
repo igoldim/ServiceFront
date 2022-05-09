@@ -33,10 +33,10 @@ const Home: React.FC<HomeProps> = ({navigation}) => {
     }, []);
 
 
-    const handlePerfil = () => {
-        AsyncStorage.setItem("Name", "");
-        AsyncStorage.setItem("token", "");
-        AsyncStorage.setItem("isLogged", "false");
+    const handlePerfil = async () => {
+        await AsyncStorage.setItem("Name", "");
+        await AsyncStorage.setItem("token", "");
+        await AsyncStorage.setItem("isLogged", "false");
         navigation.navigate('Welcome');
     }
 
@@ -89,7 +89,7 @@ const Home: React.FC<HomeProps> = ({navigation}) => {
                 <Profile 
                         img={avi} 
                         imageContainerStyle={{backgroundColor: Colors.Gray}}
-                        onPress={handlePerfil}
+                        onPress={async () => handlePerfil()}
                 />
             </HeaderStyled>        
             <HomeContainer>

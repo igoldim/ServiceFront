@@ -11,11 +11,13 @@ import PressableText from '../../../components/Texts/PressableText';
 import RowContainer from '../../../components/RowContainer';
 import { SignInProps, IUserLogin } from './SignIn.t';
 import { SignInContainer } from './SignIn.s';
-import { fetchLogin } from '../services';
+import { fetchLogin, fetchResetPassword } from '../services';
 import AsyncStorage from '@react-native-community/async-storage';
 
 const SignIn: React.FC<SignInProps> = ({navigation})  => {
     const [message, setMessage] = React.useState('');
+    const [emailRecovery, setEmailRecovery] = React.useState('');
+    
     const [isMessageSucess, setIsMessageSucess] = React.useState(false);
    
     const handleLogin = async (credentials: IUserLogin, setSubmitting) =>{
@@ -40,6 +42,34 @@ const SignIn: React.FC<SignInProps> = ({navigation})  => {
             setSubmitting(false);
         } 
     }
+
+
+    const handleResetPassword = async () => {
+        try {
+            setMessage('');
+            //call backend
+            if (emailRecovery === ''){
+                setMessage('preencha seu email!');
+                return false;
+            }
+
+            var { sucessful, message } = await fetchResetPassword(emailRecovery);
+
+            if (sucessful){
+                setMessage('Senha recuperada com sucesso, verifique seu email.');
+                return true;
+            }
+            else{
+                setMessage(message);
+                return false;
+            }
+        } catch (error) {
+            setMessage("Recuperação falhou!");
+        } 
+    }
+
+
+
     return (
         <SignInContainer>         
             <KeyboardAvoidingConatainer>
@@ -50,6 +80,7 @@ const SignIn: React.FC<SignInProps> = ({navigation})  => {
                             password:''
                         }} 
                         onSubmit={(values, {setSubmitting})=>{
+                            values.email = emailRecovery;
                             if (values.email == "" && values.password == "") {
                                 setMessage('Por favor, verifique os dados digitados.');
                                 setSubmitting(false);
@@ -65,9 +96,9 @@ const SignIn: React.FC<SignInProps> = ({navigation})  => {
                                 iconeName="email-variant"  
                                 placeholder='email@teste.com'
                                 keyboardType='email-address'
-                                onChangeText={handleChange('email')}
+                                onChangeText={setEmailRecovery}
                                 onBlur={handleBlur('email')}
-                                value={values.email}
+                                value={emailRecovery}
                             />
                             <RegularInput 
                                 title='Password' 
@@ -90,7 +121,7 @@ const SignIn: React.FC<SignInProps> = ({navigation})  => {
                                 <ActivityIndicator size={30} color={Colors.White} /></RegularButton>}
                             <RowContainer >
                                 <PressableText onPress={()=> navigation.navigate('Comecar')}>Novo Cadastro</PressableText>
-                                <PressableText onPress={()=> navigation.navigate('Welcome')}>Recuperear Senha</PressableText>
+                                <PressableText onPress={handleResetPassword}>Recuperear Senha</PressableText>
                             </RowContainer>
                         </>
                     )}

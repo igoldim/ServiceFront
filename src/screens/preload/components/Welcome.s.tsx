@@ -10,10 +10,10 @@ export const WelcomeContainer = styled(Container)`
 `;
 
 export const TopImage = styled.Image`
-    width: 80%;
+    width: 95%;
     height: 100%;   
     margin:0 auto ;
-    resize-mode: stretch;
+    resize-mode: cover;
 `;
 
 export const TopSection = styled.View`
@@ -25,7 +25,7 @@ export const TopSection = styled.View`
 
 export const BottonSection = styled.View`
     width: 100%;
-    padding: 25px;
+    padding: 20px;
     flex: 1;
     justify-content: flex-end;
 `;

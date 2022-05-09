@@ -6,7 +6,7 @@ import { GestureResponderEvent, StyleProp, TextStyle, ViewStyle } from "react-na
 
 const ButtonView = styled.TouchableOpacity`
     align-items: center;
-    background-color: ${Colors.Orange};
+    background-color: ${Colors.Salmon};
     width: 100%;
     padding: 10px;
     border-radius: 20px;

@@ -11,12 +11,11 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 const Welcome: React.FC<WelcomeProps> = ({navigation}) => {
 
-    const [versao, setVersao] = React.useState("0.0.022");
+    const [versao, setVersao] = React.useState("0.0.033");
     const [isLogged, setIsLogged] = React.useState(false);
 
     React.useEffect(()=>{
-        const handleIsLogged = async () =>{
-            const res = await AsyncStorage.getItem('isLogged');
+        AsyncStorage.getItem('isLogged').then((res)=>{
             if (res === "true") {
                 setIsLogged(true);
                 navigation.navigate("Home");
@@ -24,11 +23,12 @@ const Welcome: React.FC<WelcomeProps> = ({navigation}) => {
             else{
                 setIsLogged(false);
                 navigation.navigate("Welcome");
-            }            
-        };
-        handleIsLogged();
+            }
+        });
         return () => { setIsLogged(false); }
     }, [isLogged]);
+
+    
 
     return (
         <>           
@@ -38,7 +38,7 @@ const Welcome: React.FC<WelcomeProps> = ({navigation}) => {
                 </TopSection>
                 <BottonSection>
                     <BigText textStyles={{width:"70%", marginBottom:25}}>The Cleaner App</BigText>
-                    <SmallText textStyles={{width:"70%", marginBottom:25}}>Sistema de agendamento e exceução de diárias profissional.</SmallText>
+                    <SmallText textStyles={{width:"100%", marginBottom:25}}>Sistema de agendamento e execução de diárias profissional.</SmallText>
                     <RegularButton textStyles={{color:Colors.Background}} btnStyles={{marginBottom:50}} onPress={()=>{navigation.navigate("Comecar")}}>Vamos começar!</RegularButton>
                         <SmallText textStyles={{color:Colors.White, textAlign:'center'}} >Versão {versao}</SmallText>
                 </BottonSection>
