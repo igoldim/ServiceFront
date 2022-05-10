@@ -1,10 +1,11 @@
 import React from 'react';
 import { Colors } from '../Colors';
 import RegularText from '../Texts/RegularText';
-import { TransactionRow, TransactionSectionBackground } from './Transaction.s';
+import { TransactionList, TransactionRow, TransactionSectionBackground } from './Transaction.s';
 import { TransactionSectionProps } from './Transaction.t';
 
 import Icon from 'react-native-vector-icons/Ionicons';
+import TransactionItem from './TransactionItem';
 
 const TransactionSection: React.FC<TransactionSectionProps> = ( props ) => {
     return (
@@ -17,7 +18,15 @@ const TransactionSection: React.FC<TransactionSectionProps> = ( props ) => {
                    Recentes
                    <Icon name="caret-down" color={Colors.DarkGray} size={13} /> 
                 </RegularText>
-            </TransactionRow>        
+            </TransactionRow> 
+            <TransactionList data={props.data} 
+            showsVerticalScrollIndicator={false} 
+            contentContainerStyle={{
+                paddingBottom: 25
+            }}
+            keyExtractor={({ id }: any )=> id.toString()}
+            renderItem={({ item }: any ) => <TransactionItem {...item} />}
+            />
         </TransactionSectionBackground>
     );
 };  

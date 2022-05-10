@@ -9,7 +9,7 @@ export const HeaderStyled = styled.View`
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding-top: 50px;
+    padding-top: 40px;
     padding-left: 20px;
     padding-right: 20px;
     background-color: ${Colors.Background};
@@ -23,3 +23,15 @@ export const HomeContainer = styled(Container)`
     width: 100%;
 `;
 
+export const TopSection = styled.View`
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding-left: 25px;
+    padding-right: 10px;
+`;
+
+export const StyledPressable = styled.Pressable`
+
+`;

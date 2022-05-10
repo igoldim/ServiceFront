@@ -2,6 +2,7 @@ export interface TransactionProps {
     id: string;
     userName: string; //Igor Goldim
     scheduleDate: string;  // 07/05/2022  ==> pegar dia da semana (Sabádo)
+    scheduleTime: string;  // 08:00
     amount: string;
     art: {
         icon: string,
@@ -15,6 +16,7 @@ export interface TransactionSectionProps {
 }
 
 export interface TransactionAviProps {
-    icon: any,
-    background: string
+    icon?: string | undefined,
+    background: string,
+    texto?: string | undefined,
 }
