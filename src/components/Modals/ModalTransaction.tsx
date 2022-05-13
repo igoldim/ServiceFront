@@ -5,12 +5,13 @@ import BigText from '../Texts/BigText';
 import RegularText from '../Texts/RegularText';
 import { GestureResponderEvent, Modal, StyleProp, TextStyle, ViewStyle } from "react-native";
 import Icon from 'react-native-vector-icons/Ionicons';
+
 import RegularButton from '../Buttons/RegularButton';
 import TransactionSection from '../Transaction/TransactionSection';
 
 const ModalPressableContainer = styled.Pressable`
     flex: 1;
-    padding: 5px;
+    padding: 1px;
     background-color: rgba(0, 0, 0, 0.7);
     justify-content: center;
     align-items: center;
@@ -22,9 +23,9 @@ const ModalClose = styled.Pressable``;
 const ModalView = styled.View`
     background-color: ${Colors.Background};
     border-radius: 10px;
-    width: 100%;
-    height: 100%;
-    padding: 10px;
+    width: 96%;
+    height: 98%;
+    padding: 5px;
     align-items: center;
     /*elavation: 5;
     shadow-color: ${Colors.Black};
@@ -54,6 +55,7 @@ interface ButtonProps{
     heading: string;
     message: string;
     btnTitle: string;
+    onPressTransaction?: ((event:GestureResponderEvent) => void | undefined);
 }
 
 
@@ -67,8 +69,8 @@ const ModalTransaction: React.FC<ButtonProps> = (props) => {
             scheduleTime: "-15,00",
             amount: "100,00",
             art: {
-                icon: "checkbox",
-                background: Colors.Salmon
+                icon: "logo-bitcoin",
+                background: Colors.Green
             },
         },
         {
@@ -78,8 +80,8 @@ const ModalTransaction: React.FC<ButtonProps> = (props) => {
             scheduleTime: "-15,00",
             amount: "100,00",
             art: {
-                icon: "checkbox",
-                background: Colors.Salmon
+                icon: "logo-bitcoin",
+                background: Colors.Green
             },
         },
         {
@@ -89,8 +91,8 @@ const ModalTransaction: React.FC<ButtonProps> = (props) => {
             scheduleTime: "-15,00",
             amount: "100,00",
             art: {
-                icon: "checkbox",
-                background: Colors.Salmon
+                icon: "logo-bitcoin",
+                background: Colors.Green
             },
         },       
         {
@@ -100,8 +102,8 @@ const ModalTransaction: React.FC<ButtonProps> = (props) => {
             scheduleTime: "-15,00",
             amount: "100,00",
             art: {
-                icon: "checkbox",
-                background: Colors.Salmon
+                icon: "logo-bitcoin",
+                background: Colors.Green
             },
         },
         {
@@ -111,8 +113,8 @@ const ModalTransaction: React.FC<ButtonProps> = (props) => {
             scheduleTime: "-15,00",
             amount: "100,00",
             art: {
-                icon: "checkbox",
-                background: Colors.Salmon
+                icon: "logo-bitcoin",
+                background: Colors.Green
             },
         },
         {
@@ -122,8 +124,8 @@ const ModalTransaction: React.FC<ButtonProps> = (props) => {
             scheduleTime: "-15,00",
             amount: "100,00",
             art: {
-                icon: "checkbox",
-                background: Colors.Salmon
+                icon: "logo-bitcoin",
+                background: Colors.Green
             },
         },
         {
@@ -133,8 +135,8 @@ const ModalTransaction: React.FC<ButtonProps> = (props) => {
             scheduleTime: "-15,00",
             amount: "100,00",
             art: {
-                icon: "checkbox",
-                background: Colors.Salmon
+                icon: "logo-bitcoin",
+                background: Colors.Green
             },
         },   
      ];
@@ -154,10 +156,10 @@ const ModalTransaction: React.FC<ButtonProps> = (props) => {
                                 />
                         </ModalClose>
                     </ModalHead>
-                        <BigText textStyles={{fontSize: 25, color: Colors.White, marginVertical:10}} >{props.heading}</BigText>
+                        <BigText textStyles={{fontSize: 25, color: Colors.White, marginVertical:10, fontWeight: 'bold'}} >{props.heading}</BigText>
                         <RegularText>{props.message}</RegularText>
-                        <RegularButton btnStyles={{marginTop: 25, marginBottom: 25, width: '80%', backgroundColor: Colors.Salmon}}>Transferir Saldo</RegularButton>
-                        <TransactionSection data={cardService}/>
+                        <RegularButton btnStyles={{marginTop: 25, marginBottom: 25, width: '80%', backgroundColor: Colors.Salmon}} onPress={props.onPressTransaction}>Transferir Saldo</RegularButton>
+                        <TransactionSection data={cardService}  title={"Serviços"} subtitle={"Valores/Tx"}/>
                 </ModalView>
 
             </ModalPressableContainer>

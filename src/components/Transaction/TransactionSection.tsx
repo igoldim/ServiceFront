@@ -12,10 +12,10 @@ const TransactionSection: React.FC<TransactionSectionProps> = ( props ) => {
         <TransactionSectionBackground>
             <TransactionRow style={{marginBottom: 25}}>
                 <RegularText textStyles={{fontSize: 19, color: Colors.Salmon}}>
-                   Serviços 
+                    {props.title} 
                 </RegularText>
                 <RegularText textStyles={{fontSize: 19, color: Colors.Salmon}}>
-                   Recentes
+                    {props.subtitle}
                    <Icon name="caret-down" color={Colors.DarkGray} size={13} /> 
                 </RegularText>
             </TransactionRow> 

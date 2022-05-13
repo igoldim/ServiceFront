@@ -11,7 +11,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 const Welcome: React.FC<WelcomeProps> = ({navigation}) => {
 
-    const [versao, setVersao] = React.useState("0.0.033");
+    const [versao, setVersao] = React.useState("0.0.058");
     const [isLogged, setIsLogged] = React.useState(false);
 
     React.useEffect(()=>{

@@ -13,6 +13,8 @@ export interface TransactionProps {
 
 export interface TransactionSectionProps {
     data: Array<TransactionProps>;
+    title: string;
+    subtitle: string;
 }
 
 export interface TransactionAviProps {

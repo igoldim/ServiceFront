@@ -15,7 +15,7 @@ import Profile from '../../../components/Head/Profile';
 import BigText from '../../../components/Texts/BigText';
 import RegularText from '../../../components/Texts/RegularText';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { View } from 'react-native';
+import { Alert, View } from 'react-native';
 import ModalTransaction from '../../../components/Modals/ModalTransaction';
 
 const Home: React.FC<HomeProps> = ({navigation}) => {
@@ -204,14 +204,14 @@ const Home: React.FC<HomeProps> = ({navigation}) => {
             </HeaderStyled>        
             <HomeContainer>
                 <TopSection>
-                    <RegularText>Saldo</RegularText>
+                    <BigText textStyles={{fontWeight: 'bold'}}>Saldo</BigText>
                     <StyledPressable onPress={() => {showModal('','R$ 595,00','Saldo','')}}><Icon name="arrow-forward" color={Colors.White} size={25} /></StyledPressable>
                 </TopSection>
                 <View style={{width: '100%', paddingLeft: 25}}>
-                    <BigText>R$ 595,00</BigText>
+                    <BigText >R$ 595,00</BigText>
                 </View>
                <CardSection data={cardData} />
-               <TransactionSection data={cardService}/>
+               <TransactionSection data={cardService} title={"Serviços"} subtitle={"Recentes"}/>
             </HomeContainer>
             <ModalTransaction 
                 visible={visible} 
@@ -221,6 +221,7 @@ const Home: React.FC<HomeProps> = ({navigation}) => {
                 btnTitle={modalButtonText} 
                 type={messageType}
                 onPress={modalButtonHandle}
+                onPressTransaction={() => alert('Aguarde, estamos transferindo seu saldo para sua conta cadastrada. Prazo de 72h para conclusáo')}
                 />
 
 
