@@ -227,6 +227,7 @@ const Home: React.FC<HomeProps> = ({navigation}) => {
                 message={messageModal} 
                 btnTitle={modalButtonText} 
                 type={messageType}
+                onPress={modalButtonHandle}
                 onPressTransaction={() => alert('Aguarde, estamos transferindo seu saldo para sua conta cadastrada. Prazo de 72h para conclusáo')}
                 />
         </>
