@@ -17,6 +17,7 @@ import RegularText from '../../../components/Texts/RegularText';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Alert, View } from 'react-native';
 import ModalTransaction from '../../../components/Modals/ModalTransaction';
+import ModalScheduling, { Users } from '../../../components/Modals/ModalScheduling';
 
 const Home: React.FC<HomeProps> = ({navigation}) => {
     const [name, setName] = React.useState("Igor");
@@ -55,17 +56,18 @@ const Home: React.FC<HomeProps> = ({navigation}) => {
 
    
 
-    const cardData = [
+    const cardData : Array<Users> = [
         {
             id: "2cb32ade-ac5d-40b5-bf25-b135c85af097",
             userName: "Igor Goldim",
             userAddress: "Rua Gabriel Junqueira, 00",
             userAddressDistrict: "Serra Dourada 3 Etapa",
-            userAddressCity: "Aparecida de Goainia",
+            userAddressCity: "Aparecida de Goiania",
             userAddressState: "GO",
             userAddressComplement: "QD 55 LT 22 Casa 01",
             scheduleDate: "07/05/2022", // ==> pegar dia da semana (Sabádo)
             scheduleTime: "08:00",
+            amount: "100,00",
             userImage: avatar
         },
         {
@@ -73,11 +75,12 @@ const Home: React.FC<HomeProps> = ({navigation}) => {
             userName: "Augusto Oliveria",
             userAddress: "Rua A, 00",
             userAddressDistrict: "Etapa da Serra",
-            userAddressCity: "Desaparecida de Goainia",
+            userAddressCity: "Desaparecida de Goiania",
             userAddressState: "GO",
             userAddressComplement: "QD 01 LT 55 Casa 22",
             scheduleDate: "08/05/2022", // ==> pegar dia da semana (Domingo)
             scheduleTime: "07:00",
+            amount: "100,00",
             userImage: avatar
         },
         {
@@ -85,11 +88,12 @@ const Home: React.FC<HomeProps> = ({navigation}) => {
             userName: "Amanda Reys",
             userAddress: "Rua Sem Nome, 99",
             userAddressDistrict: "Dourada Serra",
-            userAddressCity: "Goainia de Aparecida",
+            userAddressCity: "Goiania de Aparecida",
             userAddressState: "GO",
             userAddressComplement: "QD 22 LT 55 Casa 02",
             scheduleDate: "09/05/2022", // ==> pegar dia da semana (Segunda)
             scheduleTime: "08:00",
+            amount: "100,00",
             userImage: avatar
         },
     ];
@@ -182,13 +186,16 @@ const Home: React.FC<HomeProps> = ({navigation}) => {
         setVisible(true);
     }
 
+
     const modalButtonHandle = () =>{
-        if (messageType === "success"){
-            //chamar pagina de complemento de cadastro
-            navigation.navigate('SignIn');
-        }
         setVisible(false);
     }
+
+    const modalButtonHandleScheduling = () =>{
+        setVisible(false);
+    }
+
+   
 
     return (
         <> 
@@ -210,7 +217,7 @@ const Home: React.FC<HomeProps> = ({navigation}) => {
                 <View style={{width: '100%', paddingLeft: 25}}>
                     <BigText >R$ 595,00</BigText>
                 </View>
-               <CardSection data={cardData} />
+               <CardSection data={cardData} onPress={({item}:any) => showModalScheduling(item)} />
                <TransactionSection data={cardService} title={"Serviços"} subtitle={"Recentes"}/>
             </HomeContainer>
             <ModalTransaction 
@@ -220,11 +227,8 @@ const Home: React.FC<HomeProps> = ({navigation}) => {
                 message={messageModal} 
                 btnTitle={modalButtonText} 
                 type={messageType}
-                onPress={modalButtonHandle}
                 onPressTransaction={() => alert('Aguarde, estamos transferindo seu saldo para sua conta cadastrada. Prazo de 72h para conclusáo')}
                 />
-
-
         </>
     );
 };  

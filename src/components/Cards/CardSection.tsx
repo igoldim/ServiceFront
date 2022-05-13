@@ -1,4 +1,5 @@
 import React from 'react';
+import { Users } from '../Modals/ModalScheduling';
 import CardItem from './CardItem';
 import { CardList } from './CardSection.s';
 import { CardSectionProps } from './CardSection.t';
@@ -14,18 +15,7 @@ const CardSection: React.FC<CardSectionProps> = (props) => {
                 alignItems: "center"
             }}
             keyExtractor={({id}:any) => id}
-            renderItem={({item}: any) => <CardItem 
-                                            id={item.id} 
-                                            userName={item.userName}
-                                            userAddress={item.userAddress}
-                                            userAddressDistrict={item.userAddressDistrict}
-                                            userAddressCity={item.userAddressCity}
-                                            userAddressState={item.userAddressState}
-                                            userAddressComplement={item.userAddressComplement}
-                                            userImage={item.userImage}
-                                            scheduleDate={item.scheduleDate}
-                                            scheduleTime={item.scheduleTime}
-                                            key={item.id} />}
+            renderItem={({item}: any) => <CardItem {...item} />}
             />
     );
 };  

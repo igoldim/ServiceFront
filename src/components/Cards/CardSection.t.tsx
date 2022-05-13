@@ -1,4 +1,5 @@
-import { ImageSourcePropType } from "react-native";
+import { GestureResponderEvent, ImageSourcePropType } from "react-native";
+import { Users } from "../Modals/ModalScheduling";
 
 export interface CardProps  {
     id: string;
@@ -14,6 +15,6 @@ export interface CardProps  {
 }
 
 export interface CardSectionProps {
-    data: Array<CardProps>;
-    
+    data: Array<Users>;
+    onPress?: ((event:GestureResponderEvent) => void | undefined);    
 }

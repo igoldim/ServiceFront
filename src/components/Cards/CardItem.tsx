@@ -8,11 +8,26 @@ import RegularText from '../Texts/RegularText';
 import { View } from 'react-native';
 import SmallText from '../Texts/SmallText';
 import Icon from 'react-native-vector-icons/Ionicons';
+import ModalScheduling, { Users } from '../Modals/ModalScheduling';
 
-const CardItem: React.FC<CardProps> = (props) => {
+
+
+const CardItem: React.FC<Users> = (props) => {
+
+    const [visibleScheduling , setVisibleScheduling ] = React.useState(false);
+    const [messageModalScheduling , setMessageModalScheduling ] = React.useState(''); //Email Validado com sucesso!
+    const [item , setItem ] = React.useState(null);
+    const [messageHeaddingScheduling , setMessageHeaddingScheduling ] = React.useState('');
+    const [modalButtonTextScheduling , setmodalButtonTextScheduling ] = React.useState('');     
+
+    const showModalScheduling  = (value : any) => {
+        setItem(value);
+        setVisibleScheduling(true);
+    }
+
     return(
-        <CardBackground source={card_bd}>
-            <CardTouchable underlayColor={Colors.Salmon} onPress={()=>{}}>
+        <CardBackground source={card_bd} >
+            <CardTouchable underlayColor={Colors.Salmon} onPress={() => showModalScheduling(props)}>
                 <TouchableView>
                  <CardRow style={{marginBottom:5}}>
                     <RegularText textStyles={{color: Colors.White}}>
@@ -48,6 +63,12 @@ const CardItem: React.FC<CardProps> = (props) => {
                  </CardRow>   
                 </TouchableView>
             </CardTouchable>
+            <ModalScheduling 
+                item= {props}
+                visible={visibleScheduling} 
+                onPress={() => setVisibleScheduling(false)} 
+                onPressTransaction={() => {}}
+                />
         </CardBackground>
     );
 };  
