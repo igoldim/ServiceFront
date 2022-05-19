@@ -16,11 +16,14 @@ import { IUserRegister } from '../../signIn/components/SignIn.t';
 const SignUp: React.FC<SignUpProps> = ({navigation})  => {
     const [message, setMessage] = React.useState('');
     const [isMessageSucess, setIsMessageSucess] = React.useState(false);
-
+    
     const handleSignUp = async (credentials: IUserRegister, setSubmitting) =>{
         try {
             setMessage('');            
             //call backend
+            const userType = await AsyncStorage.getItem("userTypeReg");
+
+            credentials.userType = userType ? userType : "T";
             var { sucessful, data, message} = await fetchRegister(credentials);
 
             if (sucessful){

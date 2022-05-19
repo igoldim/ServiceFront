@@ -1,7 +1,6 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Colors } from '../Colors';
 
 import Welcome from '../../screens/preload/components/Welcome';
 import SignIn from '../../screens/signIn/components/SignIn';
@@ -11,7 +10,9 @@ import User from '../../screens/comecar/user/components/User';
 
 import SignUp from '../../screens/signUp/components/SignUp';
 import EmailVerification from '../../screens/emailVerification/components/EmailVerification';
-import Home from '../../screens/home/components/Home';
+import Home from '../../screens/home/Home';
+import HomePrestador from '../../screens/home/profissional/components/HomePrestador';
+import HomeTomador from '../../screens/home/user/components/HomeTomador';
 
 export type RootStackParamList = {
     Welcome : undefined,
@@ -21,7 +22,8 @@ export type RootStackParamList = {
     Comecar : undefined,
     SignUp : undefined,
     EmailVerification : undefined,
-    Home : undefined,
+    HomePrestador : undefined,
+    HomeTomador : undefined,
 }
 
 
@@ -32,18 +34,21 @@ const RootStack: React.FC = () => {
         <NavigationContainer>
             <Stack.Navigator 
                 initialRouteName="Welcome"
-            >
+            >                
                 <Stack.Screen
                     name="Welcome"
                     component={Welcome}
-                    options={{headerShown:false }}                    
-                />
+                    options={{headerShown:false }} />
                 
                 <Stack.Screen
-                    name="Home"
-                    component={Home}     
-                    options={{headerShown:false }}                              
-                />
+                    name="HomePrestador"
+                    component={HomePrestador}     
+                    options={{headerShown:false }} />
+
+                <Stack.Screen
+                    name="HomeTomador"
+                    component={HomeTomador}     
+                    options={{headerShown:false }} />
 
                 <Stack.Screen 
                     name="SignIn" 

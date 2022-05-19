@@ -24,6 +24,7 @@ export interface IUser {
     status:	boolean;
     createAt:	string;
     updateAt:	string;
+    userType: string;
     //cards:	[...];
     //professionals	[...];
     //services	[...];
@@ -34,6 +35,7 @@ export interface IUserRegister{
     name:	string;
     email:	string;
     password:	string;
+    userType:	string;
 }
 
 

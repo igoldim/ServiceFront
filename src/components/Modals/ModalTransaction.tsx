@@ -66,10 +66,10 @@ const ModalTransaction: React.FC<ButtonProps> = (props) => {
     const cardService = [
         {
             id: "2cb32ade-ac5d-40b5-bf25-b135c85af097",
-            userName: "Amanda Reys",
-            scheduleDate: "Tx adm 15%", // ==> pegar dia da semana (Segunda)
-            scheduleTime: "-15,00",
-            amount: "100,00",
+            userName: "Entrada",
+            scheduleDate: "17/05/2022", // ==> pegar dia da semana (Segunda)
+            scheduleTime: "Pix",
+            amount: "30,00",
             art: {
                 icon: "logo-bitcoin",
                 background: Colors.Green
@@ -77,10 +77,10 @@ const ModalTransaction: React.FC<ButtonProps> = (props) => {
         },
         {
             id: "2cb32ade-ac5d-40b5-bf25-b135c85ad2541",
-            userName: "Augusto Oliveria",
-            scheduleDate: "Tx adm 15%", // ==> pegar dia da semana (Segunda)
-            scheduleTime: "-15,00",
-            amount: "100,00",
+            userName: "Saida",
+            scheduleDate: "16/05/2022", // ==> pegar dia da semana (Segunda)
+            scheduleTime: "Tx",
+            amount: "-15,00",
             art: {
                 icon: "logo-bitcoin",
                 background: Colors.Green
@@ -88,10 +88,10 @@ const ModalTransaction: React.FC<ButtonProps> = (props) => {
         },
         {
             id: "2cb32ade-ac5d-40b5-bf25-b135c85af854",
-            userName: "Igor Goldim",
-            scheduleDate: "Tx adm 15%", // ==> pegar dia da semana (Segunda)
-            scheduleTime: "-15,00",
-            amount: "100,00",
+            userName: "Saída",
+            scheduleDate: "15/05/2022", // ==> pegar dia da semana (Segunda)
+            scheduleTime: "Tx",
+            amount: "-15,00",
             art: {
                 icon: "logo-bitcoin",
                 background: Colors.Green
@@ -99,10 +99,10 @@ const ModalTransaction: React.FC<ButtonProps> = (props) => {
         },       
         {
             id: "2cb32ade-ac5d-40b5-bf25-b135c85af0127",
-            userName: "Suly Bastos",
-            scheduleDate: "Tx adm 15%", // ==> pegar dia da semana (Segunda)
-            scheduleTime: "-15,00",
-            amount: "100,00",
+            userName: "Entrda",
+            scheduleDate: "15/05/2022", // ==> pegar dia da semana (Segunda)
+            scheduleTime: "Crédito",
+            amount: "45,00",
             art: {
                 icon: "logo-bitcoin",
                 background: Colors.Green
@@ -110,10 +110,10 @@ const ModalTransaction: React.FC<ButtonProps> = (props) => {
         },
         {
             id: "2cb32ade-ac5d-40b5-bf25-b135c85af0122",
-            userName: "Calor Trindade",
-            scheduleDate: "Tx adm 15%", // ==> pegar dia da semana (Segunda)
-            scheduleTime: "-15,00",
-            amount: "100,00",
+            userName: "Saída",
+            scheduleDate: "14/05/2022", // ==> pegar dia da semana (Segunda)
+            scheduleTime: "Tx",
+            amount: "-15,00",
             art: {
                 icon: "logo-bitcoin",
                 background: Colors.Green
@@ -122,9 +122,9 @@ const ModalTransaction: React.FC<ButtonProps> = (props) => {
         {
             id: "3cb32ade-ac5d-40b5-bf25-b135c85af0122",
             userName: "Trindade Jr",
-            scheduleDate: "Tx adm 15%", // ==> pegar dia da semana (Segunda)
-            scheduleTime: "-15,00",
-            amount: "100,00",
+            scheduleDate: "13/05/2022", // ==> pegar dia da semana (Segunda)
+            scheduleTime: "Tx",
+            amount: "-15,00",
             art: {
                 icon: "logo-bitcoin",
                 background: Colors.Green
@@ -132,10 +132,10 @@ const ModalTransaction: React.FC<ButtonProps> = (props) => {
         },
         {
             id: "4cb32ade-ac5d-40b5-bf25-b135c85af0122",
-            userName: "Maria José",
-            scheduleDate: "Tx adm 15%", // ==> pegar dia da semana (Segunda)
-            scheduleTime: "-15,00",
-            amount: "100,00",
+            userName: "Entrada",
+            scheduleDate: "12/05/2022", // ==> pegar dia da semana (Segunda)
+            scheduleTime: "Pix",
+            amount: "30,00",
             art: {
                 icon: "logo-bitcoin",
                 background: Colors.Green
@@ -160,8 +160,8 @@ const ModalTransaction: React.FC<ButtonProps> = (props) => {
                     </ModalHead>
                         <BigText textStyles={{fontSize: 25, color: Colors.White, marginVertical:10, fontWeight: 'bold'}} >{props.heading}</BigText>
                         <RegularText>{props.message}</RegularText>
-                        <RegularButton btnStyles={{marginTop: 25, marginBottom: 25, width: '80%', backgroundColor: Colors.Salmon}} onPress={props.onPressTransaction}>Transferir Saldo</RegularButton>
-                        <TransactionSection data={cardService}  title={"Serviços"} subtitle={"Valores/Tx"}/>
+                        <RegularButton btnStyles={{marginTop: 25, marginBottom: 25, width: '80%', backgroundColor: Colors.Salmon}} onPress={props.onPressTransaction}>Adicionar Saldo</RegularButton>
+                        <TransactionSection data={cardService}  title={"Extrato"} subtitle={"Valores/Tx"}/>
                 </ModalView>
 
             </ModalPressableContainer>

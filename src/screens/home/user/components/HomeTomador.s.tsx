@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 
-import { Container } from '../../../components/Shared';
-import { Colors } from '../../../components/Colors';
+import { Container } from '../../../../components/Shared';
+import { Colors } from '../../../../components/Colors';
 
 export const HeaderStyled = styled.View`
     width: 100%;

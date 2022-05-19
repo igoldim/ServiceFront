@@ -30,12 +30,25 @@ const SignIn: React.FC<SignInProps> = ({navigation})  => {
                 await AsyncStorage.setItem("Name", data!.name);
                 await AsyncStorage.setItem("token", token!.toString());
                 await AsyncStorage.setItem("isLogged", "true");
-                navigation.navigate('Home');
+                await AsyncStorage.setItem("userType", data!.userType);
+                
+                if (data!.userType == "T"){
+                    navigation.navigate('HomeTomador');
+                }
+                else if (data!.userType == "P"){
+                    navigation.navigate('HomePrestador');
+                } 
+                else{
+                    await AsyncStorage.removeItem("Name");
+                    await AsyncStorage.setItem("isLogged", "false");
+                    navigation.navigate('Welcome');
+                }
             }
             else{
                 await AsyncStorage.setItem("isLogged", "false");
                 setMessage(message);
             }
+
             setSubmitting(false);
         } catch (error) {
             setMessage("Login falhou!");

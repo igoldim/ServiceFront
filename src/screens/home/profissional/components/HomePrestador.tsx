@@ -1,26 +1,27 @@
 import React from 'react';
-import CardSection from '../../../components/Cards/CardSection';
-import { HomeContainer, HeaderStyled, TopSection, StyledPressable } from './Home.s';
-import { HomeProps } from './Home.t';
-import avatar from '../../../assets/images/avatar.png';
-import TransactionSection from '../../../components/Transaction/TransactionSection';
+import CardSection from '../../../../components/Cards/CardSection';
+import { HomeContainer, HeaderStyled, TopSection, StyledPressable } from './HomePrestador.s';
+import { HomeProps } from './HomePrestador.t';
+import avatar from '../../../../assets/images/avatar.png';
+import TransactionSection from '../../../../components/Transaction/TransactionSection';
 
-import avi from '../../../assets/images/avatar.png'
+import avi from '../../../../assets/images/avatar.png'
 
-import { Colors } from '../../../components/Colors';
+import { Colors } from '../../../../components/Colors';
 
 import AsyncStorage from '@react-native-community/async-storage';
-import Greeting from '../../../components/Head/Greeting';
-import Profile from '../../../components/Head/Profile';
-import BigText from '../../../components/Texts/BigText';
-import RegularText from '../../../components/Texts/RegularText';
+import Greeting from '../../../../components/Head/Greeting';
+import Profile from '../../../../components/Head/Profile';
+import BigText from '../../../../components/Texts/BigText';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Alert, View } from 'react-native';
-import ModalTransaction from '../../../components/Modals/ModalTransaction';
-import ModalScheduling, { Users } from '../../../components/Modals/ModalScheduling';
+import ModalTransaction from '../../../../components/Modals/ModalTransaction';
+import ModalScheduling, { Users } from '../../../../components/Modals/ModalScheduling';
 
-const Home: React.FC<HomeProps> = ({navigation}) => {
-    const [name, setName] = React.useState("Igor");
+const HomePrestador: React.FC<HomeProps> = ({navigation}) => {
+    const [name, setName] = React.useState("Usuário");
+    const [userType, setUserType] = React.useState("T");
+    const [saldo, setSaldo] = React.useState("45,00");
     
     const [visible, setVisible] = React.useState(false);
     const [messageModal, setMessageModal] = React.useState(''); //Email Validado com sucesso!
@@ -28,23 +29,18 @@ const Home: React.FC<HomeProps> = ({navigation}) => {
     const [messageHeadding, setMessageHeadding] = React.useState('');
     const [modalButtonText, setmodalButtonText] = React.useState('');     
 
-
     React.useEffect(()=>{
         const handleUserName = async () => {
             const userName = await AsyncStorage.getItem("Name");
             setName(userName!.toString());
             const res = await AsyncStorage.getItem('isLogged');
-            if (res === "true") {
-                navigation.navigate("Home");
-            }
-            else{
+            if (res !== "true") {
                 navigation.navigate("Welcome");
             }       
         };    
         handleUserName();
         return () => { setName(""); }
-    }, []);
-
+    }, []);       
 
     const handlePerfil = async () => {
         await AsyncStorage.setItem("Name", "");
@@ -53,8 +49,6 @@ const Home: React.FC<HomeProps> = ({navigation}) => {
         navigation.navigate('Welcome');
         return true;
     }
-
-   
 
     const cardData : Array<Users> = [
         {
@@ -68,7 +62,8 @@ const Home: React.FC<HomeProps> = ({navigation}) => {
             scheduleDate: "07/05/2022", // ==> pegar dia da semana (Sabádo)
             scheduleTime: "08:00",
             amount: "100,00",
-            userImage: avatar
+            userImage: avatar,
+            stars: 0,
         },
         {
             id: "2cb32ade-ac5d-40b5-bf25-b135c85af080",
@@ -81,7 +76,8 @@ const Home: React.FC<HomeProps> = ({navigation}) => {
             scheduleDate: "08/05/2022", // ==> pegar dia da semana (Domingo)
             scheduleTime: "07:00",
             amount: "100,00",
-            userImage: avatar
+            userImage: avatar,
+            stars: 0,
         },
         {
             id: "2cb32ade-ac5d-40b5-bf25-b135c85af001",
@@ -94,7 +90,8 @@ const Home: React.FC<HomeProps> = ({navigation}) => {
             scheduleDate: "09/05/2022", // ==> pegar dia da semana (Segunda)
             scheduleTime: "08:00",
             amount: "100,00",
-            userImage: avatar
+            userImage: avatar,
+            stars: 0,
         },
     ];
 
@@ -104,7 +101,7 @@ const Home: React.FC<HomeProps> = ({navigation}) => {
             userName: "Amanda Reys",
             scheduleDate: "08/05/2022", // ==> pegar dia da semana (Segunda)
             scheduleTime: "08:00",
-            amount: "100,00",
+            amount: "Concluído",
             art: {
                 icon: "checkbox",
                 background: Colors.Salmon
@@ -115,7 +112,7 @@ const Home: React.FC<HomeProps> = ({navigation}) => {
             userName: "Augusto Oliveria",
             scheduleDate: "07/05/2022", // ==> pegar dia da semana (Segunda)
             scheduleTime: "07:00",
-            amount: "100,00",
+            amount: "Concluído",
             art: {
                 icon: "checkbox",
                 background: Colors.Salmon
@@ -126,7 +123,7 @@ const Home: React.FC<HomeProps> = ({navigation}) => {
             userName: "Igor Goldim",
             scheduleDate: "06/05/2022", // ==> pegar dia da semana (Segunda)
             scheduleTime: "08:00",
-            amount: "100,00",
+            amount: "Concluído",
             art: {
                 icon: "checkbox",
                 background: Colors.Salmon
@@ -137,7 +134,7 @@ const Home: React.FC<HomeProps> = ({navigation}) => {
             userName: "Suly Bastos",
             scheduleDate: "05/05/2022", // ==> pegar dia da semana (Segunda)
             scheduleTime: "08:00",
-            amount: "100,00",
+            amount: "Cancelado",
             art: {
                 icon: "checkbox",
                 background: Colors.Salmon
@@ -148,7 +145,7 @@ const Home: React.FC<HomeProps> = ({navigation}) => {
             userName: "Calor Trindade",
             scheduleDate: "04/05/2022", // ==> pegar dia da semana (Segunda)
             scheduleTime: "08:00",
-            amount: "100,00",
+            amount: "Concluído",
             art: {
                 icon: "checkbox",
                 background: Colors.Salmon
@@ -159,7 +156,7 @@ const Home: React.FC<HomeProps> = ({navigation}) => {
             userName: "Trindade Jr",
             scheduleDate: "03/05/2022", // ==> pegar dia da semana (Segunda)
             scheduleTime: "07:30",
-            amount: "100,00",
+            amount: "Concluído",
             art: {
                 icon: "checkbox",
                 background: Colors.Salmon
@@ -170,15 +167,15 @@ const Home: React.FC<HomeProps> = ({navigation}) => {
             userName: "Maria José",
             scheduleDate: "02/05/2022", // ==> pegar dia da semana (Segunda)
             scheduleTime: "07:00",
-            amount: "100,00",
+            amount: "Concluído",
             art: {
                 icon: "checkbox",
                 background: Colors.Salmon
             },
         },   
-     ];
+    ];
 
-     const showModal = (type: string, message: string, headText: string, buttonLabel: string) => {
+    const showModal = (type: string, message: string, headText: string, buttonLabel: string) => {
         setMessageType(type);
         setMessageModal(message);
         setMessageHeadding(headText);
@@ -186,16 +183,13 @@ const Home: React.FC<HomeProps> = ({navigation}) => {
         setVisible(true);
     }
 
-
     const modalButtonHandle = () =>{
         setVisible(false);
     }
 
     const modalButtonHandleScheduling = () =>{
         setVisible(false);
-    }
-
-   
+    }   
 
     return (
         <> 
@@ -212,13 +206,13 @@ const Home: React.FC<HomeProps> = ({navigation}) => {
             <HomeContainer>
                 <TopSection>
                     <BigText textStyles={{fontWeight: 'bold'}}>Saldo</BigText>
-                    <StyledPressable onPress={() => {showModal('','R$ 595,00','Saldo','')}}><Icon name="arrow-forward" color={Colors.White} size={25} /></StyledPressable>
+                    <StyledPressable onPress={() => {showModal('','R$ '+ {saldo},'Saldo','')}}><Icon name="arrow-forward" color={Colors.White} size={25} /></StyledPressable>
                 </TopSection>
                 <View style={{width: '100%', paddingLeft: 25}}>
-                    <BigText >R$ 595,00</BigText>
+                    <BigText >R$ {saldo}</BigText>
                 </View>
-               <CardSection data={cardData} onPress={({item}:any) => showModalScheduling(item)} />
-               <TransactionSection data={cardService} title={"Serviços"} subtitle={"Recentes"}/>
+                <CardSection data={cardData} onPress={({item}:any) => showModalScheduling(item)} />
+                <TransactionSection data={cardService} title={"Serviços"} subtitle={"Recentes"}/>
             </HomeContainer>
             <ModalTransaction 
                 visible={visible} 
@@ -228,10 +222,10 @@ const Home: React.FC<HomeProps> = ({navigation}) => {
                 btnTitle={modalButtonText} 
                 type={messageType}
                 onPress={modalButtonHandle}
-                onPressTransaction={() => alert('Aguarde, estamos transferindo seu saldo para sua conta cadastrada. Prazo de 72h para conclusáo')}
-                />
+                onPressTransaction={() => alert('Aguarde, estamos processando o saldo para sua conta. Prazo de 72h para conclusão')}
+            />
         </>
     );
 };  
 
-export default Home;
+export default HomePrestador;

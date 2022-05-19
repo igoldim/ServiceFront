@@ -15,16 +15,21 @@ const Welcome: React.FC<WelcomeProps> = ({navigation}) => {
     const [isLogged, setIsLogged] = React.useState(false);
 
     React.useEffect(()=>{
-        AsyncStorage.getItem('isLogged').then((res)=>{
-            if (res === "true") {
-                setIsLogged(true);
-                navigation.navigate("Home");
+        const handleUserName = async () => {
+            const userType = await AsyncStorage.getItem("userType");
+            const res = await  AsyncStorage.getItem('isLogged');
+
+            if (res === "true" && userType === "T") {
+                navigation.navigate("HomeTomador");
+            }
+            else if (res === "true" && userType === "P") {
+                navigation.navigate("HomePrestador");
             }
             else{
                 setIsLogged(false);
-                navigation.navigate("Welcome");
             }
-        });
+        };
+        handleUserName();
         return () => { setIsLogged(false); }
     }, [isLogged]);
 

@@ -37,7 +37,6 @@ const ModalView = styled.View`
     shadown-radius: 4px;*/
 `;
 
-
 const ModalHead = styled.View`
     flex-direction: row;
     justify-content: space-between;
@@ -78,9 +77,9 @@ export type Users =  {
     scheduleDate: string,
     scheduleTime: string,
     amount: string,
-    userImage: ImageSourcePropType
+    userImage: ImageSourcePropType,
+    stars: number, 
 }
-
 
 const ModalScheduling: React.FC<ButtonProps> = (props) => {
     return(
@@ -98,7 +97,7 @@ const ModalScheduling: React.FC<ButtonProps> = (props) => {
                         </ModalClose>
                     </ModalHead>
                     <Row>
-                        <RegularButton btnStyles={{marginTop: 5, marginBottom: 5, width: '45%', backgroundColor: Colors.Green}} onPress={props.onPressTransaction}>Inciar</RegularButton>
+                        <RegularButton btnStyles={{marginTop: 5, marginBottom: 5, width: '45%', backgroundColor: Colors.Green}} onPress={props.onPressTransaction}>Concluído</RegularButton>
                         <RegularButton btnStyles={{marginTop: 5, marginBottom: 5, width: '45%', backgroundColor: Colors.Red}} onPress={props.onPressTransaction}>Cancelar</RegularButton>
                     </Row>
                     <Row style={{marginTop: 10}}>
@@ -144,6 +143,6 @@ const ModalScheduling: React.FC<ButtonProps> = (props) => {
             {props.children}
         </Modal>
     );
-};  
+};
 
 export default ModalScheduling;

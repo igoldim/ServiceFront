@@ -5,8 +5,15 @@ import SmallText, { SpanBold } from '../../../../components/Texts/SmallText';
 import RegularButton from '../../../../components/Buttons/RegularButton';
 import { UserProps } from './User.t';
 import { UserContainer } from './User.s';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const User: React.FC<UserProps> = ({navigation})  => {
+    
+    const handleRegister = async () =>{
+        await AsyncStorage.setItem("userTypeReg",  "T");
+        navigation.navigate("SignUp");
+    }
+    
     return (
         <UserContainer>   
             <BigText textStyles={{marginTop:55, marginBottom:25}}>Bem vindo(a) usuário(a).</BigText>
@@ -18,7 +25,7 @@ const User: React.FC<UserProps> = ({navigation})  => {
             <RegularButton 
                 textStyles={{color:Colors.Background}} 
                 btnStyles={{width:"75%", marginBottom:25}} 
-                onPress={()=>{navigation.navigate("SignUp")}}>Iniciar cadastro</RegularButton>           
+                onPress={handleRegister}>Iniciar cadastro</RegularButton>           
             <SmallText textStyles={{width:"80%", marginBottom:25}}>Ou se já possui cadastro, basta clicar no botão abaixo.</SmallText>
             <RegularButton 
                 textStyles={{color:Colors.Blue}} 
