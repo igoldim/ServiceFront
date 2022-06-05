@@ -17,12 +17,15 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { Alert, View } from 'react-native';
 import ModalTransaction from '../../../../components/Modals/ModalTransaction';
 import ModalScheduling, { Users } from '../../../../components/Modals/ModalScheduling';
+import ModalMenu from '../../../../components/Modals/ModalMenu';
 
 const HomeTomador: React.FC<HomeProps> = ({navigation}) => {
     const [name, setName] = React.useState("Usuário");
     const [userType, setUserType] = React.useState("T");
     const [saldo, setSaldo] = React.useState("600,00");
     
+    const [visibleMenu, setVisibleMenu] = React.useState(false);
+
     const [visible, setVisible] = React.useState(false);
     const [messageModal, setMessageModal] = React.useState(''); //Email Validado com sucesso!
     const [messageType, setMessageType] = React.useState('');
@@ -43,11 +46,7 @@ const HomeTomador: React.FC<HomeProps> = ({navigation}) => {
     }, []);       
 
     const handlePerfil = async () => {
-        await AsyncStorage.setItem("Name", "");
-        await AsyncStorage.setItem("token", "");
-        await AsyncStorage.setItem("isLogged", "false");
-        navigation.navigate('Welcome');
-        return true;
+        setVisibleMenu(true);
     }
 
     const cardData : Array<Users> = [
@@ -159,9 +158,9 @@ const HomeTomador: React.FC<HomeProps> = ({navigation}) => {
         setVisible(false);
     }
 
-    const modalButtonHandleScheduling = () =>{
-        setVisible(false);
-    }   
+    const modalButtonHandleMneu = () =>{
+        setVisibleMenu(false);
+    }
 
     return (
         <> 
@@ -195,6 +194,12 @@ const HomeTomador: React.FC<HomeProps> = ({navigation}) => {
                 onPress={modalButtonHandle}
                 onPressTransaction={() => {}}
             />
+            <ModalMenu 
+                visible={visibleMenu} 
+                setVisible={handlePerfil} 
+                onPress={modalButtonHandleMneu}
+            />
+
         </>
     );
 };  

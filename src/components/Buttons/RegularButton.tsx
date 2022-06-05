@@ -15,11 +15,12 @@ const ButtonView = styled.TouchableOpacity`
 
 interface ButtonProps{
     btnStyles?: StyleProp<ViewStyle>;
-    onPress?: ((event: GestureResponderEvent) => void | undefined) | undefined;
+    onPress? : ((event: GestureResponderEvent) => void) | undefined;
     textStyles?: StyleProp<TextStyle>;
     children: React.ReactNode;
     disabled?:boolean | null | undefined;
 }
+
 
 
 const RegularButton: React.FC<ButtonProps> = (props) => {

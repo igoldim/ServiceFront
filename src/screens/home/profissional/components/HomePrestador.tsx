@@ -14,15 +14,18 @@ import Greeting from '../../../../components/Head/Greeting';
 import Profile from '../../../../components/Head/Profile';
 import BigText from '../../../../components/Texts/BigText';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Alert, View } from 'react-native';
+import {  View } from 'react-native';
 import ModalTransaction from '../../../../components/Modals/ModalTransaction';
 import ModalScheduling, { Users } from '../../../../components/Modals/ModalScheduling';
+import ModalMenu from '../../../../components/Modals/ModalMenu';
 
 const HomePrestador: React.FC<HomeProps> = ({navigation}) => {
     const [name, setName] = React.useState("Usuário");
     const [userType, setUserType] = React.useState("T");
     const [saldo, setSaldo] = React.useState("45,00");
     
+    const [visibleMenu, setVisibleMenu] = React.useState(false);
+
     const [visible, setVisible] = React.useState(false);
     const [messageModal, setMessageModal] = React.useState(''); //Email Validado com sucesso!
     const [messageType, setMessageType] = React.useState('');
@@ -43,11 +46,7 @@ const HomePrestador: React.FC<HomeProps> = ({navigation}) => {
     }, []);       
 
     const handlePerfil = async () => {
-        await AsyncStorage.setItem("Name", "");
-        await AsyncStorage.setItem("token", "");
-        await AsyncStorage.setItem("isLogged", "false");
-        navigation.navigate('Welcome');
-        return true;
+        setVisibleMenu(true);
     }
 
     const cardData : Array<Users> = [
@@ -183,6 +182,11 @@ const HomePrestador: React.FC<HomeProps> = ({navigation}) => {
         setVisible(true);
     }
 
+    const modalButtonHandleMneu = () =>{
+        setVisibleMenu(false);
+    }
+
+
     const modalButtonHandle = () =>{
         setVisible(false);
     }
@@ -223,6 +227,11 @@ const HomePrestador: React.FC<HomeProps> = ({navigation}) => {
                 type={messageType}
                 onPress={modalButtonHandle}
                 onPressTransaction={() => alert('Aguarde, estamos processando o saldo para sua conta. Prazo de 72h para conclusão')}
+            />
+            <ModalMenu 
+                visible={visibleMenu} 
+                setVisible={handlePerfil} 
+                onPress={modalButtonHandleMneu}
             />
         </>
     );
