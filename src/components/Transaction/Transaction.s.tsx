@@ -5,7 +5,6 @@ export const TransactionSectionBackground = styled.View`
     width: 100%;
     padding-top: 5px;
     flex: 2;
-    padding-horizontal: 25px;
 `;
 
 export const TransactionRow = styled.View`

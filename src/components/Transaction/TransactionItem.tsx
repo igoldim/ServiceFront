@@ -1,6 +1,5 @@
 import React from 'react';
 import { View } from 'react-native';
-import { Colors } from '../Colors';
 import RegularText from '../Texts/RegularText';
 import SmallText from '../Texts/SmallText';
 import { TransactionProps } from './Transaction.t';
@@ -11,17 +10,18 @@ const TransactionItem: React.FC<TransactionProps> = ( props ) => {
     return (
         <TransactionRow>
             <LeftRow>
-                <TransactionAvi background={props.art.background} icon={props.art.icon} texto={props.scheduleDate.substring(0,2)}/>
+                <TransactionAvi primaryColor={props.primaryColor} secondColor={props.secondColor} icon='checkmark-done' texto={props.scheduleDate.substring(0,2)}/>
                 <View style={{marginLeft: 10}}>
                     <RegularText textStyles={{
-                        color: Colors.Cyan,
+                        color: props.secondColor,
                         textAlign: 'left',
-                        marginBottom: 5,                    
+                        marginBottom: 5,
+                        fontWeight:'800'                    
                     }}>
                         {props.userName}
                     </RegularText>
                     <SmallText textStyles={{
-                        color: Colors.Salmon,
+                        color: props.secondColor,
                         textAlign: 'left',
                     }}>
                         {props.scheduleDate}
@@ -30,14 +30,15 @@ const TransactionItem: React.FC<TransactionProps> = ( props ) => {
             </LeftRow>
             <RightRow>
             <RegularText textStyles={{
-                    color: Colors.Cyan,
+                    color: props.secondColor,
                     textAlign: 'right',
                     marginBottom: 5,                    
+                    fontWeight:'800'
                 }}>
                     {props.amount.toString()}
                 </RegularText>
                 <SmallText textStyles={{
-                    color: Colors.Salmon,
+                    color: props.secondColor,
                     textAlign: 'right',
                 }}>
                     {props.scheduleTime}

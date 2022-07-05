@@ -1,147 +1,73 @@
 import React from 'react';
-import { Colors } from '../../../components/Colors';
-import RegularInput from '../../../components/Input/RegularInput';
-import KeyboardAvoidingConatainer from '../../../components/KeyboardAvoidingConatainer';
-import { Formik } from 'formik';
-import RegularText from '../../../components/Texts/RegularText';
+import { Container} from './SignIn.s';
+import { useAppData } from '../../../services';
 import RegularButton from '../../../components/Buttons/RegularButton';
-import Messagebox from '../../../components/Messagebox';
-import { ActivityIndicator } from 'react-native';
-import PressableText from '../../../components/Texts/PressableText';
-import RowContainer from '../../../components/RowContainer';
-import { SignInProps, IUserLogin } from './SignIn.t';
-import { SignInContainer } from './SignIn.s';
-import { fetchLogin, fetchResetPassword } from '../services';
+import { ScreensProps } from '../../../types/AppType';
+import RegularInput from '../../../components/Input/RegularInput';
+import ScreenHead from '../../../components/Head/ScreenHead';
 import AsyncStorage from '@react-native-community/async-storage';
 
-const SignIn: React.FC<SignInProps> = ({navigation})  => {
-    const [message, setMessage] = React.useState('');
-    const [emailRecovery, setEmailRecovery] = React.useState('');
+const SignIn: React.FC<ScreensProps> = ({navigation}) => {
+    const [primaryColor, setPrimaryColor] = React.useState("#000");
+    const [secondColor, setSecondColor] = React.useState("#000");
+    const [userType, setUserType] = React.useState<string>("");
+
+    React.useEffect(() =>{
     
-    const [isMessageSucess, setIsMessageSucess] = React.useState(false);
-   
-    const handleLogin = async (credentials: IUserLogin, setSubmitting) =>{
-        try {
-            setMessage('');
-            //call backend
-            var { sucessful, data, message, token } = await fetchLogin(credentials);
+    const loadData = async () => {
+      const {primaryColor:strPrimaryColor, secondColor: strSecondColor } = await useAppData();
+      const UserType = await AsyncStorage.getItem('UserType');
+      setUserType(UserType as string);
+      //console.log(UserType);
+      setPrimaryColor(strPrimaryColor); 
+      setSecondColor(strSecondColor); 
 
-            if (sucessful){
-                await AsyncStorage.setItem("Name", data!.name);
-                await AsyncStorage.setItem("token", token!.toString());
-                await AsyncStorage.setItem("isLogged", "true");
-                await AsyncStorage.setItem("userType", data!.userType);
-                
-                if (data!.userType == "T"){
-                    navigation.navigate('HomeTomador');
-                }
-                else if (data!.userType == "P"){
-                    navigation.navigate('HomePrestador');
-                } 
-                else{
-                    await AsyncStorage.removeItem("Name");
-                    await AsyncStorage.setItem("isLogged", "false");
-                    navigation.navigate('Welcome');
-                }
-            }
-            else{
-                await AsyncStorage.setItem("isLogged", "false");
-                setMessage(message);
-            }
+    };
+    
+    loadData();
 
-            setSubmitting(false);
-        } catch (error) {
-            setMessage("Login falhou!");
-            setSubmitting(false);
-        } 
-    }
+  },[]);
+  
+  return (
+    <Container style={{backgroundColor: primaryColor ? primaryColor : '#000'}}>
+       <ScreenHead 
+        screenName='Identificação' 
+        primaryColor={primaryColor} 
+        secondColor={secondColor} 
+        />
+        <RegularInput 
+            iconeName='email'
+            iconeColor={primaryColor}
+            title='E-mail'
+            keyboardType='email-address'
+            placeholder="Digite seu email"
+            placeholderColor={primaryColor}
+            titleStyle={{color: secondColor, fontSize: 18, fontWeight: '800'}}
+            inputStyles={{backgroundColor: secondColor, color: primaryColor, fontSize: 20, fontWeight: '800'}}
+            iconStyles={{borderColor: primaryColor}}
+            ViewStyles={{marginTop: 50}}
+        />
+        <RegularInput 
+            iconeName='form-textbox-password'
+            iconeColor={primaryColor}
+            title='Senha'
+            placeholder="* * * * * *"
+            placeholderColor={primaryColor}
+            titleStyle={{color: secondColor, fontSize: 18, fontWeight: '800'}}
+            inputStyles={{backgroundColor: secondColor, color: primaryColor, fontSize: 20, fontWeight: '800'}}
+            iconStyles={{borderColor: primaryColor}}
+            isPassword={true}            
+        />      
 
+        <RegularButton            
+            btnStyles={{backgroundColor: secondColor, borderRadius: 5, padding: 10, display: 'flex', justifyContent:'center', alignItems: 'center'}}
+            textStyles={{color: primaryColor, fontSize: 24, fontWeight: '500'}}
+            onPress={() => userType === 'T' ? navigation.navigate('TakerDashboard') : navigation.navigate('ProviderDashboard')}>
+            Acessar
+        </RegularButton>
 
-    const handleResetPassword = async () => {
-        try {
-            setMessage('');
-            //call backend
-            if (emailRecovery === ''){
-                setMessage('preencha seu email!');
-                return false;
-            }
-
-            var { sucessful, message } = await fetchResetPassword(emailRecovery);
-
-            if (sucessful){
-                setMessage('Senha recuperada com sucesso, verifique seu email.');
-                return true;
-            }
-            else{
-                setMessage(message);
-                return false;
-            }
-        } catch (error) {
-            setMessage("Recuperação falhou!");
-        } 
-    }
-
-
-
-    return (
-        <SignInContainer>         
-            <KeyboardAvoidingConatainer>
-                <RegularText textStyles={{marginBottom: 25}}>Identificação</RegularText>
-                <Formik 
-                        initialValues={{
-                            email: '', 
-                            password:''
-                        }} 
-                        onSubmit={(values, {setSubmitting})=>{
-                            values.email = emailRecovery;
-                            if (values.email == "" && values.password == "") {
-                                setMessage('Por favor, verifique os dados digitados.');
-                                setSubmitting(false);
-                            }
-                            else{
-                                handleLogin(values, setSubmitting);
-                            }
-                        }}>
-                    {({handleChange, handleBlur, handleSubmit, values, isSubmitting}) => (
-                        <>
-                            <RegularInput 
-                                title='E-mail Address' 
-                                iconeName="email-variant"  
-                                placeholder='email@teste.com'
-                                keyboardType='email-address'
-                                onChangeText={setEmailRecovery}
-                                onBlur={handleBlur('email')}
-                                value={emailRecovery}
-                            />
-                            <RegularInput 
-                                title='Password' 
-                                iconeName="form-textbox-password"  
-                                placeholder="* * * * * *"
-                                onChangeText={handleChange('password')}
-                                onBlur={handleBlur('password')}
-                                value={values.password}
-                                isPassword={true}
-                            />
-                            <Messagebox textStyle={{ marginBottom: 25}} success={isMessageSucess}>{ message || " " }</Messagebox>
-                            {!isSubmitting &&  <RegularButton 
-                                textStyles={{color:Colors.White}} 
-                                btnStyles={{width:"80%", marginBottom:10, alignSelf: 'center'}} 
-                                onPress={handleSubmit}>Acessar</RegularButton>}
-                             
-                             {isSubmitting &&  <RegularButton 
-                                textStyles={{color:Colors.White}} 
-                                btnStyles={{width:"80%", marginBottom:10, alignSelf: 'center'}}>
-                                <ActivityIndicator size={30} color={Colors.White} /></RegularButton>}
-                            <RowContainer >
-                                <PressableText onPress={()=> navigation.navigate('Comecar')}>Novo Cadastro</PressableText>
-                                <PressableText onPress={handleResetPassword}>Recuperear Senha</PressableText>
-                            </RowContainer>
-                        </>
-                    )}
-                </Formik>
-            </KeyboardAvoidingConatainer>
-        </SignInContainer>
-    );
-};  
+    </Container>
+  );
+};
 
 export default SignIn;

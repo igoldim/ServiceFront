@@ -5,12 +5,16 @@ import RegularText from '../Texts/RegularText';
 import { GestureResponderEvent, StyleProp, TextStyle, ViewStyle } from "react-native";
 
 const ButtonView = styled.TouchableOpacity`
+    display:flex ;
+    justify-content: center;
     align-items: center;
     background-color: ${Colors.Salmon};
     width: 100%;
-    padding: 10px;
-    border-radius: 20px;
-    height: 50px;
+    padding: 5px;
+    height: 60px ;
+    border-radius: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 `;
 
 interface ButtonProps{

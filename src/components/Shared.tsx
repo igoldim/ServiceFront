@@ -1,16 +1,11 @@
 import { Dimensions } from 'react-native';
 import styled from 'styled-components/native';
-
-import { Colors } from './Colors';
 export const ScreenWidth = Dimensions.get("screen").width;
 export const ScreenHeight = Dimensions.get("screen").height;
 
 export const Container = styled.View`
-    flex: 1;
-    align-items: center;
-    background-color: ${Colors.Background};
-    padding-top: 50px;
-    width: 100%;
+    height: 100%; 
+    padding:20px;
 `;
 
 export const Row = styled.View`
@@ -18,4 +13,10 @@ export const Row = styled.View`
     justify-content: space-between;
     align-items: center;
     width: 100%;
+`;
+
+
+export const StyledScrollView = styled.ScrollView`
+  height: 100%; 
+  margin-top: 10px;
 `;

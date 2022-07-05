@@ -17,7 +17,6 @@ const ModalPressableContainer = styled.Pressable`
 `;
 
 const ModalView = styled.View`
-    background-color: ${Colors.Background};
     border-radius: 20px;
     width: 100%;
     padding: 30px;
@@ -31,6 +30,7 @@ const ModalView = styled.View`
 
 interface ButtonProps{
     btnStyles?: StyleProp<ViewStyle>;
+    viewStyles?: StyleProp<ViewStyle>;
     onPress?: ((event:GestureResponderEvent) => void | undefined);
     textStyles?: StyleProp<TextStyle>;
     children?: React.ReactNode;
@@ -39,6 +39,8 @@ interface ButtonProps{
     heading: string;
     message: string;
     btnTitle: string;
+    primaryColor: string;
+    secondColor: string;
 }
 
 
@@ -46,14 +48,17 @@ const MessageModal: React.FC<ButtonProps> = (props) => {
     return(
         <Modal animationType='slide' visible={props.visible} transparent={true}>
             <ModalPressableContainer>
-                <ModalView>
+                <ModalView style={props.viewStyles}>
                     <Icon 
                         name={props.type === 'success' ? 'check-circle' : 'close-circle'} 
-                        color={props.type === 'success' ? Colors.Green : Colors.Red} size={100}
+                        color={props.primaryColor} size={100}
                         />
-                        <BigText textStyles={{fontSize: 25, color: Colors.Gray, marginVertical:10}} >{props.heading}</BigText>
-                        <RegularText>{props.message}</RegularText>
-                        <RegularButton onPress={props.onPress} btnStyles={{backgroundColor: Colors.DarkGray, marginTop: 10}}>{props.btnTitle || `Complete`}</RegularButton>
+                        <BigText textStyles={{fontSize: 25, color: props.primaryColor, marginVertical:10, fontWeight:'600'}} >{props.heading}</BigText>
+                        <RegularText textStyles={{color: props.primaryColor, marginVertical:10, fontWeight:'600'}}>{props.message}</RegularText>
+                        <RegularButton 
+                            onPress={props.onPress} 
+                            btnStyles={{backgroundColor: props.primaryColor, marginTop: 10}}
+                            textStyles={{color: props.secondColor}}>{props.btnTitle || `Concluir`}</RegularButton>
                 </ModalView>
 
             </ModalPressableContainer>

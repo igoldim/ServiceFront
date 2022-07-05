@@ -1,8 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import { Colors } from '../Colors';
 import SmallText from '../Texts/SmallText';
-import { Dimensions, GestureResponderEvent, StyleProp, TextStyle, ViewStyle } from "react-native";
+import { GestureResponderEvent, StyleProp, TextStyle, ViewStyle } from "react-native";
 
 const StyledPressable = styled.Pressable`
     align-self: center;

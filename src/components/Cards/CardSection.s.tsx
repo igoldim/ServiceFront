@@ -5,4 +5,5 @@ export const CardList = styled.FlatList`
     flex: 1;
     padding-left: 25px;
     padding-bottom: 15px;    
+    margin-top: 30px;
 `;

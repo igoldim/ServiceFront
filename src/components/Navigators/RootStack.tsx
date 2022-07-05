@@ -3,27 +3,54 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import Welcome from '../../screens/preload/components/Welcome';
-import SignIn from '../../screens/signIn/components/SignIn';
-import Comecar from '../../screens/comecar/components/Comecar';
-import Profissional from '../../screens/comecar/professional/components/Profissional';
-import User from '../../screens/comecar/user/components/User';
-
+import Start from '../../screens/start/components/Start';
+import StartTaker from '../../screens/startTaker/components/StartTaker';
+import StartProvider from '../../screens/startProvider/components/StartProvider';
 import SignUp from '../../screens/signUp/components/SignUp';
+import SignIn from '../../screens/signIn/components/SignIn';
 import EmailVerification from '../../screens/emailVerification/components/EmailVerification';
-import Home from '../../screens/home/Home';
-import HomePrestador from '../../screens/home/profissional/components/HomePrestador';
-import HomeTomador from '../../screens/home/user/components/HomeTomador';
+import TakerDashboard from '../../screens/takerDashboard/components/TakerDashboard';
+import ProviderDashboard from '../../screens/providerDashboard/components/ProviderDashboard';
+import Scheduling from '../../screens/scheduling/components/Scheduling';
+import Favorites from '../../screens/favorites/components/Favorites';
+import Perfil from '../../screens/perfil/components/Perfil';
+import Endereco from '../../screens/endereco/components/Endereco';
+import ChangePassword from '../../screens/changePassword/components/ChangePassword';
+import Recarga from '../../screens/recarga/components/Recarga';
+import RecargaPagarPix from '../../screens/recarga/components/RecargaPagarPix';
+import Agenda from '../../screens/agenda/components/Agenda';
+import RecargaPagarCartao from '../../screens/recarga/components/RecargaPagarCartao';
+import Documentos from '../../screens/documentos/components/Documentos';
+import Resultado from '../../screens/resultado/components/Resultado';
+import Agendar from '../../screens/agendar/components/Agendar';
+import Confirmar from '../../screens/confirmar/components/Confirmar';
+
+import Menu from '../Menu/Menu';
 
 export type RootStackParamList = {
     Welcome : undefined,
+    Start : undefined,
+    StartTaker : undefined,
+    StartProvider: undefined,
+    SignUp: undefined,
     SignIn: undefined,
-    Profissional: undefined,
-    User: undefined,
-    Comecar : undefined,
-    SignUp : undefined,
+    TakerDashboard: undefined,
+    ProviderDashboard: undefined,
     EmailVerification : undefined,
-    HomePrestador : undefined,
-    HomeTomador : undefined,
+    Menu: undefined,
+    Scheduling: undefined,
+    Favorites: undefined,
+    Perfil: undefined,
+    Endereco: undefined,
+    ChangePassword: undefined;
+    Recarga: undefined;
+    RecargaPagarPix: undefined;
+    Agenda: undefined;
+    RecargaPagarCartao: undefined;
+    Documentos: undefined;
+    Resultado: undefined;
+    Agendar: undefined;
+    Confirmar: undefined;
 }
 
 
@@ -33,53 +60,122 @@ const RootStack: React.FC = () => {
     return (
         <NavigationContainer>
             <Stack.Navigator 
-                initialRouteName="Welcome"
-            >                
+                initialRouteName="Welcome">                
                 <Stack.Screen
                     name="Welcome"
                     component={Welcome}
                     options={{headerShown:false }} />
-                
-                <Stack.Screen
-                    name="HomePrestador"
-                    component={HomePrestador}     
-                    options={{headerShown:false }} />
 
                 <Stack.Screen
-                    name="HomeTomador"
-                    component={HomeTomador}     
+                    name="Start"
+                    component={Start}
                     options={{headerShown:false }} />
 
-                <Stack.Screen 
-                    name="SignIn" 
-                    component={SignIn} 
+                <Stack.Screen
+                    name="StartTaker"
+                    component={StartTaker}
                     options={{headerShown:false }} />
 
-                <Stack.Screen 
-                    name="Comecar" 
-                    component={Comecar} 
-                    options={{headerShown:false }} />                
-
-                <Stack.Screen 
-                    name="Profissional" 
-                    component={Profissional} 
+                <Stack.Screen
+                    name="StartProvider"
+                    component={StartProvider}
                     options={{headerShown:false }} />
 
-                <Stack.Screen 
-                    name="User" 
-                    component={User} 
+                <Stack.Screen
+                    name="SignUp"
+                    component={SignUp}
                     options={{headerShown:false }} />
 
-                <Stack.Screen 
-                    name="SignUp" 
-                    component={SignUp} 
+                <Stack.Screen
+                    name="SignIn"
+                    component={SignIn}
                     options={{headerShown:false }} />
+
+                <Stack.Screen
+                    name="TakerDashboard"
+                    component={TakerDashboard}
+                    options={{headerShown:false }} />
+
+                <Stack.Screen
+                    name="ProviderDashboard"
+                    component={ProviderDashboard}
+                    options={{headerShown:false }} />              
+
+                <Stack.Screen
+                    name="Perfil"
+                    component={Perfil}
+                    options={{headerShown:false }} />  
+
+                <Stack.Screen
+                    name="ChangePassword"
+                    component={ChangePassword}
+                    options={{headerShown:false }} />  
+
+
+                <Stack.Screen
+                    name="Endereco"
+                    component={Endereco}
+                    options={{headerShown:false }} />  
+
+                <Stack.Screen
+                    name="Scheduling"
+                    component={Scheduling}
+                    options={{headerShown:false }} />  
+
+                <Stack.Screen
+                    name="Favorites"
+                    component={Favorites}
+                    options={{headerShown:false }} />  
 
                 <Stack.Screen 
                     name="EmailVerification" 
                     component={EmailVerification} 
                     options={{headerShown:false }} />
 
+                <Stack.Screen
+                    name="Recarga"
+                    component={Recarga}
+                    options={{headerShown:false }} />  
+
+                <Stack.Screen
+                    name="Agenda"
+                    component={Agenda}
+                    options={{headerShown:false }} />
+
+                <Stack.Screen
+                    name="Resultado"
+                    component={Resultado}
+                    options={{headerShown:false }} />
+
+                <Stack.Screen
+                    name="Confirmar"
+                    component={Confirmar}
+                    options={{headerShown:false }} />                    
+
+                <Stack.Screen
+                    name="RecargaPagarPix"
+                    component={RecargaPagarPix}
+                    options={{headerShown:false }} />  
+
+                <Stack.Screen
+                    name="RecargaPagarCartao"
+                    component={RecargaPagarCartao}
+                    options={{headerShown:false }} />  
+
+                <Stack.Screen
+                    name="Documentos"
+                    component={Documentos}
+                    options={{headerShown:false }} /> 
+
+                <Stack.Screen
+                    name="Agendar"
+                    component={Agendar}
+                    options={{headerShown:false }} />                  
+
+                <Stack.Screen 
+                    name="Menu" 
+                    component={Menu} 
+                    options={{headerShown:false }} />
             </Stack.Navigator> 
         </NavigationContainer>
     );

@@ -1,12 +1,9 @@
 import styled from 'styled-components/native';
-import { Colors } from '../Colors';
 import { ScreenWidth } from '../Shared';
 
-export const CardBackground = styled.ImageBackground`
-    height: 75%;
-    width: ${ScreenWidth * 0.67}px;
-    resize-mode: cover;
-    background-color: ${Colors.Salmon};
+export const CardBackground = styled.View`
+    height: 100%;
+    width: ${ScreenWidth * 0.60}px;
     border-radius: 15px;
     margin-right: 25px;
     overflow: hidden;
@@ -33,10 +30,8 @@ export const CardRow = styled.View`
 `;
 
 export const Avatar = styled.Image`
-    background-color: ${Colors.Aqua};
     width: 50px;
     height: 50px;
-    border-radius: 50px;
+    border-radius: 100px;
     flex: 1;
-    resize-mode: cover;
 `;

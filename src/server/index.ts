@@ -2,7 +2,7 @@ import axios from "axios";
 import AsyncStorage from '@react-native-community/async-storage';
 
 const api = axios.create({
-  baseURL: "https://api.thecleaner.app.br/v1",
+  baseURL: "https://api.thecleaner.app.br/",
 });
 
 const apiCEP = axios.create({

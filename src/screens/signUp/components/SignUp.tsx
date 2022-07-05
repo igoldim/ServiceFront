@@ -1,122 +1,93 @@
 import React from 'react';
-import { Colors } from '../../../components/Colors';
-import RegularInput from '../../../components/Input/RegularInput';
-import KeyboardAvoidingConatainer from '../../../components/KeyboardAvoidingConatainer';
-import { Formik } from 'formik';
-import RegularText from '../../../components/Texts/RegularText';
+import { Container, Line} from './SignUp.s';
+import { useAppData } from '../../../services';
+import BigText from '../../../components/Texts/BigText';
 import RegularButton from '../../../components/Buttons/RegularButton';
-import Messagebox from '../../../components/Messagebox';
-import { ActivityIndicator } from 'react-native';
+import { ScreensProps } from '../../../types/AppType';
+import RegularInput from '../../../components/Input/RegularInput';
+import ScreenHead from '../../../components/Head/ScreenHead';
 
-import { SignUpContainer } from './SignUp.s';
-import { fetchRegister } from '../services';
-import AsyncStorage from '@react-native-community/async-storage';
-import { IUserRegister } from '../../signIn/components/SignIn.t';
+const SignUp: React.FC<ScreensProps> = ({navigation}) => {
+    const [primaryColor, setPrimaryColor] = React.useState("#000");
+    const [secondColor, setSecondColor] = React.useState("#000");
 
-const SignUp: React.FC<SignUpProps> = ({navigation})  => {
-    const [message, setMessage] = React.useState('');
-    const [isMessageSucess, setIsMessageSucess] = React.useState(false);
+    React.useEffect(() =>{
     
-    const handleSignUp = async (credentials: IUserRegister, setSubmitting) =>{
-        try {
-            setMessage('');            
-            //call backend
-            const userType = await AsyncStorage.getItem("userTypeReg");
+    const loadData = async () => {
+      const {primaryColor:strPrimaryColor, secondColor: strSecondColor } = await useAppData();
+      //const UserType = await AsyncStorage.getItem('UserType');
+      //console.log(UserType);
+      setPrimaryColor(strPrimaryColor); 
+      setSecondColor(strSecondColor); 
+    };
+    
+    loadData();
 
-            credentials.userType = userType ? userType : "T";
-            var { sucessful, data, message} = await fetchRegister(credentials);
+  },[]);
+  
+  return (
+    <Container style={{backgroundColor: primaryColor}}>
+        <ScreenHead 
+            screenName='Novo cadastro'
+            primaryColor={primaryColor} 
+            secondColor={secondColor} 
+        />
+        <Line/>
+        <RegularInput 
+            iconeName='account'
+            iconeColor={primaryColor}
+            title='Nome Completo'
+            placeholder="Digite seu nome"
+            placeholderColor={primaryColor}
+            titleStyle={{color: secondColor, fontSize: 18, fontWeight: '800'}}
+            inputStyles={{backgroundColor: secondColor, color: primaryColor, fontSize: 20, fontWeight: '800'}}
+            ViewStyles={{marginTop: 40}}
+            iconStyles={{borderColor: primaryColor}}
+        />
+        <RegularInput 
+            iconeName='email'
+            iconeColor={primaryColor}
+            title='E-mail'
+            keyboardType='email-address'
+            placeholder="Digite seu email"
+            placeholderColor={primaryColor}
+            titleStyle={{color: secondColor, fontSize: 18, fontWeight: '800'}}
+            inputStyles={{backgroundColor: secondColor, color: primaryColor, fontSize: 20, fontWeight: '800'}}
+            iconStyles={{borderColor: primaryColor}}
+        />
+        <RegularInput 
+            iconeName='form-textbox-password'
+            iconeColor={primaryColor}
+            title='Senha'
+            placeholder="* * * * * *"
+            placeholderColor={primaryColor}
+            titleStyle={{color: secondColor, fontSize: 18, fontWeight: '800'}}
+            inputStyles={{backgroundColor: secondColor, color: primaryColor, fontSize: 20, fontWeight: '800'}}
+            iconStyles={{borderColor: primaryColor}}
+            isPassword={true}            
+        />
 
-            if (sucessful){
-                await AsyncStorage.setItem("email", data!.email);
+        <RegularInput 
+            iconeName='form-textbox-password'
+            iconeColor={primaryColor}
+            title='Confirme Senha'
+            placeholder="* * * * * *"
+            placeholderColor={primaryColor}
+            titleStyle={{color: secondColor, fontSize: 18, fontWeight: '800'}}
+            inputStyles={{backgroundColor: secondColor, color: primaryColor, fontSize: 20, fontWeight: '800'}}
+            iconStyles={{borderColor: primaryColor}}
+            isPassword={true}            
+        />
 
-                navigation.navigate('EmailVerification');
-            }
-            else{
-                setMessage(message);
-            }            
-            //move to next page
-            setSubmitting(false);
-        } catch (error) {
-            setMessage('Cadastro falhou!');
-            setSubmitting(false);
-        } 
-    }
-    return (
-        <SignUpContainer>         
-            <KeyboardAvoidingConatainer>
-                <RegularText textStyles={{marginBottom: 25}}>Novo Cadastro</RegularText>
-                <Formik 
-                        initialValues={{
-                            name: '',
-                            email: '', 
-                            password:'',
-                            rePassword:'',
-                        }} 
-                        onSubmit={(values, {setSubmitting})=>{
-                            if (values.name == "" || values.email == "" || values.password == "" || values.rePassword == "") {
-                                setMessage('Por favor, verifique os dados digitados.');
-                                setSubmitting(false);
-                            }
-                            else if (values.password !== values.rePassword){
-                                setMessage('Passeords não conferem.');
-                                setSubmitting(false);
-                            }
-                            else{
-                                handleSignUp(values, setSubmitting);
-                            }
-                        }}>
-                    {({handleChange, handleBlur, handleSubmit, values, isSubmitting}) => (
-                        <>
-                            <RegularInput 
-                                title='Nome completo' 
-                                iconeName="account"  
-                                placeholder='Nome completo'
-                                onChangeText={handleChange('name')}
-                                onBlur={handleBlur('name')}
-                                value={values.name}
-                            />
-                            <RegularInput 
-                                title='E-mail Address' 
-                                iconeName="email-variant"  
-                                placeholder='email@teste.com'
-                                keyboardType='email-address'
-                                onChangeText={handleChange('email')}
-                                onBlur={handleBlur('email')}
-                                value={values.email}
-                            />
-                            <RegularInput 
-                                title='Password' 
-                                iconeName="form-textbox-password"  
-                                placeholder="* * * * * *"
-                                onChangeText={handleChange('password')}
-                                onBlur={handleBlur('password')}
-                                value={values.password}
-                                isPassword={true}
-                            />
-                            <RegularInput 
-                                title='Confirm Password' 
-                                iconeName="form-textbox-password"  
-                                placeholder="* * * * * *"
-                                onChangeText={handleChange('rePassword')}
-                                onBlur={handleBlur('rePassword')}
-                                value={values.rePassword}
-                                isPassword={true}
-                            />
-                            <Messagebox textStyle={{ marginBottom: 25}} success={isMessageSucess}>{ message || " " }</Messagebox>
-                            {!isSubmitting &&  <RegularButton 
-                                textStyles={{color:Colors.White}} 
-                                btnStyles={{width:"80%", marginBottom:10, alignSelf: 'center'}} 
-                                onPress={handleSubmit}>Gravar</RegularButton>}
-                             
-                             {isSubmitting &&  <RegularButton 
-                                textStyles={{color:Colors.White}} 
-                                btnStyles={{width:"80%", marginBottom:10, alignSelf: 'center'}}>
-                                <ActivityIndicator size={30} color={Colors.White} /></RegularButton>}
-                        </>
-                    )}
-                </Formik>
-            </KeyboardAvoidingConatainer>
-        </SignUpContainer>
-    );
-};  
+        <RegularButton            
+            btnStyles={{backgroundColor: secondColor, borderRadius: 5, padding: 10, display: 'flex', justifyContent:'center', alignItems: 'center'}}
+            textStyles={{color: primaryColor, fontSize: 24, fontWeight: '500'}}
+            onPress={() => navigation.navigate('EmailVerification')}>
+            Gravar
+        </RegularButton>
+
+    </Container>
+  );
+};
+
 export default SignUp;

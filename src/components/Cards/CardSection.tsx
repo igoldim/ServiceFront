@@ -1,5 +1,4 @@
 import React from 'react';
-import { Users } from '../Modals/ModalScheduling';
 import CardItem from './CardItem';
 import { CardList } from './CardSection.s';
 import { CardSectionProps } from './CardSection.t';
@@ -15,7 +14,7 @@ const CardSection: React.FC<CardSectionProps> = (props) => {
                 alignItems: "center"
             }}
             keyExtractor={({id}:any) => id}
-            renderItem={({item}: any) => <CardItem {...item} />}
+            renderItem={({item}: any) => <CardItem item={item} primaryColor={props.primaryColor} secondColor={props.secondColor} />}
             />
     );
 };  

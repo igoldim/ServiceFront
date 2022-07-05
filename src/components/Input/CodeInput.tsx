@@ -26,31 +26,14 @@ const CodeInputContainer = styled.Pressable`
     justify-content: space-between;
 `;
 
-const CodeInputView = styled.View`
-    min-width: 15%;
-    padding: 12px;
-    border-bottom-width: 5px;
-    border-radius: 10px;
-    border-color: ${Colors.Gray};
-`;
-
-const CodeInputText = styled.Text`
-    font-size: 22px;
-    font-weight: bold;
-    text-align: center;
-    color: ${Colors.White};
-`;
-
-const CodeInputFocused = styled(CodeInputView)`
-    border-color: ${Colors.AliceBlue};
-`;
-
 interface InputProps{
     viewStyles?: StyleProp<ViewStyle>;
     maxLength?: number | undefined;
     setCode?:  ((text: string) => void) | undefined;
     code?: string | undefined;
     setPinRead?: any | undefined;
+    primaryColor?: string;
+    secondColor?: string;
 }
 
 const CodeInput: React.FC<InputProps> = (props) => {
@@ -68,6 +51,27 @@ const CodeInput: React.FC<InputProps> = (props) => {
     const handleOnSubmitEditing = () =>{
         setInputContaierIsFocused(false);
     };
+    
+    const CodeInputView = styled.View`
+        min-width: 15%;
+        padding: 12px;
+        border-bottom-width: 5px;
+        border-radius: 10px;
+        border-color: ${props.secondColor};
+    `;
+
+    const CodeInputText = styled.Text`
+        font-size: 22px;
+        font-weight: bold;
+        text-align: center;
+        color:${props.secondColor};
+    `;
+
+    const CodeInputFocused = styled(CodeInputView)`
+        border-color: ${props.secondColor};
+        opacity: 0.7;
+    `;
+
 
     const toCodeDigitsInput = (value, index) => {
         const emptyInputChar = ' ';

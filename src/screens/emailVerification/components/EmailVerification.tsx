@@ -3,7 +3,7 @@ import { Colors } from '../../../components/Colors';
 import KeyboardAvoidingConatainer from '../../../components/KeyboardAvoidingConatainer';
 import RegularText from '../../../components/Texts/RegularText';
 import RegularButton from '../../../components/Buttons/RegularButton';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, StatusBar } from 'react-native';
 import IconHeader from '../../../components/Icons/IconHeader';
 import CodeInput from '../../../components/Input/CodeInput';
 import ResendTimer from '../../../components/Timers/ResendTimer';
@@ -13,7 +13,9 @@ import { EmailVerificationContainer } from './EmailVerification.s';
 import SmallText from '../../../components/Texts/SmallText';
 
 import AsyncStorage from '@react-native-community/async-storage';
-import { fetchConfirmEmail } from '../../signUp/services';
+import { useAppData } from '../../../services';
+import { color } from 'react-native-reanimated';
+//import { fetchConfirmEmail } from '../../signUp/services';
 
 const EmailVerification: React.FC<EmailVerificationProps> = ({navigation})  => {
 
@@ -30,6 +32,23 @@ const EmailVerification: React.FC<EmailVerificationProps> = ({navigation})  => {
     const [messageHeadding, setMessageHeadding] = React.useState('');
     const [modalButtonText, setmodalButtonText] = React.useState('');     
 
+
+    const [primaryColor, setPrimaryColor] = React.useState("#000");
+    const [secondColor, setSecondColor] = React.useState("#000");
+
+    React.useEffect(() =>{
+    
+        const loadData = async () => {
+        const {primaryColor:strPrimaryColor, secondColor: strSecondColor } = await useAppData();
+        //const UserType = await AsyncStorage.getItem('UserType');
+        //console.log(UserType);
+        setPrimaryColor(strPrimaryColor); 
+        setSecondColor(strSecondColor); 
+        };
+    
+        loadData();
+
+    },[]);
 
     const resendEmail = async (triggerTimer : any) => {
         try {
@@ -54,7 +73,7 @@ const EmailVerification: React.FC<EmailVerificationProps> = ({navigation})  => {
     };
 
     const handleEmailVerification = async () =>{
-        try {
+    /*    try {
             setIsVerify(true);
             //call backend
             const email = await AsyncStorage.getItem("email");
@@ -72,18 +91,18 @@ const EmailVerification: React.FC<EmailVerificationProps> = ({navigation})  => {
         } catch (error) {
             setIsVerify(false);
             return showModal('failed', 'Failed!', 'Erro ao Verificar email', 'Fechar');
-        } 
+        } */
     }
 
     const modalButtonHandle = () =>{
         if (messageType === "success"){
             //chamar pagina de complemento de cadastro
-            navigation.navigate('SignIn');
+            navigation.navigate('Welcome');
         }
         setVisible(false);
     }
 
-    const showModal = (type, message, headText, buttonLabel) => {
+    const showModal = (type: string, message: string, headText: string, buttonLabel: string)=> {
         setMessageType(type);
         setMessageModal(message);
         setMessageHeadding(headText);
@@ -92,30 +111,38 @@ const EmailVerification: React.FC<EmailVerificationProps> = ({navigation})  => {
     }
 
     return (
-        <EmailVerificationContainer>         
+        <EmailVerificationContainer style={{backgroundColor: primaryColor}}> 
+            <StatusBar barStyle="light-content" backgroundColor={primaryColor} />        
             <KeyboardAvoidingConatainer>
-                <IconHeader iconeName='lock-open'/>
-                <RegularText textStyles={{marginBottom: 5, textAlign: 'center'}}>Estamos verificando seu email.</RegularText>
-                <SmallText textStyles={{marginBottom: 25, textAlign: 'center'}}>Digite o código recebido em seu email.</SmallText>
+                <IconHeader iconeName='lock-open' color={primaryColor} iconStyles={{backgroundColor: secondColor}}/>
+                <RegularText textStyles={{marginBottom: 5, textAlign: 'center', color: secondColor, fontSize: 24, fontWeight: '500'}}>Estamos verificando seu email.</RegularText>
+                <SmallText textStyles={{marginBottom: 25, textAlign: 'center', color: secondColor, fontSize: 18, fontWeight: '500'}}>Digite o código recebido em seu email.</SmallText>
                 
-                <CodeInput code={code} setCode={setCode} maxLength={MAX_CODE_LENGTH} setPinRead={setPinRead}/>
+                <CodeInput primaryColor={primaryColor} secondColor={secondColor} code={code} setCode={setCode} maxLength={MAX_CODE_LENGTH} setPinRead={setPinRead}/>
                 
-                {!isVerify &&  pinRead && <RegularButton 
-                                textStyles={{color:Colors.White}} 
-                                btnStyles={{width:"80%", marginBottom:5, alignSelf: 'center'}} 
-                                onPress={handleEmailVerification}>Verificar</RegularButton>}
+                {!isVerify &&  pinRead && <RegularButton            
+                    btnStyles={{backgroundColor: secondColor, borderRadius: 5, padding: 10, display: 'flex', justifyContent:'center', alignItems: 'center'}}
+                    textStyles={{color: primaryColor, fontSize: 24, fontWeight: '500'}}
+                    onPress={handleEmailVerification}>
+                    Verificar
+                </RegularButton>}
 
-                {!isVerify &&  !pinRead && <RegularButton 
-                                textStyles={{color:Colors.LightGrey}} 
-                                btnStyles={{width:"80%", marginBottom:5, alignSelf: 'center', backgroundColor: Colors.Gray}}
-                                disabled={true} 
-                                >Verificar</RegularButton>}
+ 
 
-                {isVerify &&  <RegularButton 
-                    textStyles={{color:Colors.White}} 
-                    btnStyles={{width:"80%", marginBottom:5, alignSelf: 'center'}}>
-                    <ActivityIndicator size={30} color={Colors.White} /></RegularButton>}
-                <ResendTimer activeResend={activeResend} setActiveResend={setActiveResend} resendStatus={resendStatus} resendingEmail={resendingEmail} resendEmail={resendEmail} />    
+                {!isVerify &&  !pinRead && <RegularButton            
+                     btnStyles={{borderColor: secondColor, borderTopWidth: 1,  borderLeftWidth: 1,  borderRightWidth: 1,  borderBottomWidth: 1 ,backgroundColor: primaryColor, marginBottom:10, paddingTop: 10}}
+                    textStyles={{color: secondColor, fontSize: 24, fontWeight: '500'}}
+                    disabled={true}>
+                    Verificar
+                </RegularButton>}
+
+                {isVerify && <RegularButton 
+                    textStyles={{color: primaryColor}} 
+                    btnStyles={{width:"80%", marginBottom:5, alignSelf: 'center', backgroundColor: Colors.Gray}}
+                    disabled={true}>
+                    <ActivityIndicator size={30} color={Colors.White} />
+                </RegularButton>}
+                <ResendTimer textColor= {secondColor} activeResend={activeResend} setActiveResend={setActiveResend} resendStatus={resendStatus} resendingEmail={resendingEmail} resendEmail={resendEmail} />    
             <MessageModal 
                 visible={visible} 
                 setVisible={setVisible} 

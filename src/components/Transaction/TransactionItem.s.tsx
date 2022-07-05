@@ -1,7 +1,7 @@
 import styled from "styled-components/native";
 
 
-export const TransactionRow = styled.View`
+export const TransactionRow = styled.TouchableOpacity`
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
