@@ -1,4 +1,4 @@
-package com.thecleanerapp.newarchitecture.modules;
+package br.inf.circuit.multiservice.newarchitecture.modules;
 
 import com.facebook.jni.HybridData;
 import com.facebook.react.ReactPackage;

@@ -7,11 +7,11 @@
 #define TIMEOUT_SECONDS 600
 #define TEXT_TO_LOOK_FOR @"Welcome to React"
 
-@interface TheCleanerAppTests : XCTestCase
+@interface CircuITMultiserviceTests : XCTestCase
 
 @end
 
-@implementation TheCleanerAppTests
+@implementation CircuITMultiserviceTests
 
 - (BOOL)findSubviewInView:(UIView *)view matching:(BOOL (^)(UIView *view))test
 {

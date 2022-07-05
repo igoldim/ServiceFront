@@ -1,5 +1,6 @@
 export const Colors = {
     Background:"#902764",
+    Salmon:"#FA8072",
     White:"#FFFFFF",
     Ivory:"#FFFFF0",
     LightYellow:"#FFFFE0",
@@ -35,7 +36,6 @@ export const Colors = {
     LightGoldenrodYellow:"#FAFAD2",
     Linen:"#FAF0E6",
     AntiqueWhite:"#FAEBD7",
-    Salmon:"#FA8072",
     GhostWhite:"#F8F8FF",
     MintCream:"#F5FFFA",
     WhiteSmoke:"#F5F5F5",

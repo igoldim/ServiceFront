@@ -1,4 +1,4 @@
-package com.thecleanerapp.newarchitecture;
+package br.inf.circuit.multiservice.newarchitecture;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -19,9 +19,9 @@ import com.facebook.react.fabric.CoreComponentsRegistry;
 import com.facebook.react.fabric.EmptyReactNativeConfig;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.thecleanerapp.BuildConfig;
-import com.thecleanerapp.newarchitecture.components.MainComponentsRegistry;
-import com.thecleanerapp.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import br.inf.circuit.multiservice.BuildConfig;
+import br.inf.circuit.multiservice.newarchitecture.components.MainComponentsRegistry;
+import br.inf.circuit.multiservice.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 

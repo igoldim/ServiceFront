@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "TheCleanerApp.app"
-               BlueprintName = "TheCleanerApp"
-               ReferencedContainer = "container:TheCleanerApp.xcodeproj">
+               BuildableName = "CircuITMultiservice.app"
+               BlueprintName = "CircuITMultiservice"
+               ReferencedContainer = "container:CircuITMultiservice.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "TheCleanerAppTests.xctest"
-               BlueprintName = "TheCleanerAppTests"
-               ReferencedContainer = "container:TheCleanerApp.xcodeproj">
+               BuildableName = "CircuITMultiserviceTests.xctest"
+               BlueprintName = "CircuITMultiserviceTests"
+               ReferencedContainer = "container:CircuITMultiservice.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "TheCleanerApp.app"
-            BlueprintName = "TheCleanerApp"
-            ReferencedContainer = "container:TheCleanerApp.xcodeproj">
+            BuildableName = "CircuITMultiservice.app"
+            BlueprintName = "CircuITMultiservice"
+            ReferencedContainer = "container:CircuITMultiservice.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "TheCleanerApp.app"
-            BlueprintName = "TheCleanerApp"
-            ReferencedContainer = "container:TheCleanerApp.xcodeproj">
+            BuildableName = "CircuITMultiservice.app"
+            BlueprintName = "CircuITMultiservice"
+            ReferencedContainer = "container:CircuITMultiservice.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

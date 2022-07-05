@@ -1,4 +1,4 @@
-package com.thecleanerapp.newarchitecture.components;
+package br.inf.circuit.multiservice.newarchitecture.components;
 
 import com.facebook.jni.HybridData;
 import com.facebook.proguard.annotations.DoNotStrip;
