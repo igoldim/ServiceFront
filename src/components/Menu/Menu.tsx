@@ -98,7 +98,7 @@ const Menu: React.FC<ScreensProps> = ({navigation}) => {
                             secondColor={secondColor}
                             />
                     </Row>
-                    <Row>
+                    {/*<Row>
                         <MenuItem 
                             icon="settings" 
                             title="Configurações" 
@@ -106,7 +106,7 @@ const Menu: React.FC<ScreensProps> = ({navigation}) => {
                             primaryColor={primaryColor}
                             secondColor={secondColor}
                             />
-                    </Row>                    
+                       </Row>*/}                 
                 </View>
                 <Rodape>
                     <MenuItem 
