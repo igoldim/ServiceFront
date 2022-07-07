@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-community/async-storage";
 import React from "react";
-import { View } from "react-native";
+import { ScrollView, View } from "react-native";
 import RegularButton from "../../../components/Buttons/RegularButton";
 import ScreenHead from "../../../components/Head/ScreenHead";
 import EnderecoInput from "../../../components/Input/EnderecoInput";
@@ -36,7 +36,8 @@ const Endereco: React.FC<ScreensProps> = ({navigation}) =>{
                 secondColor={secondColor} 
                 showIcon={true} 
                 onPress={() => navigation.navigate("Perfil")} />
-            <EnderecoInput 
+            <ScrollView>
+                <EnderecoInput 
                     iconeName='my-location'
                     iconeColor={primaryColor}
                     title='Cep'
@@ -129,6 +130,7 @@ const Endereco: React.FC<ScreensProps> = ({navigation}) =>{
                     onPress={() => {}}>
                     Gravar
                 </RegularButton>
+            </ScrollView>
         </Container>
     );
 };

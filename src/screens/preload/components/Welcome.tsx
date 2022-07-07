@@ -22,6 +22,21 @@ const Welcome: React.FC<ScreensProps> = ({navigation}) => {
   React.useEffect(() =>{
     const loadData = async () => {
       setIsLoading(true);
+     
+      GetLocation.getCurrentPosition({
+        enableHighAccuracy: true,
+        timeout: 15000,
+      })
+      .then(location =>  {
+        AsyncStorage.setItem('latitude', `${location.latitude}`);
+        AsyncStorage.setItem('longitude', `${location.longitude}`);
+        //console.log(location);
+      })
+      .catch(error => {
+          const { code, message } = error;
+          console.warn(code, message);
+      });
+
       var data: IResultApp = await getApp({slug, applicationkey: 'D47EE5680A60310E960CAA6BB2DA6638C53B5E04EB2F9FCBE6D04A953A1A7584'});
       //console.log( data );
       setApp( data );
@@ -48,21 +63,7 @@ const Welcome: React.FC<ScreensProps> = ({navigation}) => {
 
     };
 
-    loadData();
-
-    GetLocation.getCurrentPosition({
-      enableHighAccuracy: true,
-      timeout: 15000,
-    })
-    .then(location =>  {
-      AsyncStorage.setItem('latitude', `${location.latitude}`);
-      AsyncStorage.setItem('longitude', `${location.longitude}`);
-      //console.log(location);
-    })
-    .catch(error => {
-        const { code, message } = error;
-        console.warn(code, message);
-    });
+    loadData();   
 
   },[]);
  

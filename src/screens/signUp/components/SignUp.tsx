@@ -9,6 +9,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { fetchRegister } from '../services';
 import GetLocation from 'react-native-get-location' //https://www.npmjs.com/package/react-native-get-location
 import MessageAlertModal from '../../../components/Modals/MessageAlertModal';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const SignUp: React.FC<ScreensProps> = ({navigation}) => {
   const [appId, setAppId] = React.useState("");
@@ -139,77 +140,79 @@ const SignUp: React.FC<ScreensProps> = ({navigation}) => {
             secondColor={secondColor} 
         />
         <Line/>
-        <RegularInput 
-            iconeName='account'
-            iconeColor={primaryColor}
-            title='Nome Completo'
-            placeholder="Digite seu nome"
-            placeholderColor={primaryColor}
-            titleStyle={{color: secondColor, fontSize: 18, fontWeight: '800'}}
-            inputStyles={{backgroundColor: secondColor, color: primaryColor, fontSize: 20, fontWeight: '800'}}
-            ViewStyles={{marginTop: 40}}
-            iconStyles={{borderColor: primaryColor}}
-            onChangeText={setNome}
-            value={nome}
-        />
-        <RegularInput 
-            iconeName='email'
-            iconeColor={primaryColor}
-            title='E-mail'
-            keyboardType='email-address'
-            placeholder="Digite seu email"
-            placeholderColor={primaryColor}
-            titleStyle={{color: secondColor, fontSize: 18, fontWeight: '800'}}
-            inputStyles={{backgroundColor: secondColor, color: primaryColor, fontSize: 20, fontWeight: '800'}}
-            iconStyles={{borderColor: primaryColor}}
-            onChangeText={setEmail}
-            value={email}
-        />
-        <RegularInput 
-            iconeName='form-textbox-password'
-            iconeColor={primaryColor}
-            title='Senha'
-            placeholder="* * * * * *"
-            placeholderColor={primaryColor}
-            titleStyle={{color: secondColor, fontSize: 18, fontWeight: '800'}}
-            inputStyles={{backgroundColor: secondColor, color: primaryColor, fontSize: 20, fontWeight: '800'}}
-            iconStyles={{borderColor: primaryColor}}
-            isPassword={true}            
-            onChangeText={setPassword}
-            value={password}
-        />
+        <ScrollView>
+          <RegularInput 
+              iconeName='account'
+              iconeColor={primaryColor}
+              title='Nome Completo'
+              placeholder="Digite seu nome"
+              placeholderColor={primaryColor}
+              titleStyle={{color: secondColor, fontSize: 18, fontWeight: '800'}}
+              inputStyles={{backgroundColor: secondColor, color: primaryColor, fontSize: 20, fontWeight: '800'}}
+              ViewStyles={{marginTop: 40}}
+              iconStyles={{borderColor: primaryColor}}
+              onChangeText={setNome}
+              value={nome}
+          />
+          <RegularInput 
+              iconeName='email'
+              iconeColor={primaryColor}
+              title='E-mail'
+              keyboardType='email-address'
+              placeholder="Digite seu email"
+              autoCapitalize='none'
+              placeholderColor={primaryColor}
+              titleStyle={{color: secondColor, fontSize: 18, fontWeight: '800'}}
+              inputStyles={{backgroundColor: secondColor, color: primaryColor, fontSize: 20, fontWeight: '800'}}
+              iconStyles={{borderColor: primaryColor}}
+              onChangeText={setEmail}
+              value={email}
+          />
+          <RegularInput 
+              iconeName='form-textbox-password'
+              iconeColor={primaryColor}
+              title='Senha'
+              placeholder="* * * * * *"
+              placeholderColor={primaryColor}
+              titleStyle={{color: secondColor, fontSize: 18, fontWeight: '800'}}
+              inputStyles={{backgroundColor: secondColor, color: primaryColor, fontSize: 20, fontWeight: '800'}}
+              iconStyles={{borderColor: primaryColor}}
+              isPassword={true}            
+              onChangeText={setPassword}
+              value={password}
+          />
 
-        <RegularInput 
-            iconeName='form-textbox-password'
-            iconeColor={primaryColor}
-            title='Confirme Senha'
-            placeholder="* * * * * *"
-            placeholderColor={primaryColor}
-            titleStyle={{color: secondColor, fontSize: 18, fontWeight: '800'}}
-            inputStyles={{backgroundColor: secondColor, color: primaryColor, fontSize: 20, fontWeight: '800'}}
-            iconStyles={{borderColor: primaryColor}}
-            isPassword={true}            
-            onChangeText={setPasswordConfirm}
-            value={passwordConfirm}
-        />
+          <RegularInput 
+              iconeName='form-textbox-password'
+              iconeColor={primaryColor}
+              title='Confirme Senha'
+              placeholder="* * * * * *"
+              placeholderColor={primaryColor}
+              titleStyle={{color: secondColor, fontSize: 18, fontWeight: '800'}}
+              inputStyles={{backgroundColor: secondColor, color: primaryColor, fontSize: 20, fontWeight: '800'}}
+              iconStyles={{borderColor: primaryColor}}
+              isPassword={true}            
+              onChangeText={setPasswordConfirm}
+              value={passwordConfirm}
+          />
 
-        <RegularButton            
-            btnStyles={{backgroundColor: secondColor, borderRadius: 5, padding: 10, display: 'flex', justifyContent:'center', alignItems: 'center'}}
-            textStyles={{color: primaryColor, fontSize: 24, fontWeight: '500'}}
-            onPress={handleRegister}>
-            Gravar
-        </RegularButton>
+          <RegularButton            
+              btnStyles={{backgroundColor: secondColor, borderRadius: 5, padding: 10, display: 'flex', justifyContent:'center', alignItems: 'center'}}
+              textStyles={{color: primaryColor, fontSize: 24, fontWeight: '500'}}
+              onPress={handleRegister}>
+              Gravar
+          </RegularButton>
 
-        <MessageAlertModal 
-                visible={visible} 
-                heading={messageHeadding} 
-                message={messageModal} 
-                type={type}
-                onPress={modalButtonHandle}
-                primaryColor={primaryColor}
-                secondColor={secondColor}                
-        />
-
+          <MessageAlertModal 
+                  visible={visible} 
+                  heading={messageHeadding} 
+                  message={messageModal} 
+                  type={type}
+                  onPress={modalButtonHandle}
+                  primaryColor={primaryColor}
+                  secondColor={secondColor}                
+          />
+        </ScrollView>
     </Container>
   );
 };

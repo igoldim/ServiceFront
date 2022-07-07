@@ -11,12 +11,9 @@ import MessageModal from '../../../components/Modals/MessageModal';
 import { EmailVerificationProps } from './EmailVerification.t';
 import { EmailVerificationContainer } from './EmailVerification.s';
 import SmallText from '../../../components/Texts/SmallText';
-
-import AsyncStorage from '@react-native-community/async-storage';
 import { useAppData } from '../../../services';
-import { color } from 'react-native-reanimated';
 import { fetchConfirmEmail } from '../service';
-//import { fetchConfirmEmail } from '../../signUp/services';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const EmailVerification: React.FC<EmailVerificationProps> = ({navigation})  => {
 
@@ -38,7 +35,7 @@ const EmailVerification: React.FC<EmailVerificationProps> = ({navigation})  => {
     const [secondColor, setSecondColor] = React.useState("#000");
 
     const [email, setEmail] = React.useState("");
-    const [type, setUserType] = React.useState("");
+    const [type, setUserType] = React.useState(0);
 
     React.useEffect(() =>{
     
@@ -85,9 +82,19 @@ const EmailVerification: React.FC<EmailVerificationProps> = ({navigation})  => {
         try {
             setIsVerify(true);
             //call backend
-            var { sucessful, message} = await fetchConfirmEmail({email: email ? email : "sem@email.com", token: code!.toString()});
+            var { sucessful, data, message, token} = await fetchConfirmEmail({email: email ? email : "sem@email.com", token: code!.toString()});
 
             if (sucessful){
+                await AsyncStorage.setItem("userId", data!.id);
+                await AsyncStorage.setItem("Name", data!.name);
+                await AsyncStorage.setItem("Avatar", data!.avatar ? data!.avatar : "https://imagens.circuit.inf.br/noAvatar.png");
+                await AsyncStorage.setItem("token", token!.toString());
+
+                await AsyncStorage.setItem("isLogged", data?.userType == 0 ? "true" : "false");
+
+                await AsyncStorage.setItem("userType", data!.userType?.toString() as string);
+                await AsyncStorage.setItem("Email", email);
+                setUserType(data?.userType as number);
                 setIsVerify(false);
                 return showModal('success', 'Seu email foi verificado com sucesso.', 'Muito bom!', 'Processado');
             }
@@ -104,16 +111,20 @@ const EmailVerification: React.FC<EmailVerificationProps> = ({navigation})  => {
 
     const modalButtonHandle = () =>{
         if (messageType === "success"){
+            console.log(type);
             //verifica o tipo de usuário e redireciona a página
-            if (type === "0"){ //taker
+            if (type == 0){ //taker
                 navigation.navigate('TakerDashboard');
+                setVisible(false);
             }
             else{
                 navigation.navigate('Documentos');
+                setVisible(false);
             }
-            
         }
-        setVisible(false);
+        else {
+            setVisible(false);
+        }
     }
 
     const showModal = (type: string, message: string, headText: string, buttonLabel: string)=> {

@@ -9,7 +9,7 @@ import RegularText from "../../../components/Texts/RegularText";
 import TransactionSection from "../../../components/Transaction/TransactionSection";
 import TransactionSectionFake from "../../../components/Transaction/TransactionSectionFake";
 import { useAppData } from "../../../services";
-import { ScreensProps, TUser, Users } from "../../../types/AppType";
+import { ScreensProps, TUser } from "../../../types/AppType";
 import { fetchData } from "../service";
 import { Container } from "./TakerDashboard.s";
 
