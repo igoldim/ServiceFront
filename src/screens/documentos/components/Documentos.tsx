@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-community/async-storage";
 import React from "react";
 import RegularButton from "../../../components/Buttons/RegularButton";
 import ScreenHead from "../../../components/Head/ScreenHead";
@@ -13,15 +14,19 @@ const Documentos: React.FC<ScreensProps> = ({navigation}) =>{
     const [enderecoStatus, setEnderecoStatus] = React.useState(false);
     const [antecendeteCriminalStatus, setAntecendeteCriminalStatus] = React.useState(false);
     const [setfilStatus, setSelfieStatus] = React.useState(false);
+    const [validaDocumento, setValidaDocumento] = React.useState("false");
 
 
     React.useEffect(() =>{
     
         const loadData = async () => {
         const {primaryColor:strPrimaryColor, secondColor: strSecondColor } = await useAppData();
-
         setPrimaryColor(strPrimaryColor); 
         setSecondColor(strSecondColor); 
+
+        const validaDocumento = await AsyncStorage.getItem("validaDocumento");
+        setValidaDocumento(validaDocumento ? validaDocumento: "false");
+
         };
         
         loadData();
@@ -33,7 +38,7 @@ const Documentos: React.FC<ScreensProps> = ({navigation}) =>{
         <Container style={{backgroundColor: primaryColor}}>
              <ScreenHead 
                 screenName="Documentação"  
-                onPress={() => navigation.navigate("Perfil")}
+                onPress={() => validaDocumento != "true" ? navigation.navigate("Perfil") : navigation.navigate("SignIn")}
                 primaryColor={primaryColor} 
                 secondColor={secondColor} 
                 showIcon={true}/>

@@ -15,6 +15,7 @@ import SmallText from '../../../components/Texts/SmallText';
 import AsyncStorage from '@react-native-community/async-storage';
 import { useAppData } from '../../../services';
 import { color } from 'react-native-reanimated';
+import { fetchConfirmEmail } from '../service';
 //import { fetchConfirmEmail } from '../../signUp/services';
 
 const EmailVerification: React.FC<EmailVerificationProps> = ({navigation})  => {
@@ -36,16 +37,24 @@ const EmailVerification: React.FC<EmailVerificationProps> = ({navigation})  => {
     const [primaryColor, setPrimaryColor] = React.useState("#000");
     const [secondColor, setSecondColor] = React.useState("#000");
 
+    const [email, setEmail] = React.useState("");
+    const [type, setUserType] = React.useState("");
+
     React.useEffect(() =>{
     
         const loadData = async () => {
-        const {primaryColor:strPrimaryColor, secondColor: strSecondColor } = await useAppData();
+        const {primaryColor:strPrimaryColor, secondColor: strSecondColor, Email, userType } = await useAppData();
         //const UserType = await AsyncStorage.getItem('UserType');
         //console.log(UserType);
         setPrimaryColor(strPrimaryColor); 
         setSecondColor(strSecondColor); 
+        setEmail(Email);
+        setUserType(userType);
+
+        console.log(type);
+
         };
-    
+
         loadData();
 
     },[]);
@@ -73,31 +82,36 @@ const EmailVerification: React.FC<EmailVerificationProps> = ({navigation})  => {
     };
 
     const handleEmailVerification = async () =>{
-    /*    try {
+        try {
             setIsVerify(true);
             //call backend
-            const email = await AsyncStorage.getItem("email");
-            var { sucessful, message} = await fetchConfirmEmail({email: email!.toString(), token: code!.toString()});
+            var { sucessful, message} = await fetchConfirmEmail({email: email ? email : "sem@email.com", token: code!.toString()});
 
             if (sucessful){
                 setIsVerify(false);
-                return showModal('success', 'Muito bom!', 'Seu email foi verificado com sucesso.', 'Processado');
+                return showModal('success', 'Seu email foi verificado com sucesso.', 'Muito bom!', 'Processado');
             }
             else{
                 setIsVerify(false);
-                return showModal('failed', 'Failed!', message, 'Fechar');
+                return showModal('failed', 'Verifique o token digitado!', message, 'Fechar');
             }            
             //move to next page
         } catch (error) {
             setIsVerify(false);
             return showModal('failed', 'Failed!', 'Erro ao Verificar email', 'Fechar');
-        } */
+        } 
     }
 
     const modalButtonHandle = () =>{
         if (messageType === "success"){
-            //chamar pagina de complemento de cadastro
-            navigation.navigate('Welcome');
+            //verifica o tipo de usuário e redireciona a página
+            if (type === "0"){ //taker
+                navigation.navigate('TakerDashboard');
+            }
+            else{
+                navigation.navigate('Documentos');
+            }
+            
         }
         setVisible(false);
     }
@@ -151,6 +165,8 @@ const EmailVerification: React.FC<EmailVerificationProps> = ({navigation})  => {
                 btnTitle={modalButtonText} 
                 type={messageType}
                 onPress={modalButtonHandle}
+                primaryColor={primaryColor}
+                secondColor={secondColor}                
                 />
             </KeyboardAvoidingConatainer>
         </EmailVerificationContainer>

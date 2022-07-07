@@ -12,14 +12,14 @@ const Endereco: React.FC<ScreensProps> = ({navigation}) =>{
     const [primaryColor, setPrimaryColor] = React.useState("#000");
     const [secondColor, setSecondColor] = React.useState("#000");
     const [userType, setUserType] = React.useState<string>("");
-
     React.useEffect(() =>{
     
     const loadData = async () => {
       const {primaryColor:strPrimaryColor, secondColor: strSecondColor } = await useAppData();
       const UserType = await AsyncStorage.getItem('UserType');
+     
       setUserType(UserType as string);
-
+     
       setPrimaryColor(strPrimaryColor); 
       setSecondColor(strSecondColor); 
     };

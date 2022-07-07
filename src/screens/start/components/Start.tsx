@@ -39,7 +39,7 @@ const Start: React.FC<ScreensProps> = ({navigation}) => {
 
   const handleType = async (type : string) =>{
 
-    await AsyncStorage.setItem('UserType', type);
+    await AsyncStorage.setItem('UserTypeScreen', type);
 
     type === 'T' ? navigation.navigate('StartTaker'): navigation.navigate('StartProvider');
   }

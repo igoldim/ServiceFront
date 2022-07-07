@@ -7,6 +7,7 @@ import RegularInput from '../../../components/Input/RegularInput';
 import ScreenHead from '../../../components/Head/ScreenHead';
 import AsyncStorage from '@react-native-community/async-storage';
 import { fetchLogin } from '../services';
+import MessageAlertModal from '../../../components/Modals/MessageAlertModal';
 
 const SignIn: React.FC<ScreensProps> = ({navigation}) => {
     const [appId, setAppId] = React.useState("");
@@ -14,6 +15,15 @@ const SignIn: React.FC<ScreensProps> = ({navigation}) => {
     const [password, setPassword] = React.useState("");
     const [primaryColor, setPrimaryColor] = React.useState("#000");
     const [secondColor, setSecondColor] = React.useState("#000");
+
+    const [visible, setVisible] = React.useState(false);
+    const [messageHeadding, setMessageHeadding] = React.useState('');
+    const [messageModal, setMessageModal] = React.useState('');
+
+    const [messageResponse, setMessageResponse] = React.useState('');
+
+    const [type, setType] = React.useState("erro");
+    
 
     React.useEffect(() =>{
     
@@ -43,6 +53,19 @@ const SignIn: React.FC<ScreensProps> = ({navigation}) => {
 
   const handleLogin = async () =>{
     try {
+
+        //valida dados de entrada
+        if (email === "") {
+          showModal("Erro", "Informe seu email", "erro");
+          return false;
+        }
+
+        if (password === "") {
+          showModal("Erro", "Informe sua senha", "erro");
+          return false;
+        }
+        
+
         //call backend
         var { sucessful, data, message, token } = await fetchLogin({appId, email, password});       
         
@@ -55,6 +78,7 @@ const SignIn: React.FC<ScreensProps> = ({navigation}) => {
           await AsyncStorage.setItem("token", token!.toString());
           await AsyncStorage.setItem("isLogged", "true");
           await AsyncStorage.setItem("userType", data!.userType?.toString() as string);
+          await AsyncStorage.setItem("Email", email);
             
           //console.log(data!.userType?.toString());
 
@@ -70,19 +94,47 @@ const SignIn: React.FC<ScreensProps> = ({navigation}) => {
             await AsyncStorage.removeItem("Avatar");
             await AsyncStorage.removeItem("token");
             await AsyncStorage.removeItem("userType");
+            await AsyncStorage.removeItem("email");
             await AsyncStorage.setItem("isLogged", "false");
           }
         }
         else{
-            //console.log(message);
-            await AsyncStorage.setItem("isLogged", "false");
+          await AsyncStorage.setItem("Email", email);
+          await AsyncStorage.setItem("isLogged", "false");
+          await AsyncStorage.setItem("validaDocumento", "true");
+          
+          setMessageResponse(message);
+          
+          showModal("Erro", message, "erro");
         }
     } catch (error) {
       console.log(error);
     } 
-}
+  }
 
-  
+  const showModal = (headText: string, message: string, type: string)=> {
+    setMessageHeadding(headText);
+    setMessageModal(message);
+    setType(type);
+    setVisible(true);
+  }
+
+
+  const modalButtonHandle = () =>{
+    if (messageResponse == "Email não confirmado, acesse seu email para validá-lo."){
+      navigation.navigate('EmailVerification');
+      setVisible(false);
+    }
+    else if (messageResponse == "Você precisa informar seus documentos para validação de sua conta"){
+      navigation.navigate('Documentos');
+      setVisible(false);
+    }
+    else{
+      setVisible(false);
+    }    
+    console.log(messageResponse);
+  }
+
   return (
     <Container style={{backgroundColor: primaryColor ? primaryColor : '#000'}}>
        <ScreenHead 
@@ -124,6 +176,16 @@ const SignIn: React.FC<ScreensProps> = ({navigation}) => {
             onPress={handleLogin}>
             Acessar
         </RegularButton>
+
+        <MessageAlertModal 
+                visible={visible} 
+                heading={messageHeadding} 
+                message={messageModal} 
+                onPress={modalButtonHandle}
+                type={type}
+                primaryColor={primaryColor}
+                secondColor={secondColor}                
+                />
 
     </Container>
   );

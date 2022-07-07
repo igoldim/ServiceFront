@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-community/async-storage"
+import { Modal } from "react-native"
 import { IApp, IContextApp, IResultApp } from "./../interfaces"
 import { api } from "./../server"
 
@@ -23,8 +24,32 @@ export const useAppData= async (): Promise<IContextApp> => {
     const appKey = await AsyncStorage.getItem('appKey') as string;
     const userId = await AsyncStorage.getItem("userId") as string;
     const Name = await AsyncStorage.getItem("Name") as string;
+    const Email = await AsyncStorage.getItem("Email") as string;
     const Avatar = await AsyncStorage.getItem("Avatar") as string;
 
-    return {titulo, subtitulo, logo, primaryColor, secondColor, versao, userType, appKey, userId, Name, Avatar};
+    const Latitude = await AsyncStorage.getItem("latitude") as string;
+    const Longitude = await AsyncStorage.getItem("longitude") as string;
+
+    const ActivateCode = await AsyncStorage.getItem("activateCode") as string;
+    
+
+    return {titulo
+          , subtitulo
+          , logo
+          , primaryColor
+          , secondColor
+          , versao
+          , userType
+          , appKey
+          , userId
+          , Name
+          , Avatar
+          , Latitude
+          , Longitude
+          , ActivateCode
+          , Email  };
 }
 
+export const useApi = () =>({
+
+});

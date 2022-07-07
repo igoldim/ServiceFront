@@ -9,7 +9,7 @@ export const fetchLogin= async (
         .post<any>('/Secutiry/Authentication', params)
         .then(({ data }) => data)
 
-    console.log(response);
+    //console.log(response);
 
     return response
 }
@@ -19,7 +19,7 @@ export const fetchResetPassword= async (
     params: string
 ): Promise<ILoginResult> => {
     const response = await api
-        .get<any>(`/Auth/ResetPassword?email=${params}`)
+        .get<any>(`/Secutiry/ResetPassword?email=${params}`)
         .then(({ data }) => data)
     return response
 }

@@ -160,7 +160,7 @@ const ModalScheduling: React.FC<ButtonProps> = (props) => {
                            {props.item.proffisional && 
                                 <RegularText textStyles={{fontSize: 16, color: props.primaryColor}} >{props.item.proffisional.name.split(' ')[0] + ' ' + props.item.proffisional.name.split(' ')[props.item.proffisional.name.split(' ').length-1]}</RegularText>
                             }
-                            <RegularText textStyles={{fontSize: 16, color: props.primaryColor}} >{props.item.amountValue && (props.item.amountValue).toFixed(2).toString()}</RegularText>
+                            <RegularText textStyles={{fontSize: 16, color: props.primaryColor}} >{props.item.amountValue && props.item.amountValue}</RegularText>
                         </Row>
                         <Row style={{width: '100%'}}>
                             <BigText textStyles={{fontSize: 20, color: props.primaryColor, marginVertical: 2, fontWeight: 'bold'}} >Endereço</BigText>

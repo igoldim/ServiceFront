@@ -57,7 +57,7 @@ const ProviderDashboard: React.FC<ScreensProps> = ({navigation}) => {
                     <Icon name="md-arrow-forward" color={secondColor} size={30} /> 
                 </TouchableOpacity>
             </View>           
-            <RegularText textStyles={{color: secondColor, fontSize: 28, fontWeight: '400'}}>R$ {data?.serviceAmount?.toFixed(2)}</RegularText> 
+            <RegularText textStyles={{color: secondColor, fontSize: 28, fontWeight: '400'}}>R$ {data?.serviceAmount}</RegularText> 
 
             {data?.servicesAgendados.length == 0  && 
                 <CardSectionFake primaryColor={primaryColor} secondColor={secondColor} />

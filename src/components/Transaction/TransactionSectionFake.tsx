@@ -8,7 +8,7 @@ import TransactionItemFake from './TransactionItemFake';
 
 const TransactionSectionFake: React.FC<TransactionSectionFakeProps> = ( props ) => {
     return (
-        <TransactionSectionBackground>
+        <TransactionSectionBackground style={{marginTop: 0}}>
             <TransactionRow style={{marginBottom: 15}}>
                 <RegularText textStyles={{fontSize: 19, color: props.secondColor, fontWeight:'800'}}>
                     {props.title} 

@@ -6,6 +6,7 @@ import RegularText from '../Texts/RegularText';
 import { GestureResponderEvent, Modal, StyleProp, TextStyle, ViewStyle } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import RegularButton from '../Buttons/RegularButton';
+import { useAppData } from '../../services';
 
 
 const ModalPressableContainer = styled.Pressable`
@@ -29,28 +30,26 @@ const ModalView = styled.View`
 `;
 
 interface ButtonProps{
-    btnStyles?: StyleProp<ViewStyle>;
-    viewStyles?: StyleProp<ViewStyle>;
     onPress?: ((event:GestureResponderEvent) => void | undefined);
     textStyles?: StyleProp<TextStyle>;
     children?: React.ReactNode;
     visible?:boolean | undefined;
-    type: string;
     heading: string;
     message: string;
-    btnTitle: string;
+    type: string;
     primaryColor: string;
     secondColor: string;
 }
 
 
-const MessageModal: React.FC<ButtonProps> = (props) => {
+const MessageAlertModal: React.FC<ButtonProps> = (props) => {
+
     return(
         <Modal animationType='slide' visible={props.visible} transparent={true}>
             <ModalPressableContainer>
-                <ModalView style={[props.viewStyles, {backgroundColor: props.secondColor }]}>
+                <ModalView style={{backgroundColor: props.secondColor}}>
                     <Icon 
-                        name={props.type === 'success' ? 'check-circle' : 'close-circle'} 
+                        name={props.type == 'success' ? 'check-circle' : 'close-circle'} 
                         color={props.primaryColor} size={100}
                         />
                         <BigText textStyles={{fontSize: 25, color: props.primaryColor, marginVertical:10, fontWeight:'600'}} >{props.heading}</BigText>
@@ -58,7 +57,7 @@ const MessageModal: React.FC<ButtonProps> = (props) => {
                         <RegularButton 
                             onPress={props.onPress} 
                             btnStyles={{backgroundColor: props.primaryColor, marginTop: 10}}
-                            textStyles={{color: props.secondColor}}>{props.btnTitle || `Concluir`}</RegularButton>
+                            textStyles={{color: props.secondColor}}>Fechar</RegularButton>
                 </ModalView>
 
             </ModalPressableContainer>
@@ -67,4 +66,4 @@ const MessageModal: React.FC<ButtonProps> = (props) => {
     );
 };  
 
-export default MessageModal;
+export default MessageAlertModal;

@@ -184,7 +184,7 @@ const TakerDashboard: React.FC<ScreensProps> = ({navigation}) => {
                     onLocationhButton={() => navigation.navigate('Resultado')} 
                 /> 
                 <BigText textStyles={{color: secondColor, fontSize: 28, fontWeight: '800'}}>Total de Serviços</BigText>  
-                <RegularText textStyles={{color: secondColor, fontSize: 28, fontWeight: '400'}}>R$ {data?.serviceAmount?.toFixed(2)}</RegularText> 
+                <RegularText textStyles={{color: secondColor, fontSize: 28, fontWeight: '400'}}>R$ {data?.serviceAmount}</RegularText> 
 
                 {data?.servicesAgendados.length == 0  && 
                     <CardSectionFake primaryColor={primaryColor} secondColor={secondColor} />

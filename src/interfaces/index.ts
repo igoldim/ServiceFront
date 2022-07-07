@@ -41,7 +41,11 @@ export interface IContextApp {
     userType: string;
     userId: string;
     Name: string;
+    Email: string;
     Avatar: string;
+    Latitude: string;
+    Longitude: string;
+    ActivateCode: string;
 }
 
 
@@ -145,13 +149,23 @@ export interface CommentItemProps {
     secondColor: string;  
 }
 
-
-
 export interface ILogin {
     appId: string;
     email: string;
     password: string;
 }
+
+export interface IRegister {
+    appId: string;
+    name: string;
+    email: string;
+    password: string;
+    latitude: string,
+    longitude: string
+    tipo: number,
+}
+
+
 
 export interface TLoadData {
     id: string;
@@ -171,3 +185,17 @@ export interface ILoginResult {
 	type: string;
     message: string;
 }
+
+
+export interface IRegisterResult {
+    sucessful: boolean,
+	data: TUser,
+    message: string;
+}
+
+export interface IEmailValidation {
+    email: string;
+	token: string;
+}
+
+

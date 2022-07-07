@@ -52,13 +52,13 @@ const TransactionItem: React.FC<TServices> = ( props ) => {
                     marginBottom: 5,                    
                     fontWeight:'800'
                 }}>
-                    {props.amountValue.toFixed(2).toString()}
+                    {props.amountValue}
                 </RegularText>
                 <SmallText textStyles={{
                     color: secondColor,
                     textAlign: 'right',
                 }}>
-                    {props.schedule && props.schedule.scheduleDateTime.split("T")[1].substring(0,5)}
+                    {props.schedule && props.schedule.scheduleDateTime.split("T")[1]}
                 </SmallText>
             </RightRow>
         </TransactionRow>

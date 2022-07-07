@@ -32,13 +32,31 @@ api.interceptors.response.use(undefined, (error) => {
   if (error.response) {
     //trata erro da api
     //console.log(error.response);
-    alert(error.response.data.message);
+    //alert(error.response.data.message);
+  }
+
+  if (error.response.status === 400) {
+    //chama tela de login
+    //window.location.href = "/?notAuthorized=true";
+    return Promise.resolve(error.response);
   }
 
  if (error.response.status === 401) {
     //chama tela de login
     //window.location.href = "/?notAuthorized=true";
-    return Promise.resolve(error);
+    return Promise.resolve(error.response);
+  }
+
+  if (error.response.status === 404) {
+    //chama tela de login
+    //window.location.href = "/?notAuthorized=true";
+    return Promise.resolve(error.response);
+  }
+
+  if (error.response.status === 500) {
+    //chama tela de login
+    //window.location.href = "/?notAuthorized=true";
+    return Promise.resolve(error.response);
   }
 
   return Promise.reject(error);
