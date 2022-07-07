@@ -40,42 +40,6 @@ const TakerDashboard: React.FC<ScreensProps> = ({navigation}) => {
 
     },[]);
 
-    const cardData : Array<Users> = [
-        {
-            id: "2cb32ade-ac5d-40b5-bf25-b135c85af097",
-            userName: "Igor Goldim",
-            userAddress: "Rua Gabriel Junqueira, 00",
-            userAddressDistrict: "Serra Dourada 3 Etapa",
-            userAddressCity: "Aparecida de Goiania",
-            userAddressState: "GO",
-            userAddressComplement: "QD 55 LT 22 Casa 01",
-            scheduleDate: "07/05/2022", // ==> pegar dia da semana (Sabádo)
-            scheduleTime: "08:00",
-            amount: "100,00",
-            userImage: 'https://imagens.circuit.inf.br/noAvatar.png',
-            stars: 3,
-            type: "P",
-        },
-        {
-            id: "2cb32ade-ac5d-50b5-bf25-b135c85af097",
-            userName: "Igor Goldim",
-            userAddress: "Rua Gabriel Junqueira, 00",
-            userAddressDistrict: "Serra Dourada 3 Etapa",
-            userAddressCity: "Aparecida de Goiania",
-            userAddressState: "GO",
-            userAddressComplement: "QD 55 LT 22 Casa 01",
-            scheduleDate: "08/05/2022", // ==> pegar dia da semana (Sabádo)
-            scheduleTime: "08:00",
-            amount: "90,00",
-            userImage: 'https://imagens.circuit.inf.br/noAvatar.png',
-            stars: 3,
-            type: "P",
-        },
-    ];
-
-    const showModalScheduling = (item:Users) =>{
-
-    };
 
     const cardService = [
         {
