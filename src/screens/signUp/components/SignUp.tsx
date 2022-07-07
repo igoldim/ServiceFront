@@ -6,6 +6,7 @@ import RegularButton from '../../../components/Buttons/RegularButton';
 import { ScreensProps } from '../../../types/AppType';
 import RegularInput from '../../../components/Input/RegularInput';
 import ScreenHead from '../../../components/Head/ScreenHead';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const SignUp: React.FC<ScreensProps> = ({navigation}) => {
     const [primaryColor, setPrimaryColor] = React.useState("#000");
@@ -14,6 +15,18 @@ const SignUp: React.FC<ScreensProps> = ({navigation}) => {
     React.useEffect(() =>{
     
     const loadData = async () => {
+        var isLogado = await AsyncStorage.getItem("isLogged");
+        var userType = await AsyncStorage.getItem("userType");
+        
+        if (isLogado == "true"){
+          if (userType == "0"){
+            navigation.navigate('TakerDashboard');
+          }
+          else if (userType == "1"){
+              navigation.navigate('ProviderDashboard');
+          } 
+        }
+
       const {primaryColor:strPrimaryColor, secondColor: strSecondColor } = await useAppData();
       //const UserType = await AsyncStorage.getItem('UserType');
       //console.log(UserType);

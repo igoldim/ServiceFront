@@ -9,7 +9,23 @@ export const CardBackground = styled.View`
     overflow: hidden;
 `;
 
+export const CardBackgroundF = styled.View`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 130px;
+    width: ${ScreenWidth * 0.60}px;
+    border-radius: 15px;
+    overflow: hidden;
+    align-self: center ;
+`;
+
 export const CardTouchable = styled.TouchableHighlight`
+    height: 100%;
+    border-radius: 25px;
+`;
+
+export const CardTouchableF = styled.View`
     height: 100%;
     border-radius: 25px;
 `;

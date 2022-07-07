@@ -106,3 +106,93 @@ export type TComment = {
     stars: number,
     comment: string
 }
+
+
+export type TUser = {
+    id:  string,
+	register: string | null,
+	avatarFile: any | null | undefined,
+	avatar: string | null, 
+	name: string,
+	phone: string | null,
+	email: string | null,
+	zip: string | null,
+	address: string | null,
+	number: string | null,
+	complement: string | null,
+	district: string | null,
+	city: string | null,
+	state: string | null,
+	password: string | null,
+	activateCode: string | null,
+	amount: number | null ,
+	serviceAmount: number | null,
+	userType: number | null,
+	latitude: string | null,
+	longitude: string | null,
+	status: boolean,
+	createAt: string | null,
+	updateAt: string | null,
+	cards: Array<TCards>,
+	documents: Array<TDcuments>,
+	favoriteProfessionals: Array<TFavoriteProfessionals>,
+	favoriteUsers: Array<TFavoriteUsers>,
+	payments: Array<TPayments>,
+	schedules: Array<TSchedule>,
+	servicesAgendados: Array<TServices>
+	servicesConcluido: Array<TServices>
+}
+
+export type TCards = {
+    id:  string,
+}
+
+export type TDcuments = {
+    id:  string,
+}
+
+export type TFavoriteProfessionals = {
+    id:  string,
+}
+
+export type TFavoriteUsers = {
+    id:  string,
+}
+
+export type TPayments = {
+    id:  string,
+}
+
+
+export type TSchedule = {
+    id:  string,
+    userId: string,
+    appId: string,
+    scheduleDateTime: string,
+    amount: number,
+    status: boolean,
+    createAt: string,
+    updateAt: string,
+}
+
+export type TServices = {
+    id:  string,
+    appId : string,
+    profissionalId : string,
+    latitude : string,
+    longitude : string,
+    userId : string,
+    amountValue : number,
+    endTime : string,
+    rateValue : string,
+    scheduleId : string,
+    schedule : TSchedule,
+    serviceValue : number,
+    order : number,
+    startTime : string,
+    status : boolean,
+    proffisional : TUser,
+    user : TUser,
+    createAt : string,
+    updateAt : string
+}

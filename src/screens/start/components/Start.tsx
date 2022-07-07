@@ -15,10 +15,22 @@ const Start: React.FC<ScreensProps> = ({navigation}) => {
     React.useEffect(() =>{
     
     const loadData = async () => {
-      const {primaryColor:strPrimaryColor, secondColor: strSecondColor } = await useAppData();
+        var isLogado = await AsyncStorage.getItem("isLogged");
+        var userType = await AsyncStorage.getItem("userType");
+        
+        if (isLogado == "true"){
+          if (userType == "0"){
+            navigation.navigate('TakerDashboard');
+          }
+          else if (userType == "1"){
+              navigation.navigate('ProviderDashboard');
+          } 
+        }
 
-      setPrimaryColor(strPrimaryColor); 
-      setSecondColor(strSecondColor); 
+        const {primaryColor:strPrimaryColor, secondColor: strSecondColor } = await useAppData();
+
+        setPrimaryColor(strPrimaryColor); 
+        setSecondColor(strSecondColor); 
     };
     
     loadData();

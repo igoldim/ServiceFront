@@ -6,6 +6,7 @@ import { ScreensProps } from "../../types/AppType";
 import { Row } from "../Shared";
 import MenuItem from "./MenuItem";
 import { View } from "react-native";
+import AsyncStorage from "@react-native-community/async-storage";
 
 const Menu: React.FC<ScreensProps> = ({navigation}) => {
 
@@ -27,6 +28,16 @@ const Menu: React.FC<ScreensProps> = ({navigation}) => {
         loadData();
 
     },[]);
+
+    const handleSair = async () => {
+        await AsyncStorage.removeItem("userId");
+        await AsyncStorage.removeItem("Name");
+        await AsyncStorage.removeItem("Avatar");
+        await AsyncStorage.removeItem("token");
+        await AsyncStorage.removeItem("userType");
+        await AsyncStorage.setItem("isLogged", "false");
+        navigation.navigate('Welcome');
+    }
 
     return (
         <Container style={{backgroundColor: primaryColor}}>
@@ -112,7 +123,7 @@ const Menu: React.FC<ScreensProps> = ({navigation}) => {
                     <MenuItem 
                         icon="exit-to-app" 
                         title="Sair" 
-                        onPress={() => navigation.navigate('Welcome')}
+                        onPress={handleSair}
                         primaryColor={primaryColor}
                         secondColor={secondColor}
                         />

@@ -29,15 +29,16 @@ api.interceptors.request.use(async (config) => {
 });
 
 api.interceptors.response.use(undefined, (error) => {
-  /*if (error.response) {
+  if (error.response) {
     //trata erro da api
-    //this.toastify.show(error.response.data.error);
-  }*/
+    //console.log(error.response);
+    alert(error.response.data.message);
+  }
 
  if (error.response.status === 401) {
     //chama tela de login
     //window.location.href = "/?notAuthorized=true";
-    return Promise.reject(error);
+    return Promise.resolve(error);
   }
 
   return Promise.reject(error);

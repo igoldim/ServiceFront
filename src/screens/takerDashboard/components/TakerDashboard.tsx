@@ -1,155 +1,170 @@
 import React from "react";
 import CardSection from "../../../components/Cards/CardSection";
+import CardSectionFake from "../../../components/Cards/CardSectionFake";
 import { Colors } from "../../../components/Colors";
 import ScreenHeadUser from "../../../components/Head/ScreenHeadUser";
 import SearchInput from "../../../components/Input/SearchInput";
 import BigText from "../../../components/Texts/BigText";
 import RegularText from "../../../components/Texts/RegularText";
 import TransactionSection from "../../../components/Transaction/TransactionSection";
+import TransactionSectionFake from "../../../components/Transaction/TransactionSectionFake";
 import { useAppData } from "../../../services";
-import { ScreensProps, Users } from "../../../types/AppType";
+import { ScreensProps, TUser, Users } from "../../../types/AppType";
+import { fetchData } from "../service";
 import { Container } from "./TakerDashboard.s";
 
 const TakerDashboard: React.FC<ScreensProps> = ({navigation}) => {
+    const [name, setName] = React.useState("Usuário");
+    const [avatar, setAvatar] = React.useState("");
+    const [data, setData] = React.useState<TUser>();
+
     const [primaryColor, setPrimaryColor] = React.useState("#000");
     const [secondColor, setSecondColor] = React.useState("#000");
 
     React.useEffect(() =>{
     
-    const loadData = async () => {
-        const {primaryColor:strPrimaryColor, secondColor: strSecondColor } = await useAppData();
-        setPrimaryColor(strPrimaryColor); 
-        setSecondColor(strSecondColor); 
+        const loadData = async () => {
+            const {primaryColor:strPrimaryColor, secondColor: strSecondColor, Name, userId, appKey, Avatar} = await useAppData();
+            setPrimaryColor(strPrimaryColor); 
+            setSecondColor(strSecondColor); 
+            setName(Name);
+            setAvatar(Avatar);
+
+            var { sucessful, data, message } = await fetchData({id: userId,  appid: appKey}); 
+            //console.log(data?.servicesAgendados);   
+
+            setData(data);
+        };
+        
+        loadData();
+
+    },[]);
+
+    const cardData : Array<Users> = [
+        {
+            id: "2cb32ade-ac5d-40b5-bf25-b135c85af097",
+            userName: "Igor Goldim",
+            userAddress: "Rua Gabriel Junqueira, 00",
+            userAddressDistrict: "Serra Dourada 3 Etapa",
+            userAddressCity: "Aparecida de Goiania",
+            userAddressState: "GO",
+            userAddressComplement: "QD 55 LT 22 Casa 01",
+            scheduleDate: "07/05/2022", // ==> pegar dia da semana (Sabádo)
+            scheduleTime: "08:00",
+            amount: "100,00",
+            userImage: 'https://imagens.circuit.inf.br/noAvatar.png',
+            stars: 3,
+            type: "P",
+        },
+        {
+            id: "2cb32ade-ac5d-50b5-bf25-b135c85af097",
+            userName: "Igor Goldim",
+            userAddress: "Rua Gabriel Junqueira, 00",
+            userAddressDistrict: "Serra Dourada 3 Etapa",
+            userAddressCity: "Aparecida de Goiania",
+            userAddressState: "GO",
+            userAddressComplement: "QD 55 LT 22 Casa 01",
+            scheduleDate: "08/05/2022", // ==> pegar dia da semana (Sabádo)
+            scheduleTime: "08:00",
+            amount: "90,00",
+            userImage: 'https://imagens.circuit.inf.br/noAvatar.png',
+            stars: 3,
+            type: "P",
+        },
+    ];
+
+    const showModalScheduling = (item:Users) =>{
+
     };
-    
-    loadData();
 
-  },[]);
-
-  const cardData : Array<Users> = [
-    {
-        id: "2cb32ade-ac5d-40b5-bf25-b135c85af097",
-        userName: "Igor Goldim",
-        userAddress: "Rua Gabriel Junqueira, 00",
-        userAddressDistrict: "Serra Dourada 3 Etapa",
-        userAddressCity: "Aparecida de Goiania",
-        userAddressState: "GO",
-        userAddressComplement: "QD 55 LT 22 Casa 01",
-        scheduleDate: "07/05/2022", // ==> pegar dia da semana (Sabádo)
-        scheduleTime: "08:00",
-        amount: "100,00",
-        userImage: 'https://imagens.circuit.inf.br/noAvatar.png',
-        stars: 3,
-        type: "P",
-    },
-    {
-        id: "2cb32ade-ac5d-50b5-bf25-b135c85af097",
-        userName: "Igor Goldim",
-        userAddress: "Rua Gabriel Junqueira, 00",
-        userAddressDistrict: "Serra Dourada 3 Etapa",
-        userAddressCity: "Aparecida de Goiania",
-        userAddressState: "GO",
-        userAddressComplement: "QD 55 LT 22 Casa 01",
-        scheduleDate: "08/05/2022", // ==> pegar dia da semana (Sabádo)
-        scheduleTime: "08:00",
-        amount: "90,00",
-        userImage: 'https://imagens.circuit.inf.br/noAvatar.png',
-        stars: 3,
-        type: "P",
-    },
-  ];
-
-  const showModalScheduling = (item:Users) =>{
-
-  };
-
-const cardService = [
-    {
-        id: "2cb32ade-ac5d-40b5-bf25-b135c85af097",
-        userName: "Amanda Reys",
-        scheduleDate: "08/05/2022", // ==> pegar dia da semana (Segunda)
-        scheduleTime: "08:00",
-        amount: "Concluído",
-        art: {
-            icon: "checkbox",
-            background: Colors.Salmon
+    const cardService = [
+        {
+            id: "2cb32ade-ac5d-40b5-bf25-b135c85af097",
+            userName: "Amanda Reys",
+            scheduleDate: "08/05/2022", // ==> pegar dia da semana (Segunda)
+            scheduleTime: "08:00",
+            amount: "Concluído",
+            art: {
+                icon: "checkbox",
+                background: Colors.Salmon
+            },
         },
-    },
-    {
-        id: "2cb32ade-ac5d-40b5-bf25-b135c85ad2541",
-        userName: "Augusto Oliveria",
-        scheduleDate: "07/05/2022", // ==> pegar dia da semana (Segunda)
-        scheduleTime: "07:00",
-        amount: "Concluído",
-        art: {
-            icon: "checkbox",
-            background: Colors.Salmon
+        {
+            id: "2cb32ade-ac5d-40b5-bf25-b135c85ad2541",
+            userName: "Augusto Oliveria",
+            scheduleDate: "07/05/2022", // ==> pegar dia da semana (Segunda)
+            scheduleTime: "07:00",
+            amount: "Concluído",
+            art: {
+                icon: "checkbox",
+                background: Colors.Salmon
+            },
         },
-    },
-    {
-        id: "2cb32ade-ac5d-40b5-bf25-b135c85af854",
-        userName: "Igor Goldim",
-        scheduleDate: "06/05/2022", // ==> pegar dia da semana (Segunda)
-        scheduleTime: "08:00",
-        amount: "Concluído",
-        art: {
-            icon: "checkbox",
-            background: Colors.Salmon
+        {
+            id: "2cb32ade-ac5d-40b5-bf25-b135c85af854",
+            userName: "Igor Goldim",
+            scheduleDate: "06/05/2022", // ==> pegar dia da semana (Segunda)
+            scheduleTime: "08:00",
+            amount: "Concluído",
+            art: {
+                icon: "checkbox",
+                background: Colors.Salmon
+            },
+        },       
+        {
+            id: "2cb32ade-ac5d-40b5-bf25-b135c85af0127",
+            userName: "Suly Bastos",
+            scheduleDate: "05/05/2022", // ==> pegar dia da semana (Segunda)
+            scheduleTime: "08:00",
+            amount: "Cancelado",
+            art: {
+                icon: "checkbox",
+                background: Colors.Salmon
+            },
         },
-    },       
-    {
-        id: "2cb32ade-ac5d-40b5-bf25-b135c85af0127",
-        userName: "Suly Bastos",
-        scheduleDate: "05/05/2022", // ==> pegar dia da semana (Segunda)
-        scheduleTime: "08:00",
-        amount: "Cancelado",
-        art: {
-            icon: "checkbox",
-            background: Colors.Salmon
+        {
+            id: "2cb32ade-ac5d-40b5-bf25-b135c85af0122",
+            userName: "Calor Trindade",
+            scheduleDate: "04/05/2022", // ==> pegar dia da semana (Segunda)
+            scheduleTime: "08:00",
+            amount: "Concluído",
+            art: {
+                icon: "checkbox",
+                background: Colors.Salmon
+            },
         },
-    },
-    {
-        id: "2cb32ade-ac5d-40b5-bf25-b135c85af0122",
-        userName: "Calor Trindade",
-        scheduleDate: "04/05/2022", // ==> pegar dia da semana (Segunda)
-        scheduleTime: "08:00",
-        amount: "Concluído",
-        art: {
-            icon: "checkbox",
-            background: Colors.Salmon
+        {
+            id: "3cb32ade-ac5d-40b5-bf25-b135c85af0122",
+            userName: "Trindade Jr",
+            scheduleDate: "03/05/2022", // ==> pegar dia da semana (Segunda)
+            scheduleTime: "07:30",
+            amount: "Concluído",
+            art: {
+                icon: "checkbox",
+                background: Colors.Salmon
+            },
         },
-    },
-    {
-        id: "3cb32ade-ac5d-40b5-bf25-b135c85af0122",
-        userName: "Trindade Jr",
-        scheduleDate: "03/05/2022", // ==> pegar dia da semana (Segunda)
-        scheduleTime: "07:30",
-        amount: "Concluído",
-        art: {
-            icon: "checkbox",
-            background: Colors.Salmon
-        },
-    },
-    {
-        id: "4cb32ade-ac5d-40b5-bf25-b135c85af0122",
-        userName: "Maria José",
-        scheduleDate: "02/05/2022", // ==> pegar dia da semana (Segunda)
-        scheduleTime: "07:00",
-        amount: "Concluído",
-        art: {
-            icon: "checkbox",
-            background: Colors.Salmon
-        },
-    },   
-];
+        {
+            id: "4cb32ade-ac5d-40b5-bf25-b135c85af0122",
+            userName: "Maria José",
+            scheduleDate: "02/05/2022", // ==> pegar dia da semana (Segunda)
+            scheduleTime: "07:00",
+            amount: "Concluído",
+            art: {
+                icon: "checkbox",
+                background: Colors.Salmon
+            },
+        },   
+    ];
 
     return (
         <Container style={{backgroundColor: primaryColor}}>
             <ScreenHeadUser 
-                userName='Igor' 
+                userName={name.split(" ")[0]}  
                 primaryColor={primaryColor} 
                 secondColor={secondColor} 
-                showIcon={true}  
+                avatar={avatar}
+                showIcon={true}
                 onPress={() => navigation.navigate('Menu')}/>
             <SearchInput
                     onSearchButton={() => navigation.navigate('Resultado')} 
@@ -169,12 +184,24 @@ const cardService = [
                     onLocationhButton={() => navigation.navigate('Resultado')} 
                 /> 
                 <BigText textStyles={{color: secondColor, fontSize: 28, fontWeight: '800'}}>Total de Serviços</BigText>  
-                <RegularText textStyles={{color: secondColor, fontSize: 28, fontWeight: '400'}}>R$ 999,99</RegularText> 
+                <RegularText textStyles={{color: secondColor, fontSize: 28, fontWeight: '400'}}>R$ {data?.serviceAmount?.toFixed(2)}</RegularText> 
 
-                <CardSection data={cardData} primaryColor={primaryColor} secondColor={secondColor} />
+                {data?.servicesAgendados.length == 0  && 
+                    <CardSectionFake primaryColor={primaryColor} secondColor={secondColor} />
+                }           
 
-                <TransactionSection data={cardService} title={"Serviços"} subtitle={"Recentes"} primaryColor={primaryColor} secondColor={secondColor} />
+                {data?.servicesAgendados   &&  
+                    <CardSection data={data?.servicesAgendados} primaryColor={primaryColor} secondColor={secondColor} />
+                }
 
+
+                {data?.servicesConcluido && data?.servicesConcluido.length == 0  && 
+                    <TransactionSectionFake title={"Serviços"} subtitle={"Recentes"} primaryColor={primaryColor} secondColor={secondColor}/>
+                }           
+
+                {data?.servicesConcluido && data?.servicesConcluido.length > 0  && 
+                    <TransactionSection data={data?.servicesConcluido} title={"Serviços"} subtitle={"Recentes"} primaryColor={primaryColor} secondColor={secondColor}/>
+                }          
         </Container>);
 }
 

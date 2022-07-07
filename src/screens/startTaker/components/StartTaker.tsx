@@ -16,6 +16,18 @@ const StartTaker: React.FC<ScreensProps> = ({navigation}) => {
     React.useEffect(() =>{
     
     const loadData = async () => {
+        var isLogado = await AsyncStorage.getItem("isLogged");
+        var userType = await AsyncStorage.getItem("userType");
+        
+        if (isLogado == "true"){
+          if (userType == "0"){
+            navigation.navigate('TakerDashboard');
+          }
+          else if (userType == "1"){
+              navigation.navigate('ProviderDashboard');
+          } 
+        }
+        
         const {primaryColor:strPrimaryColor, secondColor: strSecondColor } = await useAppData();
         //const UserType = await AsyncStorage.getItem('UserType');
         //console.log(UserType);

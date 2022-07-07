@@ -10,7 +10,7 @@ import { Row } from '../Shared';
 
 import ScreenHead from '../Head/ScreenHead';
 import Stars from '../Stars';
-import { Users } from '../../types/AppType';
+import { TServices} from '../../types/AppType';
 import RegularInputArea from '../Input/RegularInputArea';
 import MessageModal from './MessageModal';
 
@@ -51,7 +51,7 @@ export const StyledImage = styled.Image`
 `;
 
 interface ButtonProps{
-    item : Users;
+    item : TServices;
     btnStyles?: StyleProp<ViewStyle>;
     onPress?:() => void;
     textStyles?: StyleProp<TextStyle>;
@@ -109,14 +109,13 @@ const ModalScheduling: React.FC<ButtonProps> = (props) => {
         setStarValue(startValue !== newValue ? newValue : 0);
     };
 
-
     return(<>
             <Modal
                 animationType='slide'
                 visible={props.visible!}>
                 <ModalPressableContainer style={{backgroundColor: props.primaryColor}}>
                     <ModalView style={{backgroundColor: props.secondColor}}>
-                        <ScreenHead screenName='Agendamento' showIcon={true} onPress={props.onPress} color={props.primaryColor}/>
+                        <ScreenHead screenName='Agendamento' showIcon={true} onPress={props.onPress} primaryColor={props.secondColor} secondColor={props.primaryColor}/>
                         {!viewComment && status === "" &&
                         <Row>
                             <RegularButton 
@@ -146,33 +145,59 @@ const ModalScheduling: React.FC<ButtonProps> = (props) => {
                             <RegularText textStyles={{fontSize: 25, color: props.primaryColor, fontWeight: '800'}} >Hora</RegularText>
                         </Row>
                         <Row>
-                            <RegularText textStyles={{fontSize: 18, color: props.primaryColor}} > {props.item && props.item.scheduleDate}</RegularText>
-                            <RegularText textStyles={{fontSize: 18, color: props.primaryColor}} > {props.item && props.item.scheduleTime}</RegularText>
+                            <RegularText textStyles={{fontSize: 18, color: props.primaryColor}} > {props.item.schedule && props.item.schedule.scheduleDateTime?.split("T")[0]}</RegularText>
+                            <RegularText textStyles={{fontSize: 18, color: props.primaryColor}} > {props.item.schedule && props.item.schedule.scheduleDateTime?.split("T")[1]}</RegularText>
                         </Row>
                         <Row style={{width: '100%'}}>
                             <BigText textStyles={{textAlign: 'left', fontSize: 20, color: props.primaryColor, marginVertical: 2, fontWeight: 'bold'}} >Cliente</BigText>
                             <BigText textStyles={{textAlign: 'left', fontSize: 20, color: props.primaryColor, marginVertical: 2, fontWeight: 'bold'}} >Valor</BigText>
                         </Row>
                         <Row style={{width: '100%'}}>
-                            <RegularText textStyles={{fontSize: 16, color: props.primaryColor}} >{props.item && props.item.userName.split(' ')[0] + ' ' + props.item.userName.split(' ')[props.item.userName.split(' ').length-1]}</RegularText>
-                            <RegularText textStyles={{fontSize: 16, color: props.primaryColor}} >{props.item && props.item.amount}</RegularText>
+                            { props.item.user && 
+                                <RegularText textStyles={{fontSize: 16, color: props.primaryColor}} >{ props.item.user.name}</RegularText>
+                            }
+                           
+                           {props.item.proffisional && 
+                                <RegularText textStyles={{fontSize: 16, color: props.primaryColor}} >{props.item.proffisional.name.split(' ')[0] + ' ' + props.item.proffisional.name.split(' ')[props.item.proffisional.name.split(' ').length-1]}</RegularText>
+                            }
+                            <RegularText textStyles={{fontSize: 16, color: props.primaryColor}} >{props.item.amountValue && (props.item.amountValue).toFixed(2).toString()}</RegularText>
                         </Row>
                         <Row style={{width: '100%'}}>
                             <BigText textStyles={{fontSize: 20, color: props.primaryColor, marginVertical: 2, fontWeight: 'bold'}} >Endereço</BigText>
                         </Row>
                         <Row style={{width: '100%'}}>
-                            <BigText textStyles={{fontSize: 16, color: props.primaryColor}} >{props.item && props.item.userAddress}</BigText>
+                            {props.item.user && 
+                                <BigText textStyles={{fontSize: 16, color: props.primaryColor}} >{props.item.user.address}</BigText>
+                            }
+                            {props.item.proffisional && 
+                                <BigText textStyles={{fontSize: 16, color: props.primaryColor}} >{props.item.proffisional.address}</BigText>
+                            }
                         </Row>
                         <Row style={{width: '100%'}}>
-                            <BigText textStyles={{fontSize: 16, color: props.primaryColor}} >{props.item && props.item.userAddressDistrict}</BigText>
+                            {props.item.user && 
+                                <BigText textStyles={{fontSize: 16, color: props.primaryColor}} >{props.item.user.district}</BigText>
+                            }
+                            {props.item.proffisional && 
+                                <BigText textStyles={{fontSize: 16, color: props.primaryColor}} >{props.item.proffisional.district}</BigText>
+                            }
                         </Row>
                         <Row style={{width: '100%'}}>
-                            <BigText textStyles={{fontSize: 16, color: props.primaryColor}} >{props.item && props.item.userAddressComplement}</BigText>
+                            {props.item.user && 
+                                <BigText textStyles={{fontSize: 16, color: props.primaryColor}} >{props.item.user.complement}</BigText>
+                            }
+                            {props.item.proffisional && 
+                                <BigText textStyles={{fontSize: 16, color: props.primaryColor}} >{props.item.proffisional.complement}</BigText>
+                            }
                         </Row>
                         <Row style={{width: '100%'}}>
-                            <BigText textStyles={{fontSize: 16, color: props.primaryColor}} >{props.item && props.item.userAddressCity}{props.item && " / " + props.item.userAddressState}</BigText>
+                            {props.item.user && 
+                                <BigText textStyles={{fontSize: 16, color: props.primaryColor}} >{props.item.user.city}{" / " + props.item.user.state}</BigText>
+                            }
+                            {props.item.proffisional && 
+                                <BigText textStyles={{fontSize: 16, color: props.primaryColor}} >{props.item.proffisional.city}{" / " + props.item.proffisional.state}</BigText>
+                            }
                         </Row>
-                        {props.item.type === "T" &&
+                        {props.item.user  &&
                         <>
                             <Row style={{width: '100%'}}>
                                 <BigText textStyles={{fontSize: 20, color: props.primaryColor, marginVertical: 10, fontWeight: 'bold'}} >Localização</BigText>
@@ -182,7 +207,7 @@ const ModalScheduling: React.FC<ButtonProps> = (props) => {
                             </Row>
                             {status === "" &&  
                             <RegularButton 
-                                    btnStyles={{alignSelf: 'center', backgroundColor:  props.primaryColor, width: '45%', borderRadius: 5, padding: 10, display: 'flex', justifyContent:'center', alignItems: 'center', marginBottom: 20}}
+                                    btnStyles={{alignSelf: 'center', backgroundColor:  props.secondColor, width: '45%', borderRadius: 5, padding: 10, display: 'flex', justifyContent:'center', alignItems: 'center', marginBottom: 20}}
                                     textStyles={{color: props.secondColor, fontSize: 24, fontWeight: '500'}}
                                     onPress={props.onPress}>
                                         Rota
@@ -190,7 +215,7 @@ const ModalScheduling: React.FC<ButtonProps> = (props) => {
                             }
                         </>
                         }
-                        {props.item.type === "P" && viewComment &&
+                        {props.item.proffisional && viewComment &&
                         <>
                             <Row style={{width: '100%'}}>
                                 <BigText textStyles={{fontSize: 20, color: props.primaryColor, marginVertical: 10, fontWeight: 'bold'}} >Comentário</BigText>

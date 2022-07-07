@@ -1,5 +1,5 @@
 import { StyleProp, ViewStyle } from "react-native";
-import { TAgenda, TComment, TSearch, TUsers } from "../types/AppType";
+import { TAgenda, TComment, TSearch, TServices, TUser, TUsers } from "../types/AppType";
 
 export interface IApp {
     slug: string;
@@ -39,17 +39,26 @@ export interface IContextApp {
     secondColor: string;
     versao: string;
     userType: string;
+    userId: string;
+    Name: string;
+    Avatar: string;
 }
 
 
 export interface TransactionSectionProps {
-    data: Array<TUsers>;
+    data: Array<TServices> | undefined;
     title: string;
     subtitle: string;
     primaryColor: string;
     secondColor: string;    
 }
 
+export interface TransactionSectionFakeProps {
+    title: string;
+    subtitle: string;
+    primaryColor: string;
+    secondColor: string;    
+}
 export interface TransactionAviProps {
     icon?: string | undefined;
     texto?: string | undefined;
@@ -136,3 +145,29 @@ export interface CommentItemProps {
     secondColor: string;  
 }
 
+
+
+export interface ILogin {
+    appId: string;
+    email: string;
+    password: string;
+}
+
+export interface TLoadData {
+    id: string;
+    appid: string;
+}
+
+export interface ILogin {
+    appId: string;
+    email: string;
+    password: string;
+}
+
+export interface ILoginResult {
+    sucessful: boolean,
+	data: TUser,
+	token: string;
+	type: string;
+    message: string;
+}

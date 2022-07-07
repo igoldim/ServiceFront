@@ -27,7 +27,10 @@ const ScreenHeadUser: React.FC<Props> = ({userName, primaryColor, secondColor, o
                 </StyledView>
                 <StyledView>
                     <IconImg style={{backgroundColor: secondColor}} onPress={onPress}>
-                        <Image source={{uri: avatar, width: 42, height:42}}/>
+                        <Image 
+                            source={{uri: avatar ? avatar : 'https://imagens.circuit.inf.br/noAvatar.png', width: 60, height:60}}
+                            style={{borderRadius: 100}}
+                        />
                     </IconImg>
                 </StyledView>                             
             </Container>

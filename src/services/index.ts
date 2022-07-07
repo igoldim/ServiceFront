@@ -12,7 +12,7 @@ export const getApp= async (
     return response.data
 }
 
-export const useAppData= async (): Promise<IContextApp> => {
+export const useAppData= async (): Promise<IContextApp> => {    
     const titulo = await AsyncStorage.getItem('titulo') as string;
     const subtitulo = await AsyncStorage.getItem('subtitulo') as string;
     const logo = await AsyncStorage.getItem('logo') as string;
@@ -21,7 +21,10 @@ export const useAppData= async (): Promise<IContextApp> => {
     const versao = await AsyncStorage.getItem('versao') as string;
     const userType = await AsyncStorage.getItem('UserType') as string;
     const appKey = await AsyncStorage.getItem('appKey') as string;
-    
-    return {titulo, subtitulo, logo, primaryColor, secondColor, versao, userType, appKey};
+    const userId = await AsyncStorage.getItem("userId") as string;
+    const Name = await AsyncStorage.getItem("Name") as string;
+    const Avatar = await AsyncStorage.getItem("Avatar") as string;
+
+    return {titulo, subtitulo, logo, primaryColor, secondColor, versao, userType, appKey, userId, Name, Avatar};
 }
 
