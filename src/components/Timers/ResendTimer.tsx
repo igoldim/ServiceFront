@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components/native';
 import SmallText from '../Texts/SmallText';
 import PressableText from '../Texts/PressableText';
-import { Colors } from '../Colors';
 import RowContainer from '../RowContainer';
 import { ResendTimerProps } from '../../types/AppType';
 

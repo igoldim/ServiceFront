@@ -29,8 +29,8 @@ export type AppType = {
 export type ResendTimerProps = {
     activeResend: boolean;
     setActiveResend: Dispatch<SetStateAction<boolean>>;
-    targetTimeInSeconds: number;
-    resendEmail: Dispatch<SetStateAction<number>>;
+    targetTimeInSeconds?: number;
+    resendEmail: (triggerTimer : any) => void;
     resendStatus: string;
     resendingEmail: boolean;
     textColor: string;

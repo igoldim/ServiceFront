@@ -40,16 +40,11 @@ const EmailVerification: React.FC<EmailVerificationProps> = ({navigation})  => {
     React.useEffect(() =>{
     
         const loadData = async () => {
-        const {primaryColor:strPrimaryColor, secondColor: strSecondColor, Email, userType } = await useAppData();
-        //const UserType = await AsyncStorage.getItem('UserType');
-        //console.log(UserType);
-        setPrimaryColor(strPrimaryColor); 
-        setSecondColor(strSecondColor); 
-        setEmail(Email);
-        setUserType(userType);
+            const {primaryColor:strPrimaryColor, secondColor: strSecondColor, Email} = await useAppData();
 
-        console.log(type);
-
+            setPrimaryColor(strPrimaryColor); 
+            setSecondColor(strSecondColor); 
+            setEmail(Email);
         };
 
         loadData();
@@ -60,7 +55,9 @@ const EmailVerification: React.FC<EmailVerificationProps> = ({navigation})  => {
         try {
             setResendingEmail(true);
 
-            //make request to backend to send email
+            //chamar metodo de reenvio do ActiveCode
+
+            
 
             setResendStatus('Failed!'); // 'Failed!' or 'Sent!'
 
@@ -170,7 +167,6 @@ const EmailVerification: React.FC<EmailVerificationProps> = ({navigation})  => {
                 <ResendTimer textColor= {secondColor} activeResend={activeResend} setActiveResend={setActiveResend} resendStatus={resendStatus} resendingEmail={resendingEmail} resendEmail={resendEmail} />    
             <MessageModal 
                 visible={visible} 
-                setVisible={setVisible} 
                 heading={messageHeadding} 
                 message={messageModal} 
                 btnTitle={modalButtonText} 
