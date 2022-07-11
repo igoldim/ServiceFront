@@ -148,6 +148,7 @@ const SignIn: React.FC<ScreensProps> = ({navigation}) => {
             title='E-mail'
             keyboardType='email-address'
             placeholder="Digite seu email"
+            autoCapitalize='none'
             placeholderColor={primaryColor}
             titleStyle={{color: secondColor, fontSize: 18, fontWeight: '800'}}
             inputStyles={{backgroundColor: secondColor, color: primaryColor, fontSize: 20, fontWeight: '800'}}
