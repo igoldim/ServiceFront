@@ -180,13 +180,23 @@ export interface ILogin {
 
 export interface ILoginResult {
     sucessful: boolean,
+    sendDocuments: boolean,
 	data: TUser,
 	token: string;
 	type: string;
+    userType: number,
     message: string;
 }
 
+export interface IChangePassword {
+    userId: string;
+	password: string;
+}
 
+export interface IDefaultResult {
+    sucessful: string,
+    message: string,
+}
 export interface IRegisterResult {
     sucessful: boolean,
 	data: TUser,

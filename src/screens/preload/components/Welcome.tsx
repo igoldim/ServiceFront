@@ -10,6 +10,8 @@ import { AppType, ScreensProps } from '../../../types/AppType';
 import { IResultApp } from '../../../interfaces';
 import { ActivityIndicator, StatusBar, View } from 'react-native';
 import GetLocation from 'react-native-get-location' //https://www.npmjs.com/package/react-native-get-location
+import MessageAlertModal from '../../../components/Modals/MessageAlertModal';
+import{ BackHandler } from 'react-native';
 
 const Welcome: React.FC<ScreensProps> = ({navigation}) => {
   const [app, setApp] = React.useState<AppType | null>(null);
@@ -18,6 +20,10 @@ const Welcome: React.FC<ScreensProps> = ({navigation}) => {
 
   const [isLoading, setIsLoading] = React.useState(true);
   
+  const [visible, setVisible] = React.useState(false);
+  const [messageHeadding, setMessageHeadding] = React.useState('');
+  const [messageModal, setMessageModal] = React.useState('');
+  const [type, setType] = React.useState("erro");
   
   React.useEffect(() =>{
     const loadData = async () => {
@@ -34,40 +40,58 @@ const Welcome: React.FC<ScreensProps> = ({navigation}) => {
       })
       .catch(error => {
           const { code, message } = error;
-          console.warn(code, message);
+          showModal("Erro", "A Geolocalização está inativa, precisamos da geolocalização para localizarmos suas pesquisas com mais precisões.", "erro");
+          return false;            
       });
 
-      var data: IResultApp = await getApp({slug, applicationkey: 'D47EE5680A60310E960CAA6BB2DA6638C53B5E04EB2F9FCBE6D04A953A1A7584'});
-      //console.log( data );
-      setApp( data );
-      setButtonLabel("Vamos Começar");     
-      setVersaoLabel(`Versão ${data.versao}`);
+      try {
+        var data: IResultApp = await getApp({slug, applicationkey: 'D47EE5680A60310E960CAA6BB2DA6638C53B5E04EB2F9FCBE6D04A953A1A7584'});
 
-      await AsyncStorage.setItem('appKey', data.id);
-      await AsyncStorage.setItem('primaryColor', data.primaryColor);
-      await AsyncStorage.setItem('secondColor', data.secondColor);
-      await AsyncStorage.setItem('versao', data.versao);
-      var isLogado = await AsyncStorage.getItem("isLogged");
-      var userType = await AsyncStorage.getItem("userType");
-      
-      setIsLoading(false);
+        //console.log( data );
+        setApp( data );
+        setButtonLabel("Vamos Começar");     
+        setVersaoLabel(`Versão ${data.versao}`);
 
-      if (isLogado == "true"){
-        if (userType == "0"){
-          navigation.navigate('TakerDashboard');
-        }
-        else if (userType == "1"){
-            navigation.navigate('ProviderDashboard');
-        } 
-      }
+        await AsyncStorage.setItem('appKey', data.id);
+        await AsyncStorage.setItem('primaryColor', data.primaryColor);
+        await AsyncStorage.setItem('secondColor', data.secondColor);
+        await AsyncStorage.setItem('versao', data.versao);
+        var isLogado = await AsyncStorage.getItem("isLogged");
+        var userType = await AsyncStorage.getItem("userType");
+        
+        setIsLoading(false);
 
+        if (isLogado == "true"){
+          if (userType == "0"){
+            navigation.navigate('TakerDashboard');
+          }
+          else if (userType == "1"){
+              navigation.navigate('ProviderDashboard');
+          } 
+        }        
+      } catch (error) {
+        showModal("Erro", "Sem conexão com a internet", "erro");
+        return false;
+      } 
     };
 
     loadData();   
 
   },[]);
  
-  
+  const showModal = (headText: string, message: string, type: string)=> {
+    setMessageHeadding(headText);
+    setMessageModal(message);
+    setType(type);
+    setVisible(true);
+  }
+
+  const modalButtonHandle = () =>{
+      setVisible(false);
+      BackHandler.exitApp();
+
+  }
+
   return (
     <>
       <StatusBar barStyle="light-content" backgroundColor={app?.primaryColor} />
@@ -91,8 +115,18 @@ const Welcome: React.FC<ScreensProps> = ({navigation}) => {
               <ActivityIndicator size={30} color="#fff" />
         </RegularButton>}
 
-
         <RegularText textStyles={{color: app?.secondColor, fontSize: 24, fontWeight: '500', bottom: 0, position: 'absolute', textAlign: 'center', marginBottom:5, alignSelf: 'center'}}>{versaoLabel ?? "" }</RegularText>
+
+        <MessageAlertModal 
+                visible={visible} 
+                heading={messageHeadding} 
+                message={messageModal} 
+                onPress={modalButtonHandle}
+                type={type}
+                primaryColor={app?.primaryColor as string}
+                secondColor={app?.secondColor as string}                
+                />
+
       </Container>
     </>   
   );

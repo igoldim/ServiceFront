@@ -25,12 +25,12 @@ const Documentos: React.FC<ScreensProps> = ({navigation}) =>{
     React.useEffect(() =>{
     
         const loadData = async () => {
-        const {primaryColor:strPrimaryColor, secondColor: strSecondColor } = await useAppData();
-        setPrimaryColor(strPrimaryColor); 
-        setSecondColor(strSecondColor); 
+            const {primaryColor:strPrimaryColor, secondColor: strSecondColor } = await useAppData();
+            setPrimaryColor(strPrimaryColor); 
+            setSecondColor(strSecondColor); 
 
-        const validaDocumento = await AsyncStorage.getItem("validaDocumento");
-        setValidaDocumento(validaDocumento ? validaDocumento: "false");
+            const validaDocumento = await AsyncStorage.getItem("validaDocumento");
+            setValidaDocumento(validaDocumento ? validaDocumento: "false");
 
         };
         

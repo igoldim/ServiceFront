@@ -8,9 +8,7 @@ export const fetchLogin= async (
     const response = await api
         .post<any>('/Secutiry/Authentication', params)
         .then(({ data }) => data)
-
     //console.log(response);
-
     return response
 }
 
