@@ -2,19 +2,28 @@ import AsyncStorage from "@react-native-community/async-storage";
 import React from "react";
 import RegularButton from "../../../components/Buttons/RegularButton";
 import ScreenHead from "../../../components/Head/ScreenHead";
-import EnderecoInput from "../../../components/Input/EnderecoInput";
+import DocumentoInput from "../../../components/Input/DocumentoInput";
+
 import { Container, StyledScrollView } from "../../../components/Shared";
 import { useAppData } from "../../../services";
 import { ScreensProps } from "../../../types/AppType";
 
+import * as ImagePicker from 'react-native-image-picker';
+import { PermissionsAndroid } from "react-native";
+
 const Documentos: React.FC<ScreensProps> = ({navigation}) =>{
     const [primaryColor, setPrimaryColor] = React.useState("#000");
     const [secondColor, setSecondColor] = React.useState("#000");
+
+
     const [identidadeStatus, setIdentidadeStatus] = React.useState(false);
     const [enderecoStatus, setEnderecoStatus] = React.useState(false);
     const [antecendeteCriminalStatus, setAntecendeteCriminalStatus] = React.useState(false);
     const [setfilStatus, setSelfieStatus] = React.useState(false);
     const [validaDocumento, setValidaDocumento] = React.useState("false");
+
+
+    const [type, setType] = React.useState<"front" | "back" | undefined>("back");
 
 
     React.useEffect(() =>{
@@ -34,6 +43,60 @@ const Documentos: React.FC<ScreensProps> = ({navigation}) =>{
     },[]);
 
 
+    const takePictureIdentidade = async () => {
+        try {
+            const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.CAMERA,
+            {
+                title: "App Camera Permission",
+                message:"App needs access to your camera ",
+                buttonNeutral: "Ask Me Later",
+                buttonNegative: "Cancel",
+                buttonPositive: "OK"
+            }
+            );
+
+            const grantedstorage = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+                {
+                  title: "App Camera Permission",
+                  message:"App needs access to your camera ",
+                  buttonNeutral: "Ask Me Later",
+                  buttonNegative: "Cancel",
+                  buttonPositive: "OK"
+                }
+              );
+
+            if (granted === PermissionsAndroid.RESULTS.GRANTED && grantedstorage ===  PermissionsAndroid.RESULTS.GRANTED) {
+                await ImagePicker.launchCamera({mediaType: 'photo', saveToPhotos: true, quality: 1, cameraType:'back'}, (data) =>{
+                    console.log(data);
+                });
+            } else {
+            console.log("Camera permission denied");
+            }
+        } catch (err) {
+            console.warn(err);
+        }
+    }
+
+    const takePictureEndereco = async () => {
+        await ImagePicker.launchCamera({mediaType: 'photo', saveToPhotos: true, quality: 1, cameraType:'back'}, (data) =>{
+            console.log(data);
+        });
+    }
+
+    const takePictureAntecedente = async () => {
+        await ImagePicker.launchCamera({mediaType: 'photo', saveToPhotos: true, quality: 1, cameraType:'back'}, (data) =>{
+            console.log(data);
+        });
+    }
+
+    const takePictureSelfie = async () => {
+        await ImagePicker.launchCamera({mediaType: 'photo', saveToPhotos: true, quality: 1, cameraType:'back'}, (data) =>{
+            console.log(data);
+        });
+    }
+
     return (
         <Container style={{backgroundColor: primaryColor}}>
              <ScreenHead 
@@ -44,7 +107,7 @@ const Documentos: React.FC<ScreensProps> = ({navigation}) =>{
                 showIcon={true}/>
              <StyledScrollView>
 
-             <EnderecoInput 
+             <DocumentoInput 
                     iconeName={identidadeStatus ? "check-circle" : "radio-button-unchecked"}
                     iconeColor={primaryColor}
                     title='Comprovante Identidade'
@@ -56,9 +119,10 @@ const Documentos: React.FC<ScreensProps> = ({navigation}) =>{
                     ViewStyles={{marginTop: 10}}
                     iconStyles={{borderColor: primaryColor}}
                     ShowMenu={true}
+                    onPressMenu={takePictureIdentidade}
                 />
                 
-                <EnderecoInput 
+                <DocumentoInput 
                     iconeName={enderecoStatus ? "check-circle" : "radio-button-unchecked"}
                     iconeColor={primaryColor}
                     title='Comprovante Endereço'
@@ -70,9 +134,10 @@ const Documentos: React.FC<ScreensProps> = ({navigation}) =>{
                     ViewStyles={{marginTop: 10}}
                     iconStyles={{borderColor: primaryColor}}
                     ShowMenu={true}
+                    onPressMenu={takePictureEndereco}
                 />
 
-                <EnderecoInput 
+                <DocumentoInput 
                     iconeName={antecendeteCriminalStatus ? "check-circle" : "radio-button-unchecked"}
                     iconeColor={primaryColor}
                     title='Antecendente Criminal'
@@ -84,8 +149,9 @@ const Documentos: React.FC<ScreensProps> = ({navigation}) =>{
                     ViewStyles={{marginTop: 10}}
                     iconStyles={{borderColor: primaryColor}}
                     ShowMenu={true}
+                    onPressMenu={takePictureAntecedente}
                 />
-                <EnderecoInput 
+                <DocumentoInput 
                     iconeName={setfilStatus ? "check-circle" : "radio-button-unchecked"}
                     iconeColor={primaryColor}
                     title='Self com Doc. de Identidade'
@@ -97,6 +163,7 @@ const Documentos: React.FC<ScreensProps> = ({navigation}) =>{
                     ViewStyles={{marginTop: 10}}
                     iconStyles={{borderColor: primaryColor}}
                     ShowMenu={true}
+                    onPressMenu={takePictureSelfie}
                 />
 
                 <RegularButton            
