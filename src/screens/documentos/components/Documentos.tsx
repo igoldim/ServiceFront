@@ -22,10 +22,6 @@ const Documentos: React.FC<ScreensProps> = ({navigation}) =>{
     const [setfilStatus, setSelfieStatus] = React.useState(false);
     const [validaDocumento, setValidaDocumento] = React.useState("false");
 
-
-    const [type, setType] = React.useState<"front" | "back" | undefined>("back");
-
-
     React.useEffect(() =>{
     
         const loadData = async () => {
@@ -69,6 +65,11 @@ const Documentos: React.FC<ScreensProps> = ({navigation}) =>{
 
             if (granted === PermissionsAndroid.RESULTS.GRANTED && grantedstorage ===  PermissionsAndroid.RESULTS.GRANTED) {
                 await ImagePicker.launchCamera({mediaType: 'photo', saveToPhotos: true, quality: 1, cameraType:'back'}, (data) =>{
+
+                    if (data.assets){
+                        setIdentidadeStatus(true);
+                    }
+
                     console.log(data);
                 });
             } else {
@@ -80,21 +81,120 @@ const Documentos: React.FC<ScreensProps> = ({navigation}) =>{
     }
 
     const takePictureEndereco = async () => {
-        await ImagePicker.launchCamera({mediaType: 'photo', saveToPhotos: true, quality: 1, cameraType:'back'}, (data) =>{
-            console.log(data);
-        });
+        try {
+            const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.CAMERA,
+            {
+                title: "App Camera Permission",
+                message:"App needs access to your camera ",
+                buttonNeutral: "Ask Me Later",
+                buttonNegative: "Cancel",
+                buttonPositive: "OK"
+            }
+            );
+
+            const grantedstorage = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+                {
+                  title: "App Camera Permission",
+                  message:"App needs access to your camera ",
+                  buttonNeutral: "Ask Me Later",
+                  buttonNegative: "Cancel",
+                  buttonPositive: "OK"
+                }
+              );
+
+            if (granted === PermissionsAndroid.RESULTS.GRANTED && grantedstorage ===  PermissionsAndroid.RESULTS.GRANTED) {
+                await ImagePicker.launchCamera({mediaType: 'photo', saveToPhotos: true, quality: 1, cameraType:'back'}, (data) =>{
+                    if (data.assets){
+                        setEnderecoStatus(true);
+                    }
+                    console.log(data);
+                });
+            } else {
+            console.log("Camera permission denied");
+            }
+        } catch (err) {
+            console.warn(err);
+        }
     }
 
     const takePictureAntecedente = async () => {
-        await ImagePicker.launchCamera({mediaType: 'photo', saveToPhotos: true, quality: 1, cameraType:'back'}, (data) =>{
-            console.log(data);
-        });
+        try {
+            const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.CAMERA,
+            {
+                title: "App Camera Permission",
+                message:"App needs access to your camera ",
+                buttonNeutral: "Ask Me Later",
+                buttonNegative: "Cancel",
+                buttonPositive: "OK"
+            }
+            );
+
+            const grantedstorage = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+                {
+                  title: "App Camera Permission",
+                  message:"App needs access to your camera ",
+                  buttonNeutral: "Ask Me Later",
+                  buttonNegative: "Cancel",
+                  buttonPositive: "OK"
+                }
+              );
+
+            if (granted === PermissionsAndroid.RESULTS.GRANTED && grantedstorage ===  PermissionsAndroid.RESULTS.GRANTED) {
+                await ImagePicker.launchCamera({mediaType: 'photo', saveToPhotos: true, quality: 1, cameraType:'back'}, (data) =>{
+                    if (data.assets){
+                        setAntecendeteCriminalStatus(true);
+                    }
+                    console.log(data);
+                });
+            } else {
+            console.log("Camera permission denied");
+            }
+        } catch (err) {
+            console.warn(err);
+        }
     }
 
     const takePictureSelfie = async () => {
-        await ImagePicker.launchCamera({mediaType: 'photo', saveToPhotos: true, quality: 1, cameraType:'back'}, (data) =>{
-            console.log(data);
-        });
+        try {
+            const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.CAMERA,
+            {
+                title: "App Camera Permission",
+                message:"App needs access to your camera ",
+                buttonNeutral: "Ask Me Later",
+                buttonNegative: "Cancel",
+                buttonPositive: "OK"
+            }
+            );
+
+            const grantedstorage = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+                {
+                  title: "App Camera Permission",
+                  message:"App needs access to your camera ",
+                  buttonNeutral: "Ask Me Later",
+                  buttonNegative: "Cancel",
+                  buttonPositive: "OK"
+                }
+              );
+
+            if (granted === PermissionsAndroid.RESULTS.GRANTED && grantedstorage ===  PermissionsAndroid.RESULTS.GRANTED) {
+                await ImagePicker.launchCamera({mediaType: 'photo', saveToPhotos: true, quality: 1, cameraType:'back'}, (data) =>{
+                    if (data.assets){
+                        setSelfieStatus(true);
+                    }
+                    console.log(data);
+                });
+            } else {
+            console.log("Camera permission denied");
+            }
+        } catch (err) {
+            console.warn(err);
+        }
     }
 
     return (
