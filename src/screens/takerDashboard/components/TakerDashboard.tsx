@@ -129,7 +129,14 @@ const TakerDashboard: React.FC<ScreensProps> = ({navigation}) => {
                 secondColor={secondColor} 
                 avatar={avatar}
                 showIcon={true}
-                onPress={() => navigation.navigate('Menu')}/>
+                onPress={() => 
+                    navigation.reset({
+                        index: 1,
+                        routes: [
+                          { name: 'Menu' },
+                        ],
+                      })}
+            />
             <SearchInput
                     onSearchButton={() => navigation.navigate('Resultado')} 
                     iconeName='account-search-outline'

@@ -13,6 +13,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { fetchData } from "../service";
 import CardSectionFake from "../../../components/Cards/CardSectionFake";
 import TransactionSectionFake from "../../../components/Transaction/TransactionSectionFake";
+import AsyncStorage from "@react-native-community/async-storage";
 
 const ProviderDashboard: React.FC<ScreensProps> = ({navigation}) => {
     const [name, setName] = React.useState("Usuário");
@@ -35,6 +36,7 @@ const ProviderDashboard: React.FC<ScreensProps> = ({navigation}) => {
 
             if (sucessful){
                 setAvar(data?.avatar as string);
+                await AsyncStorage.setItem("Avatar", data?.avatar as string);
                 setData(data);
                 //console.log(data?.avatar);   
             }
@@ -56,7 +58,14 @@ const ProviderDashboard: React.FC<ScreensProps> = ({navigation}) => {
                 secondColor={secondColor} 
                 showIcon={true} 
                 avatar={avatar}
-                onPress={() => navigation.navigate('Menu')} />
+                onPress={() => 
+                    navigation.reset({
+                        index: 1,
+                        routes: [
+                          { name: 'Menu' },
+                        ],
+                      })}
+                />
             <View style={{display: "flex", flexDirection: "row", justifyContent:'space-between',  marginTop: 75}}>
                 <BigText textStyles={{color: secondColor, fontSize: 28, fontWeight: '800'}}>Saldo</BigText>  
                 <TouchableOpacity>

@@ -64,11 +64,12 @@ const RootStack: React.FC = () => {
     return (
         <NavigationContainer>
             <Stack.Navigator 
+                detachInactiveScreens={true}
                 initialRouteName="Welcome">                
                 <Stack.Screen
                     name="Welcome"
-                    component={Welcome}
-                    options={{headerShown:false }} />
+                    component={Welcome}                                        
+                    options={{headerShown:false}} />
 
                 <Stack.Screen
                     name="Start"

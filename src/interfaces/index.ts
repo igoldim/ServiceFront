@@ -38,7 +38,7 @@ export interface IContextApp {
     primaryColor: string;
     secondColor: string;
     versao: string;
-    userType: string;
+    UserType: string;
     userId: string;
     Name: string;
     Email: string;
@@ -188,6 +188,31 @@ export interface ILoginResult {
     userType: number,
     message: string;
 }
+
+export interface ICepResult {
+    cep: string,
+    logradouro: string,
+	complemento: string,
+	bairro: string;
+	localidade: string;
+    uf: string,
+    ddd: string;
+    erro: string;
+}
+
+export interface IEndereco {
+    userId: string,
+    zip: string,
+    address: string,
+    number: string,
+    complement: string, 
+    district: string,
+    city: string,
+    state: string,
+    latitude?: string,
+    longitude?: string
+}
+
 
 export interface IChangePassword {
     userId: string;

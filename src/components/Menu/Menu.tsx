@@ -15,19 +15,18 @@ const Menu: React.FC<ScreensProps> = ({navigation}) => {
     const [versao, setVersao] = React.useState("");
     const [userType, setUserType] = React.useState("");
 
-    React.useEffect(() =>{
-    
-        const loadData = async () => {
-            const {primaryColor:strPrimaryColor, secondColor: strSecondColor, versao: strVsrsao, userType: strUserType } = await useAppData();
-            setPrimaryColor(strPrimaryColor); 
-            setSecondColor(strSecondColor); 
-            setVersao(strVsrsao);
-            setUserType(strUserType);
-        };
-        
+    React.useEffect(() =>{     
         loadData();
-
     },[]);
+
+    
+    const loadData = async () => {
+        const {primaryColor:strPrimaryColor, secondColor: strSecondColor, versao: strVsrsao, UserType } = await useAppData();
+        setPrimaryColor(strPrimaryColor); 
+        setSecondColor(strSecondColor); 
+        setVersao(strVsrsao);
+        setUserType(UserType);
+    };
 
     const handleSair = async () => {
         await AsyncStorage.removeItem("userId");
@@ -46,7 +45,7 @@ const Menu: React.FC<ScreensProps> = ({navigation}) => {
                 screenName="Menu" 
                 primaryColor={primaryColor} 
                 secondColor={secondColor} 
-                onPress={() => navigation.navigate(userType === "P" ? "ProviderDashboard" : "TakerDashboard")} 
+                onPress={() => navigation.navigate(userType === "1" ? "ProviderDashboard" : "TakerDashboard")} 
                 showVersion={true} 
                 version={versao}/>           
                 <View style={{marginTop: 80}}>
@@ -63,12 +62,12 @@ const Menu: React.FC<ScreensProps> = ({navigation}) => {
                         <MenuItem 
                             icon="calendar-today" 
                             title={userType === "P" ? "Agenda": "Agendamentos"} 
-                            onPress={() => userType === "P" ? navigation.navigate("Agenda") : null }
+                            onPress={() => userType === "1" ? navigation.navigate("Agenda") : null }
                             primaryColor={primaryColor}
                             secondColor={secondColor}
                             />
                     </Row>
-                    {userType === "T" && <Row>
+                    {userType === "0" && <Row>
                         <MenuItem 
                             icon="favorite" 
                             title="Favoritos" 
@@ -78,7 +77,7 @@ const Menu: React.FC<ScreensProps> = ({navigation}) => {
                             />
                     </Row>
                     }
-                    {userType === "P" && 
+                    {userType === "1" && 
                     <>
                         <Row>
                             <MenuItem 

@@ -20,7 +20,7 @@ export const useAppData= async (): Promise<IContextApp> => {
     const primaryColor = await AsyncStorage.getItem('primaryColor') as string;
     const secondColor = await AsyncStorage.getItem('secondColor') as string;
     const versao = await AsyncStorage.getItem('versao') as string;
-    const userType = await AsyncStorage.getItem('UserType') as string;
+    const UserType = await AsyncStorage.getItem('UserType') as string;
     const appKey = await AsyncStorage.getItem('appKey') as string;
     const userId = await AsyncStorage.getItem("userId") as string;
     const Name = await AsyncStorage.getItem("Name") as string;
@@ -39,7 +39,7 @@ export const useAppData= async (): Promise<IContextApp> => {
           , primaryColor
           , secondColor
           , versao
-          , userType
+          , UserType
           , appKey
           , userId
           , Name

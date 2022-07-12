@@ -1,14 +1,15 @@
 import AsyncStorage from "@react-native-community/async-storage";
 import React from "react";
-import { Image } from "react-native";
+import { Image, PermissionsAndroid } from "react-native";
 import RegularButton from "../../../components/Buttons/RegularButton";
 import ScreenHead from "../../../components/Head/ScreenHead";
 import RegularInput from "../../../components/Input/RegularInput";
 import { StyledScrollView } from "../../../components/Shared";
 import { useAppData } from "../../../services";
 import { ScreensProps } from "../../../types/AppType";
-import { fetchGetPerfil } from "../services";
+import { fetchGetPerfil, fetchPerfil } from "../services";
 import { Container, IconImg } from "./Perfil.s";
+import * as ImagePicker from 'react-native-image-picker';
 
 const Perfil: React.FC<ScreensProps> = ({navigation}) =>{
     const [primaryColor, setPrimaryColor] = React.useState("#000");
@@ -19,33 +20,91 @@ const Perfil: React.FC<ScreensProps> = ({navigation}) =>{
     const [email, setEmail] = React.useState<string>("");
     const [registro, setRegistro] = React.useState<string>("");
     const [avatar, setAvatar] = React.useState<string>("https://imagens.circuit.inf.br/noAvatar.png");
+    const [avatarFile, setAvatarFile] = React.useState<string | null>(null);
     const [endereco, setEndereco] = React.useState<string>("");
 
     React.useEffect(() =>{
-    
+        loadData();
+    },[]);
+
     const loadData = async () => {
-      const {primaryColor:strPrimaryColor, secondColor: strSecondColor, userId, Avatar } = await useAppData();
-      const UserType = await AsyncStorage.getItem('UserType');
-      setAvatar(Avatar);
-      setUserType(UserType as string);
-      setPrimaryColor(strPrimaryColor); 
-      setSecondColor(strSecondColor); 
+        const {primaryColor:strPrimaryColor, secondColor: strSecondColor, userId, Avatar } = await useAppData();
+        const UserType = await AsyncStorage.getItem('UserType');
+        setAvatar(Avatar);
+        setUserType(UserType as string);
+        setPrimaryColor(strPrimaryColor); 
+        setSecondColor(strSecondColor); 
 
-      //carrega dados da api
-      var { sucessful, data, message } = await fetchGetPerfil(userId); 
-      if (sucessful){
-        setAvatar(data.avatar && data.avatar != "" ? data.avatar : Avatar);
-        setUserNAme(data.name);
-        setEmail(data.email as string);
-        setRegistro(data.register as string);
+        //carrega dados da api
+        var { sucessful, data, message } = await fetchGetPerfil(userId); 
+        if (sucessful){
+            setAvatar(data.avatar && data.avatar != "" ? data.avatar : Avatar);
+            setUserNAme(data.name);
+            setEmail(data.email as string);
+            setRegistro(data.register as string);
 
-        setEndereco(`${data.number} - ${data.address?.substring(0,33)}...`)
-      }
+            setEndereco(`${data.number} - ${data.address?.substring(0,19)}...`)
+        }
+
     };
-    
-    loadData();
-  },[]);
 
+    const handSendData = async () => {
+        const { userId } = await useAppData();
+        const {sucessful, data, message} = await fetchPerfil({userId, avatar, avatarFile, name: userName});
+
+        if (sucessful){
+            loadData();
+        }
+    }
+    const handlePicture = async () => {
+        try {
+            const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.CAMERA,
+            {
+                title: "App Camera Permission",
+                message:"App needs access to your camera ",
+                buttonNeutral: "Ask Me Later",
+                buttonNegative: "Cancel",
+                buttonPositive: "OK"
+            }
+            );
+
+            const grantedstorage = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+                {
+                  title: "App Camera Permission",
+                  message:"App needs access to your camera ",
+                  buttonNeutral: "Ask Me Later",
+                  buttonNegative: "Cancel",
+                  buttonPositive: "OK"
+                }
+              );
+
+              const grantedstorageread = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+                {
+                  title: "App Camera Permission",
+                  message:"App needs access to your camera ",
+                  buttonNeutral: "Ask Me Later",
+                  buttonNegative: "Cancel",
+                  buttonPositive: "OK"
+                }
+              );
+
+            if (granted === PermissionsAndroid.RESULTS.GRANTED && grantedstorage ===  PermissionsAndroid.RESULTS.GRANTED && grantedstorageread ===  PermissionsAndroid.RESULTS.GRANTED) {
+                await ImagePicker.launchCamera({mediaType: 'photo', saveToPhotos: true, quality: 0.2, cameraType:'front'}, (data) =>{
+
+                    if (data.assets){
+                        setAvatarFile(data.assets[0].uri?.toString() as string);
+                    }
+                });
+            } else {
+            console.log("Camera permission denied");
+            }
+        } catch (err) {
+            console.warn(err);
+        }
+    }
     return(
         <Container style={{backgroundColor: primaryColor}}>
             <ScreenHead 
@@ -55,7 +114,7 @@ const Perfil: React.FC<ScreensProps> = ({navigation}) =>{
                 showIcon={true} 
                 onPress={() => navigation.navigate("Menu")} />
             <StyledScrollView>
-                <IconImg style={{backgroundColor: secondColor, marginTop: 10}} onPress={() => {}}>
+                <IconImg style={{backgroundColor: secondColor, marginTop: 10}} onPress={handlePicture}>
                         <Image 
                             source={{uri: avatar, width: 150, height:150 }}
                             style={{borderRadius: 100}}/>
@@ -112,7 +171,13 @@ const Perfil: React.FC<ScreensProps> = ({navigation}) =>{
                     placeholder="Informe seu endereço"
                     ShowMenu={true}      
                     editable={false}              
-                    onPressMenu={() => navigation.navigate("Endereco")}
+                    onPressMenu={() =>
+                        navigation.reset({
+                            index: 1,
+                            routes: [
+                              { name: 'Endereco' },
+                            ],
+                          })}
                     placeholderColor={primaryColor}
                     titleStyle={{color: secondColor, fontSize: 18, fontWeight: '800'}}
                     inputStyles={{backgroundColor: secondColor, color: primaryColor, fontSize: 16, fontWeight: '800'}}
@@ -154,7 +219,7 @@ const Perfil: React.FC<ScreensProps> = ({navigation}) =>{
                 <RegularButton            
                     btnStyles={{backgroundColor: secondColor, borderRadius: 5, padding: 10, display: 'flex', justifyContent:'center', alignItems: 'center'}}
                     textStyles={{color: primaryColor, fontSize: 24, fontWeight: '500'}}
-                    onPress={() => {}}>
+                    onPress={handSendData}>
                     Gravar
                 </RegularButton>
             </StyledScrollView>

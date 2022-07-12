@@ -9,11 +9,14 @@ import { useAppData } from "../../../services";
 import { ScreensProps } from "../../../types/AppType";
 
 import * as ImagePicker from 'react-native-image-picker';
-import { PermissionsAndroid } from "react-native";
+import { ActivityIndicator, PermissionsAndroid } from "react-native";
+import { fetchDocumento } from "../services";
 
 const Documentos: React.FC<ScreensProps> = ({navigation}) =>{
     const [primaryColor, setPrimaryColor] = React.useState("#000");
     const [secondColor, setSecondColor] = React.useState("#000");
+
+    const [isLoading, setLoading] = React.useState(false);
 
 
     const [identidadeStatus, setIdentidadeStatus] = React.useState(false);
@@ -21,6 +24,12 @@ const Documentos: React.FC<ScreensProps> = ({navigation}) =>{
     const [antecendeteCriminalStatus, setAntecendeteCriminalStatus] = React.useState(false);
     const [setfilStatus, setSelfieStatus] = React.useState(false);
     const [validaDocumento, setValidaDocumento] = React.useState("false");
+
+    const [DocumentoIdentidade, setDocumentoIdentidade] = React.useState<string>("");
+    const [DocumentoEndereco, setDocumentoEndereco] =  React.useState<string>("");
+    const [DocumentoAntecedente, setDocumentoAntecedente] =  React.useState<string>("");
+    const [DocumentoSefie, setDocumentoSefie] =  React.useState<string>("");
+
 
     React.useEffect(() =>{
     
@@ -67,6 +76,7 @@ const Documentos: React.FC<ScreensProps> = ({navigation}) =>{
                 await ImagePicker.launchCamera({mediaType: 'photo', saveToPhotos: true, quality: 1, cameraType:'back'}, (data) =>{
 
                     if (data.assets){
+                        setDocumentoIdentidade(data.assets[0].uri as string);
                         setIdentidadeStatus(true);
                     }
 
@@ -107,6 +117,7 @@ const Documentos: React.FC<ScreensProps> = ({navigation}) =>{
             if (granted === PermissionsAndroid.RESULTS.GRANTED && grantedstorage ===  PermissionsAndroid.RESULTS.GRANTED) {
                 await ImagePicker.launchCamera({mediaType: 'photo', saveToPhotos: true, quality: 1, cameraType:'back'}, (data) =>{
                     if (data.assets){
+                        setDocumentoEndereco(data.assets[0].uri as string);
                         setEnderecoStatus(true);
                     }
                     console.log(data);
@@ -146,6 +157,7 @@ const Documentos: React.FC<ScreensProps> = ({navigation}) =>{
             if (granted === PermissionsAndroid.RESULTS.GRANTED && grantedstorage ===  PermissionsAndroid.RESULTS.GRANTED) {
                 await ImagePicker.launchCamera({mediaType: 'photo', saveToPhotos: true, quality: 1, cameraType:'back'}, (data) =>{
                     if (data.assets){
+                        setDocumentoAntecedente(data.assets[0].uri as string);
                         setAntecendeteCriminalStatus(true);
                     }
                     console.log(data);
@@ -185,6 +197,7 @@ const Documentos: React.FC<ScreensProps> = ({navigation}) =>{
             if (granted === PermissionsAndroid.RESULTS.GRANTED && grantedstorage ===  PermissionsAndroid.RESULTS.GRANTED) {
                 await ImagePicker.launchCamera({mediaType: 'photo', saveToPhotos: true, quality: 1, cameraType:'back'}, (data) =>{
                     if (data.assets){
+                        setDocumentoSefie(data.assets[0].uri as string);
                         setSelfieStatus(true);
                     }
                     console.log(data);
@@ -195,6 +208,22 @@ const Documentos: React.FC<ScreensProps> = ({navigation}) =>{
         } catch (err) {
             console.warn(err);
         }
+    }
+
+    const handleSendDocumento = async () => {
+        setLoading(true);
+        const { userId, appKey: appId, Latitude, Longitude } = await useAppData();
+        const {sucessful, data, message} = await fetchDocumento({userId, appId, DocumentoIdentidade, DocumentoEndereco, DocumentoAntecedente, DocumentoSefie, Latitude, Longitude});
+
+        if (sucessful){
+            navigation.reset({
+                index: 1,
+                routes: [
+                  { name: 'ValidandoDocumentos' },
+                ],
+              })
+        }
+        setLoading(false);
     }
 
     return (
@@ -266,12 +295,21 @@ const Documentos: React.FC<ScreensProps> = ({navigation}) =>{
                     onPressMenu={takePictureSelfie}
                 />
 
+                {isLoading && <RegularButton 
+                        btnStyles={{backgroundColor: secondColor, borderRadius: 5, padding: 10, display: 'flex', justifyContent:'center', alignItems: 'center', marginTop: 15}}
+                        textStyles={{color: primaryColor, fontSize: 24, fontWeight: '500'}}
+                        disabled={true}>
+                            <ActivityIndicator size={30} color="#fff" />
+                        </RegularButton>}
+                
+                {!isLoading &&
                 <RegularButton            
                         btnStyles={{backgroundColor: secondColor, borderRadius: 5, padding: 10, display: 'flex', justifyContent:'center', alignItems: 'center', marginTop: 15}}
                         textStyles={{color: primaryColor, fontSize: 24, fontWeight: '500'}}
-                        onPress={() => {}}>
+                        onPress={handleSendDocumento}>
                         Enviar
-                </RegularButton>
+                </RegularButton>}
+
              </StyledScrollView>
             
 

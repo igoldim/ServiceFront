@@ -19,10 +19,10 @@ const SignIn: React.FC<ScreensProps> = ({navigation}) => {
     const [visible, setVisible] = React.useState(false);
     const [messageHeadding, setMessageHeadding] = React.useState('');
     const [messageModal, setMessageModal] = React.useState('');
+    const [type, setType] = React.useState("erro");
 
     const [messageResponse, setMessageResponse] = React.useState('');
 
-    const [type, setType] = React.useState("erro");
     const [sendDocuments, setSendDocuments] = React.useState(false);
     const [userType, setUserType] = React.useState(0);
 
@@ -80,11 +80,10 @@ const SignIn: React.FC<ScreensProps> = ({navigation}) => {
             await AsyncStorage.setItem("Avatar", data?.avatar ? data!.avatar : "https://imagens.circuit.inf.br/noAvatar.png");
             await AsyncStorage.setItem("token", token?.toString());
             await AsyncStorage.setItem("isLogged", "true");
-            await AsyncStorage.setItem("userType", data?.userType?.toString() as string);
+            await AsyncStorage.setItem("UserType", data?.userType?.toString() as string);
 
             setUserType(data!.userType as number);
             await AsyncStorage.setItem("Email", email);
-            //console.log(data!.userType?.toString());
 
             if (data!.userType == 0){
                 navigation.navigate('TakerDashboard');

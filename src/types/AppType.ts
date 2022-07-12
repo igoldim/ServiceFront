@@ -143,6 +143,26 @@ export type TUser = {
 	servicesConcluido: Array<TServices>
 }
 
+
+export type TUserPerfil = {
+    userId : string,
+	avatarFile: string | null,
+	avatar: string | null, 
+	name: string,
+}
+
+export type TDocumento = {
+    userId : string,
+	appId: string,
+	DocumentoIdentidade: string, 
+	DocumentoEndereco: string,
+	DocumentoAntecedente: string,
+	DocumentoSefie: string,
+    Latitude: string,
+    Longitude: string,
+}
+    
+
 export type TCards = {
     id:  string,
 }
