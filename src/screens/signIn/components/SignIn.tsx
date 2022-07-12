@@ -75,12 +75,12 @@ const SignIn: React.FC<ScreensProps> = ({navigation}) => {
           //console.log(sucessful);
 
           if (sucessful){
-            await AsyncStorage.setItem("userId", data!.id);
-            await AsyncStorage.setItem("Name", data!.name);
-            await AsyncStorage.setItem("Avatar", data!.avatar ? data!.avatar : "https://imagens.circuit.inf.br/noAvatar.png");
-            await AsyncStorage.setItem("token", token!.toString());
+            await AsyncStorage.setItem("userId", data?.id);
+            await AsyncStorage.setItem("Name", data?.name);
+            await AsyncStorage.setItem("Avatar", data?.avatar ? data!.avatar : "https://imagens.circuit.inf.br/noAvatar.png");
+            await AsyncStorage.setItem("token", token?.toString());
             await AsyncStorage.setItem("isLogged", "true");
-            await AsyncStorage.setItem("userType", data!.userType?.toString() as string);
+            await AsyncStorage.setItem("userType", data?.userType?.toString() as string);
 
             setUserType(data!.userType as number);
             await AsyncStorage.setItem("Email", email);
@@ -162,9 +162,9 @@ const SignIn: React.FC<ScreensProps> = ({navigation}) => {
               autoCapitalize='none'
               placeholderColor={primaryColor}
               titleStyle={{color: secondColor, fontSize: 18, fontWeight: '800'}}
-              inputStyles={{backgroundColor: secondColor, color: primaryColor, fontSize: 20, fontWeight: '800'}}
+              inputStyles={{backgroundColor: secondColor, color: primaryColor, fontSize: 20, fontWeight: '800', width:'85%'}}
               iconStyles={{borderColor: primaryColor}}
-              ViewStyles={{marginTop: 50}}
+              ViewStyles={{backgroundColor: secondColor}}
               onChangeText={setEmail}
               value={email}
           />
@@ -177,6 +177,7 @@ const SignIn: React.FC<ScreensProps> = ({navigation}) => {
               titleStyle={{color: secondColor, fontSize: 18, fontWeight: '800'}}
               inputStyles={{backgroundColor: secondColor, color: primaryColor, fontSize: 20, fontWeight: '800'}}
               iconStyles={{borderColor: primaryColor}}
+              ViewStyles={{backgroundColor: secondColor}}
               isPassword={true}            
               onChangeText={setPassword}
               value={password}

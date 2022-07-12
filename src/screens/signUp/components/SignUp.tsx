@@ -15,6 +15,8 @@ const SignUp: React.FC<ScreensProps> = ({navigation}) => {
   const [appId, setAppId] = React.useState("");
   const [nome, setNome] = React.useState("");
   const [email, setEmail] = React.useState("");
+  const [registro, setRegistro] = React.useState<string>("");
+
   const [password, setPassword] = React.useState("");
   const [passwordConfirm, setPasswordConfirm] = React.useState("");
 
@@ -81,6 +83,15 @@ const SignUp: React.FC<ScreensProps> = ({navigation}) => {
           return false;
         }
 
+        if (registro === "") {
+          showModal("Erro", "Informe seu CPF", "erro");
+          return false;
+        }
+
+        //validar CPF
+
+        //Consultar CPF na receita federal e na PF/PC
+
         if (password === "") {
           showModal("Erro", "Informe sua senha", "erro");
           return false;
@@ -97,7 +108,7 @@ const SignUp: React.FC<ScreensProps> = ({navigation}) => {
         }
 
         //call backend
-        var { sucessful, data, message } = await fetchRegister({appId, name: nome, email, password, tipo, latitude, longitude});       
+        var { sucessful, data, message } = await fetchRegister({appId, name: nome, email, register: registro, password, tipo, latitude, longitude});       
         //console.log(sucessful);
         if (sucessful){
             await AsyncStorage.setItem("activateCode", data!.activateCode as string);
@@ -148,8 +159,8 @@ const SignUp: React.FC<ScreensProps> = ({navigation}) => {
               placeholder="Digite seu nome"
               placeholderColor={primaryColor}
               titleStyle={{color: secondColor, fontSize: 18, fontWeight: '800'}}
-              inputStyles={{backgroundColor: secondColor, color: primaryColor, fontSize: 20, fontWeight: '800'}}
-              ViewStyles={{marginTop: 40}}
+              inputStyles={{backgroundColor: secondColor, color: primaryColor, fontSize: 16, fontWeight: '800', width:'85%'}}
+              ViewStyles={{backgroundColor: secondColor}}
               iconStyles={{borderColor: primaryColor}}
               onChangeText={setNome}
               value={nome}
@@ -163,11 +174,28 @@ const SignUp: React.FC<ScreensProps> = ({navigation}) => {
               autoCapitalize='none'
               placeholderColor={primaryColor}
               titleStyle={{color: secondColor, fontSize: 18, fontWeight: '800'}}
-              inputStyles={{backgroundColor: secondColor, color: primaryColor, fontSize: 20, fontWeight: '800'}}
+              inputStyles={{backgroundColor: secondColor, color: primaryColor, fontSize: 16, fontWeight: '800', width:'85%'}}
               iconStyles={{borderColor: primaryColor}}
+              ViewStyles={{backgroundColor: secondColor}}
               onChangeText={setEmail}
               value={email}
           />
+          <RegularInput 
+                    iconeName='card-account-details'
+                    iconeColor={primaryColor}
+                    title='CPF'
+                    placeholder="Digite seu cpf"
+                    keyboardType="number-pad"
+                    maxLength={11}
+                    placeholderColor={primaryColor}
+                    titleStyle={{color: secondColor, fontSize: 18, fontWeight: '800'}}
+                    inputStyles={{backgroundColor: secondColor, color: primaryColor, fontSize: 16, fontWeight: '800', width:'85%'}}
+                    iconStyles={{borderColor: primaryColor}}
+                    ViewStyles={{backgroundColor: secondColor}}
+                    value={registro}
+                    onChangeText={setRegistro}
+                />
+
           <RegularInput 
               iconeName='form-textbox-password'
               iconeColor={primaryColor}
@@ -175,8 +203,9 @@ const SignUp: React.FC<ScreensProps> = ({navigation}) => {
               placeholder="* * * * * *"
               placeholderColor={primaryColor}
               titleStyle={{color: secondColor, fontSize: 18, fontWeight: '800'}}
-              inputStyles={{backgroundColor: secondColor, color: primaryColor, fontSize: 20, fontWeight: '800'}}
+              inputStyles={{backgroundColor: secondColor, color: primaryColor, fontSize: 16, fontWeight: '800'}}
               iconStyles={{borderColor: primaryColor}}
+              ViewStyles={{backgroundColor: secondColor}}
               isPassword={true}            
               onChangeText={setPassword}
               value={password}
@@ -189,8 +218,9 @@ const SignUp: React.FC<ScreensProps> = ({navigation}) => {
               placeholder="* * * * * *"
               placeholderColor={primaryColor}
               titleStyle={{color: secondColor, fontSize: 18, fontWeight: '800'}}
-              inputStyles={{backgroundColor: secondColor, color: primaryColor, fontSize: 20, fontWeight: '800'}}
+              inputStyles={{backgroundColor: secondColor, color: primaryColor, fontSize: 16, fontWeight: '800'}}
               iconStyles={{borderColor: primaryColor}}
+              ViewStyles={{backgroundColor: secondColor}}
               isPassword={true}            
               onChangeText={setPasswordConfirm}
               value={passwordConfirm}

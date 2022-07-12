@@ -18,9 +18,9 @@ const StyledTextInput = styled.TextInput`
     padding: 15px;
     padding-left: 15px;
     padding-right: 55px;
-    border-radius: 10px;
+    border-radius: 5px;
     font-size: 16px ;
-    height: 50px;
+    height: 60px;
     margin-top: 3px;
     margin-bottom: 10px;
     color: ${Colors.Background};
@@ -40,7 +40,7 @@ const LeftIcon = styled.View`
 
 const RightIcon = styled.TouchableOpacity`
     position: absolute;
-    top: 35px;
+    top: 45px;
     right:15px;
     z-index: 1;
 `;

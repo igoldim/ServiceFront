@@ -159,6 +159,7 @@ export interface IRegister {
     appId: string;
     name: string;
     email: string;
+    register: string;
     password: string;
     latitude: string,
     longitude: string

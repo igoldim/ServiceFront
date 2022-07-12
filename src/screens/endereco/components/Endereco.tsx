@@ -6,22 +6,44 @@ import ScreenHead from "../../../components/Head/ScreenHead";
 import EnderecoInput from "../../../components/Input/EnderecoInput";
 import { useAppData } from "../../../services";
 import { ScreensProps } from "../../../types/AppType";
+import { fetchGetPerfil } from "../../perfil/services";
 import { Container } from "./Endereco.s";
 
 const Endereco: React.FC<ScreensProps> = ({navigation}) =>{
     const [primaryColor, setPrimaryColor] = React.useState("#000");
     const [secondColor, setSecondColor] = React.useState("#000");
     const [userType, setUserType] = React.useState<string>("");
+    
+    const [zip, setZip] = React.useState<string>("");
+    const [address, setAddress] = React.useState<string>("");
+    const [number, setNumber] = React.useState<string>("");
+    const [complement, setComplement] = React.useState<string>("");
+    const [district, setDistrict] = React.useState<string>("");
+    const [city, setCity] = React.useState<string>("");
+    const [state, setState] = React.useState<string>("");
+
+    
     React.useEffect(() =>{
     
     const loadData = async () => {
-      const {primaryColor:strPrimaryColor, secondColor: strSecondColor } = await useAppData();
+      const {primaryColor:strPrimaryColor, secondColor: strSecondColor, userId } = await useAppData();
       const UserType = await AsyncStorage.getItem('UserType');
      
       setUserType(UserType as string);
      
       setPrimaryColor(strPrimaryColor); 
       setSecondColor(strSecondColor); 
+
+      var { sucessful, data, message } = await fetchGetPerfil(userId); 
+      if (sucessful){
+        setZip(data?.zip as string);
+        setAddress(data?.address as string);
+        setNumber(data?.number as string);
+        setDistrict(data?.district as string);
+        setCity(data?.city as string);
+        setState(data?.state as string);
+        setComplement(data?.complement as string);
+      }
     };
     
     loadData();
@@ -50,6 +72,8 @@ const Endereco: React.FC<ScreensProps> = ({navigation}) =>{
                     ViewStyles={{marginTop: 10}}
                     iconStyles={{borderColor: primaryColor}}
                     ShowMenu={true}
+                    value={zip}
+                    onChangeText={setZip}
                 />
                 <View style={{display: 'flex', flexDirection:'row', justifyContent:'space-between'}}>
                     <EnderecoInput 
@@ -62,7 +86,9 @@ const Endereco: React.FC<ScreensProps> = ({navigation}) =>{
                         ViewStyles={{marginTop: 10, width:'75%'}}
                         iconStyles={{borderColor: primaryColor}}
                         ShowMenu={false}
-                    />
+                        value={address}
+                        onChangeText={setAddress}
+                        />
 
                     <EnderecoInput 
                         iconeColor={primaryColor}
@@ -74,6 +100,8 @@ const Endereco: React.FC<ScreensProps> = ({navigation}) =>{
                         ViewStyles={{marginTop: 10, width:'24%'}}
                         iconStyles={{borderColor: primaryColor}}
                         ShowMenu={false}
+                        value={number}
+                        onChangeText={setNumber}
                     />
                 </View>
                 <EnderecoInput 
@@ -86,6 +114,8 @@ const Endereco: React.FC<ScreensProps> = ({navigation}) =>{
                         ViewStyles={{marginTop: 10}}
                         iconStyles={{borderColor: primaryColor}}
                         ShowMenu={false}
+                        value={district}
+                        onChangeText={setDistrict}
                     />
                 <View style={{display: 'flex', flexDirection:'row', justifyContent:'space-between'}}>
                     <EnderecoInput 
@@ -98,6 +128,8 @@ const Endereco: React.FC<ScreensProps> = ({navigation}) =>{
                         ViewStyles={{marginTop: 10, width:'75%'}}
                         iconStyles={{borderColor: primaryColor}}
                         ShowMenu={false}
+                        value={city}
+                        onChangeText={setCity}
                     />
 
                     <EnderecoInput 
@@ -111,6 +143,8 @@ const Endereco: React.FC<ScreensProps> = ({navigation}) =>{
                         ViewStyles={{marginTop: 10, width:'24%'}}
                         iconStyles={{borderColor: primaryColor}}
                         ShowMenu={false}
+                        value={state}
+                        onChangeText={setState}
                     />
                 </View>
                 <EnderecoInput 
@@ -123,6 +157,8 @@ const Endereco: React.FC<ScreensProps> = ({navigation}) =>{
                         ViewStyles={{marginTop: 10, marginBottom:20}}
                         iconStyles={{borderColor: primaryColor}}
                         ShowMenu={false}
+                        value={complement}
+                        onChangeText={setComplement}
                     />
                  <RegularButton            
                     btnStyles={{backgroundColor: secondColor, borderRadius: 5, padding: 10, display: 'flex', justifyContent:'center', alignItems: 'center'}}

@@ -94,7 +94,7 @@ const ChangePassword: React.FC<ScreensProps> = ({navigation}) =>{
                 titleStyle={{color: secondColor, fontSize: 18, fontWeight: '800'}}
                 inputStyles={{backgroundColor: secondColor, color: primaryColor, fontSize: 20, fontWeight: '800'}}
                 iconStyles={{borderColor: primaryColor}}
-                ViewStyles={{marginTop: 40, marginBottom: 15}}
+                ViewStyles={{backgroundColor: secondColor, marginTop: 40, marginBottom: 15}}
                 isPassword={true}            
                 value={password}
                 onChangeText={setPassword}
@@ -109,7 +109,7 @@ const ChangePassword: React.FC<ScreensProps> = ({navigation}) =>{
                 titleStyle={{color: secondColor, fontSize: 18, fontWeight: '800'}}
                 inputStyles={{backgroundColor: secondColor, color: primaryColor, fontSize: 20, fontWeight: '800'}}
                 iconStyles={{borderColor: primaryColor}}
-                ViewStyles={{marginBottom: 30}}
+                ViewStyles={{backgroundColor: secondColor, marginBottom: 30}}
                 isPassword={true}            
                 value={confirmePassword}
                 onChangeText={setConfirmPassword}

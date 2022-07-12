@@ -17,6 +17,7 @@ import TransactionSectionFake from "../../../components/Transaction/TransactionS
 const ProviderDashboard: React.FC<ScreensProps> = ({navigation}) => {
     const [name, setName] = React.useState("Usuário");
     const [data, setData] = React.useState<TUser>();
+    const [avatar, setAvar] = React.useState("https://imagens.circuit.inf.br/noAvatar.png");
 
     const [primaryColor, setPrimaryColor] = React.useState("#000");
     const [secondColor, setSecondColor] = React.useState("#000");
@@ -24,15 +25,19 @@ const ProviderDashboard: React.FC<ScreensProps> = ({navigation}) => {
     React.useEffect(() =>{
     
         const loadData = async () => {
-            const {primaryColor:strPrimaryColor, secondColor: strSecondColor, Name, userId, appKey } = await useAppData();
+            const {primaryColor:strPrimaryColor, secondColor: strSecondColor, Name, userId, appKey, Avatar } = await useAppData();
+            setAvar(Avatar);
             setPrimaryColor(strPrimaryColor); 
             setSecondColor(strSecondColor); 
             setName(Name);
 
             var { sucessful, data, message } = await fetchData({id: userId,  appid: appKey}); 
-            //console.log(data?.servicesAgendados);   
 
-            setData(data);
+            if (sucessful){
+                setAvar(data?.avatar as string);
+                setData(data);
+                //console.log(data?.avatar);   
+            }
         };
         
         loadData();
@@ -50,6 +55,7 @@ const ProviderDashboard: React.FC<ScreensProps> = ({navigation}) => {
                 primaryColor={primaryColor} 
                 secondColor={secondColor} 
                 showIcon={true} 
+                avatar={avatar}
                 onPress={() => navigation.navigate('Menu')} />
             <View style={{display: "flex", flexDirection: "row", justifyContent:'space-between',  marginTop: 75}}>
                 <BigText textStyles={{color: secondColor, fontSize: 28, fontWeight: '800'}}>Saldo</BigText>  
