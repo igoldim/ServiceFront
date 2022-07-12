@@ -18,14 +18,15 @@ const Perfil: React.FC<ScreensProps> = ({navigation}) =>{
     const [userName, setUserNAme] = React.useState<string>("");
     const [email, setEmail] = React.useState<string>("");
     const [registro, setRegistro] = React.useState<string>("");
-    const [avatar, setAvatar] = React.useState<string>("");
+    const [avatar, setAvatar] = React.useState<string>("https://imagens.circuit.inf.br/noAvatar.png");
     const [endereco, setEndereco] = React.useState<string>("");
 
     React.useEffect(() =>{
     
     const loadData = async () => {
-      const {primaryColor:strPrimaryColor, secondColor: strSecondColor, userId } = await useAppData();
+      const {primaryColor:strPrimaryColor, secondColor: strSecondColor, userId, Avatar } = await useAppData();
       const UserType = await AsyncStorage.getItem('UserType');
+      setAvatar(Avatar);
       setUserType(UserType as string);
       setPrimaryColor(strPrimaryColor); 
       setSecondColor(strSecondColor); 
@@ -33,7 +34,7 @@ const Perfil: React.FC<ScreensProps> = ({navigation}) =>{
       //carrega dados da api
       var { sucessful, data, message } = await fetchGetPerfil(userId); 
       if (sucessful){
-        setAvatar(data.avatar as string);
+        setAvatar(data.avatar && data.avatar != "" ? data.avatar : Avatar);
         setUserNAme(data.name);
         setEmail(data.email as string);
         setRegistro(data.register as string);
@@ -56,7 +57,7 @@ const Perfil: React.FC<ScreensProps> = ({navigation}) =>{
             <StyledScrollView>
                 <IconImg style={{backgroundColor: secondColor, marginTop: 10}} onPress={() => {}}>
                         <Image 
-                            source={{uri: avatar !== "" ? avatar :  'https://imagens.circuit.inf.br/noAvatar.png', width: 150, height:150 }}
+                            source={{uri: avatar, width: 150, height:150 }}
                             style={{borderRadius: 100}}/>
                 </IconImg>
                 <RegularInput 
