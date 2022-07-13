@@ -1,19 +1,11 @@
 import styled from "styled-components/native";
-import { ScreenHeight } from "../Shared";
-
-
-export const FavoritesSectionBackground = styled.View`
-    width: 100%;
-    padding-top: 5px;
-    flex: 2;
-`;
 
 export const FavoritesRow = styled.View`
-    width: ${ScreenHeight * 0.385}px;
-    height: 130px;
+    width: 100%;
     border-radius: 4px;
     overflow: hidden;
     margin-bottom: 5px;
+    padding: 10px ;
 `;
 
 export const FavoritesHead = styled.View`
@@ -23,7 +15,7 @@ export const FavoritesHead = styled.View`
     padding-top: 10px;
     padding-left: 10px;
     padding-right: 10px;
-    width: ${ScreenHeight * 0.38}px;
+    width: 100%;
 `;
 
 export const Favoritestatus = styled.View`
@@ -50,7 +42,7 @@ export const  FavoritesFooter = styled.View`
     padding-top: 10px;
     padding-left: 10px;
     padding-right: 10px;
-    width: ${ScreenHeight * 0.38}px;
+    width: 100%;
 `;
 
 

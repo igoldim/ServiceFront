@@ -57,16 +57,28 @@ const Welcome: React.FC<ScreensProps> = ({navigation}) => {
         await AsyncStorage.setItem('secondColor', data.secondColor);
         await AsyncStorage.setItem('versao', data.versao);
         var isLogado = await AsyncStorage.getItem("isLogged");
-        var userType = await AsyncStorage.getItem("userType");
+        var userType = await AsyncStorage.getItem("UserType");
         
+       // console.log(userType);
+
         setIsLoading(false);
 
         if (isLogado == "true"){
           if (userType == "0"){
-            navigation.navigate('TakerDashboard');
+            navigation.reset({
+              index: 1,
+              routes: [
+                { name: 'TakerDashboard' },
+              ],
+            })
           }
           else if (userType == "1"){
-              navigation.navigate('ProviderDashboard');
+            navigation.reset({
+              index: 1,
+              routes: [                
+                { name: 'ProviderDashboard' },
+              ],
+            })
           } 
         }        
       } catch (error) {

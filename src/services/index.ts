@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-community/async-storage"
+import { useNavigation } from "@react-navigation/native"
 import { Modal } from "react-native"
 import { IApp, IContextApp, IResultApp } from "./../interfaces"
 import { api } from "./../server"
@@ -50,6 +51,26 @@ export const useAppData= async (): Promise<IContextApp> => {
           , Email  };
 }
 
-export const useApi = () =>({
+export const cleanData = async () => {    
+    
+    const navigation = useNavigation();
 
-});
+    await AsyncStorage.removeItem('titulo');
+    await AsyncStorage.removeItem('subtitulo');
+    await AsyncStorage.removeItem('logo');
+    await AsyncStorage.removeItem('primaryColor');
+    await AsyncStorage.removeItem('secondColor');
+    await AsyncStorage.removeItem('versao');
+    await AsyncStorage.removeItem('UserType');
+    await AsyncStorage.removeItem('appKey');
+    await AsyncStorage.removeItem("userId");
+    await AsyncStorage.removeItem("Name");
+    await AsyncStorage.removeItem("Email");
+    await AsyncStorage.removeItem("Avatar");
+    await AsyncStorage.removeItem("latitude");
+    await AsyncStorage.removeItem("longitude");
+    await AsyncStorage.removeItem("activateCode");    
+    await AsyncStorage.removeItem("isLogged");       
+
+    navigation.navigate("SignIn");
+}

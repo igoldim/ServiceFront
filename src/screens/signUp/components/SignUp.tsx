@@ -10,6 +10,7 @@ import { fetchRegister } from '../services';
 import GetLocation from 'react-native-get-location' //https://www.npmjs.com/package/react-native-get-location
 import MessageAlertModal from '../../../components/Modals/MessageAlertModal';
 import { ScrollView } from 'react-native-gesture-handler';
+import { ActivityIndicator } from 'react-native';
 
 const SignUp: React.FC<ScreensProps> = ({navigation}) => {
   const [appId, setAppId] = React.useState("");
@@ -34,6 +35,8 @@ const SignUp: React.FC<ScreensProps> = ({navigation}) => {
   const [secondColor, setSecondColor] = React.useState("#000");
 
   const [type, setType] = React.useState("erro");
+
+  const [isLoading, setLoading] = React.useState(false);
 
   React.useEffect(() =>{
     
@@ -71,7 +74,7 @@ const SignUp: React.FC<ScreensProps> = ({navigation}) => {
 
   const handleRegister = async () =>{
     try {
-
+        setLoading(true);
         //valida dados de entrada
         if (nome === "") {
           showModal("Erro", "Informe seu nome", "erro");
@@ -111,17 +114,20 @@ const SignUp: React.FC<ScreensProps> = ({navigation}) => {
         var { sucessful, data, message } = await fetchRegister({appId, name: nome, email, register: registro, password, tipo, latitude, longitude});       
         //console.log(sucessful);
         if (sucessful){
-            await AsyncStorage.setItem("activateCode", data!.activateCode as string);
-            await AsyncStorage.setItem("Email", email);
-            setMessageResponse(message);
-            showModal("Parabéns", message, "success")
+          await AsyncStorage.setItem("activateCode", data!.activateCode as string);
+          await AsyncStorage.setItem("Email", email);
+          setMessageResponse(message);
+          setLoading(false);
+          showModal("Parabéns", message, "success")
         }
         else{
-            setMessageResponse(message);
-            showModal("Erro", message, "erro");
-            await AsyncStorage.setItem("isLogged", "false");
+          setMessageResponse(message);
+          setLoading(false);
+          showModal("Erro", message, "erro");
+          await AsyncStorage.setItem("isLogged", "false");
         }
     } catch (error) {
+      setLoading(false);
       console.log(error);
     } 
   }
@@ -226,12 +232,20 @@ const SignUp: React.FC<ScreensProps> = ({navigation}) => {
               value={passwordConfirm}
           />
 
+          {isLoading && <RegularButton 
+                        btnStyles={{backgroundColor: secondColor, borderRadius: 5, padding: 10, display: 'flex', justifyContent:'center', alignItems: 'center', marginTop: 15}}
+                        textStyles={{color: primaryColor, fontSize: 24, fontWeight: '500'}}
+                        disabled={true}>
+                            <ActivityIndicator size={30} color="#fff" />
+                        </RegularButton>}
+                
+          {!isLoading &&
           <RegularButton            
-              btnStyles={{backgroundColor: secondColor, borderRadius: 5, padding: 10, display: 'flex', justifyContent:'center', alignItems: 'center'}}
-              textStyles={{color: primaryColor, fontSize: 24, fontWeight: '500'}}
-              onPress={handleRegister}>
-              Gravar
-          </RegularButton>
+                  btnStyles={{backgroundColor: secondColor, borderRadius: 5, padding: 10, display: 'flex', justifyContent:'center', alignItems: 'center', marginTop: 15}}
+                  textStyles={{color: primaryColor, fontSize: 24, fontWeight: '500'}}
+                  onPress={handleRegister}>
+                  Gravar
+          </RegularButton>}
 
           <MessageAlertModal 
                   visible={visible} 

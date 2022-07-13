@@ -8,7 +8,7 @@ import {View } from 'react-native';
 const CommentItem: React.FC<CommentItemProps> = ( props ) => {
     return (
         <CommentItemContainer style={{backgroundColor: props.secondColor}}>
-            <ListHead style={{paddingTop: 20}}>               
+            <ListHead>               
                 <Stars 
                     isSave={false} 
                     onPress={() => {}}  
@@ -23,7 +23,7 @@ const CommentItem: React.FC<CommentItemProps> = ( props ) => {
                         <Avatar source={{uri: props.avatar as string}} style={{backgroundColor: props.primaryColor}}  />             
                     </ListStatus>
             </ListHead>
-            <ListFooter style={{marginTop: -35}}>                
+            <ListFooter style={{marginTop: -25}}>                
                <ListFooterItem>
                     <View style={{paddingLeft: 5}}>      
                         <RegularText textStyles={{

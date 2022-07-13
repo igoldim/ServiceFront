@@ -9,8 +9,7 @@ export const ServicesSectionBackground = styled.View`
 `;
 
 export const ServicesRow = styled.View`
-    width: ${ScreenHeight * 0.385}px;
-    height: 130px;
+    width: 100%;
     border-radius: 4px;
     overflow: hidden;
     margin-bottom: 5px;
@@ -23,7 +22,7 @@ export const ServiceHead = styled.View`
     padding-top: 10px;
     padding-left: 10px;
     padding-right: 10px;
-    width: ${ScreenHeight * 0.38}px;
+    width: 100%;
 `;
 
 export const ServiceStatus = styled.View`
@@ -50,7 +49,7 @@ export const ServiceFooter = styled.View`
     padding-top: 10px;
     padding-left: 10px;
     padding-right: 10px;
-    width: ${ScreenHeight * 0.38}px;
+    width: 100%;
 `;
 
 

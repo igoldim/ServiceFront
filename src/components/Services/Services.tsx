@@ -1,12 +1,12 @@
 import { ServicesList, ServicesSectionBackground } from "./Services.s";
-import { ServicesSectionProps} from "../../types/AppType";
 import ServicesItem from "./ServicesItem";
 import React from "react";
+import { ServicesSectionProps } from "../../interfaces";
+import { Container } from "../Shared";
 
 const Services: React.FC<ServicesSectionProps> = ( props ) => {
 
     return (
-        <ServicesSectionBackground>
             <ServicesList data={props.data} 
                 showsVerticalScrollIndicator={false} 
                 contentContainerStyle={{
@@ -15,7 +15,6 @@ const Services: React.FC<ServicesSectionProps> = ( props ) => {
                 keyExtractor={({ id }: any )=> id.toString()}
                 renderItem={({ item }: any ) => <ServicesItem {...item} />}
             />
-        </ServicesSectionBackground>
     );
 };  
 

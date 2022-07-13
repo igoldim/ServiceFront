@@ -1,5 +1,6 @@
 import axios from "axios";
 import AsyncStorage from '@react-native-community/async-storage';
+import { cleanData } from "../services";
 
 const api = axios.create({
   baseURL: "https://api.thecleaner.app.br/",
@@ -28,7 +29,8 @@ api.interceptors.request.use(async (config) => {
   return config;
 });
 
-api.interceptors.response.use(undefined, (error) => {
+api.interceptors.response.use(undefined, async (error) => {
+ 
   if (error.response) {
     //trata erro da api
     //console.log(error.response);
@@ -44,7 +46,9 @@ api.interceptors.response.use(undefined, (error) => {
  if (error.response.status === 401) {
     //chama tela de login
     //window.location.href = "/?notAuthorized=true";
-    return Promise.resolve(error.response);
+   const res = await cleanData();
+    //return Promise.resolve(error.response);
+
   }
 
   if (error.response.status === 404) {

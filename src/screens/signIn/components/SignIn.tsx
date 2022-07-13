@@ -8,6 +8,7 @@ import ScreenHead from '../../../components/Head/ScreenHead';
 import AsyncStorage from '@react-native-community/async-storage';
 import { fetchLogin } from '../services';
 import MessageAlertModal from '../../../components/Modals/MessageAlertModal';
+import { ActivityIndicator } from 'react-native';
 
 const SignIn: React.FC<ScreensProps> = ({navigation}) => {
     const [appId, setAppId] = React.useState("");
@@ -26,6 +27,7 @@ const SignIn: React.FC<ScreensProps> = ({navigation}) => {
     const [sendDocuments, setSendDocuments] = React.useState(false);
     const [userType, setUserType] = React.useState(0);
 
+    const [isLoading, setLoading] = React.useState(false);
 
     React.useEffect(() =>{
     
@@ -55,7 +57,7 @@ const SignIn: React.FC<ScreensProps> = ({navigation}) => {
 
     const handleLogin = async () =>{
       try {
-
+          setLoading(true);
           //valida dados de entrada
           if (email === "") {
             showModal("Erro", "Informe seu email", "erro");
@@ -86,9 +88,11 @@ const SignIn: React.FC<ScreensProps> = ({navigation}) => {
             await AsyncStorage.setItem("Email", email);
 
             if (data!.userType == 0){
+                setLoading(false);
                 navigation.navigate('TakerDashboard');
             }
             else if (data!.userType == 1){
+                setLoading(false);
                 navigation.navigate('ProviderDashboard');
             } 
             else{
@@ -107,12 +111,13 @@ const SignIn: React.FC<ScreensProps> = ({navigation}) => {
             
             //console.log(NUserType);
             //console.log(boolSendDocuments);
-
+            setLoading(false);
             if (NUserType == 1 &&  boolSendDocuments){
               navigation.navigate('ValidandoDocumentos');
               return false;
             }
             else{
+              setLoading(false);
               setMessageResponse(message);
               showModal("Erro", message, "erro");
             }
@@ -182,12 +187,20 @@ const SignIn: React.FC<ScreensProps> = ({navigation}) => {
               value={password}
           />      
 
+          {isLoading && <RegularButton 
+                        btnStyles={{backgroundColor: secondColor, borderRadius: 5, padding: 10, display: 'flex', justifyContent:'center', alignItems: 'center', marginTop: 15}}
+                        textStyles={{color: primaryColor, fontSize: 24, fontWeight: '500'}}
+                        disabled={true}>
+                            <ActivityIndicator size={30} color="#fff" />
+                        </RegularButton>}
+                
+          {!isLoading &&
           <RegularButton            
-              btnStyles={{backgroundColor: secondColor, borderRadius: 5, padding: 10, display: 'flex', justifyContent:'center', alignItems: 'center'}}
-              textStyles={{color: primaryColor, fontSize: 24, fontWeight: '500'}}
-              onPress={handleLogin}>
-              Acessar
-          </RegularButton>
+                  btnStyles={{backgroundColor: secondColor, borderRadius: 5, padding: 10, display: 'flex', justifyContent:'center', alignItems: 'center', marginTop: 15}}
+                  textStyles={{color: primaryColor, fontSize: 24, fontWeight: '500'}}
+                  onPress={handleLogin}>
+                  Acessar
+          </RegularButton>}
 
           <MessageAlertModal 
               visible={visible} 

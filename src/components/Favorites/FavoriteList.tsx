@@ -2,12 +2,13 @@ import React from "react";
 import { TFavoritesSectionProps } from "../../types/AppType";
 import { FavoritesList, FavoritesSectionBackground } from "./Favorites.s";
 import FavoritesItem from "./FavoritesItem";
-import { ActivityIndicator } from "react-native";
+import { ActivityIndicator, View } from "react-native";
+import { Container } from "../Shared";
 
 const FavoriteList: React.FC<TFavoritesSectionProps> = ( props ) => {
 
     return (
-        <FavoritesSectionBackground>
+        <View style={{marginTop: 15}}>
             {props.isLoading && 
             <ActivityIndicator size={30} color="#fff" />
             }
@@ -21,7 +22,7 @@ const FavoriteList: React.FC<TFavoritesSectionProps> = ( props ) => {
                 renderItem={({ item }: any ) => <FavoritesItem {...item} />}
             />
             }
-        </FavoritesSectionBackground>
+        </View>
     );
 };  
 

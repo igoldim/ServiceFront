@@ -5,7 +5,7 @@ export const ScreenHeight = Dimensions.get("screen").height;
 
 export const Container = styled.View`
     height: 100%; 
-    padding:20px;
+    padding: 20px;
 `;
 
 export const Row = styled.View`

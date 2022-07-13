@@ -1,9 +1,9 @@
 import React from "react";
 import FavoriteList from "../../../components/Favorites/FavoriteList";
 import ScreenHead from "../../../components/Head/ScreenHead";
+import { Container } from "../../../components/Shared";
 import { useAppData } from "../../../services";
 import { TFavoriteData, ScreensProps } from "../../../types/AppType";
-import { Container } from "./Favorites.s";
 import { fetchFavorite } from '../services/index'
 
 const Favorites: React.FC<ScreensProps> = ({navigation}) =>{

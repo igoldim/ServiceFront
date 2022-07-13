@@ -9,28 +9,26 @@ export const Container = styled.View`
 
 export const CardCommentList = styled.FlatList`
     width: 100%;
-    padding-left: 20px;
 `;
 
 export const StyledFlatList = styled.FlatList`
     width: 100%;
-    height: 40%;
 `;
 
 export const ListContainer = styled.TouchableOpacity`
-    width: ${ScreenHeight * 0.385}px;
-    height: 140px;
+    width: 100%;
     border-radius: 4px;
     overflow: hidden;
     margin-bottom: 5px;
+    padding: 10px;
 `;
 
 export const CommentItemContainer = styled.View`
-    width: ${ScreenHeight * 0.385}px;
-    height: 140px;
+    width: ${ScreenHeight * 0.35}px;
     border-radius: 5px;
-    margin-right: 25px;
+    margin-right: 10px;
     overflow: hidden;
+    padding: 10px;
 `;
 
 
@@ -38,9 +36,7 @@ export const ListHead = styled.View`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding-left: 10px;
-    padding-right: 10px;
-    width: ${ScreenHeight * 0.38}px;
+    width: 100%;
 `;
 
 export const ListStatus = styled.View`
@@ -58,8 +54,6 @@ export const ListStatusRodape = styled.View`
 
 
 export const  ListFooter = styled.View`
-    padding-left: 10px;
-    padding-right: 10px;
 `;
 
 
@@ -99,7 +93,6 @@ export const RightRow = styled.View`
 `;
 
 export const Avatar = styled.Image`
-    margin-bottom: 20px ;
     width: 50px;
     height: 50px;
     border-radius: 100px;

@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-community/async-storage";
 import React from "react";
-import { Image, PermissionsAndroid } from "react-native";
+import { ActivityIndicator, Image, PermissionsAndroid } from "react-native";
 import RegularButton from "../../../components/Buttons/RegularButton";
 import ScreenHead from "../../../components/Head/ScreenHead";
 import RegularInput from "../../../components/Input/RegularInput";
@@ -10,6 +10,7 @@ import { ScreensProps } from "../../../types/AppType";
 import { fetchGetPerfil, fetchPerfil } from "../services";
 import { Container, IconImg } from "./Perfil.s";
 import * as ImagePicker from 'react-native-image-picker';
+import MessageAlertModal from "../../../components/Modals/MessageAlertModal";
 
 const Perfil: React.FC<ScreensProps> = ({navigation}) =>{
     const [primaryColor, setPrimaryColor] = React.useState("#000");
@@ -22,6 +23,13 @@ const Perfil: React.FC<ScreensProps> = ({navigation}) =>{
     const [avatar, setAvatar] = React.useState<string>("https://imagens.circuit.inf.br/noAvatar.png");
     const [avatarFile, setAvatarFile] = React.useState<string | null>(null);
     const [endereco, setEndereco] = React.useState<string>("");
+
+    const [isLoading, setLoading] = React.useState(false);
+
+    const [visible, setVisible] = React.useState(false);
+    const [messageHeadding, setMessageHeadding] = React.useState('');
+    const [messageModal, setMessageModal] = React.useState('');
+    const [type, setType] = React.useState("erro");
 
     React.useEffect(() =>{
         loadData();
@@ -49,12 +57,23 @@ const Perfil: React.FC<ScreensProps> = ({navigation}) =>{
     };
 
     const handSendData = async () => {
+        setLoading(true);
+
+        //valida dados de entrada
+        if (userName === "") {
+            setLoading(false);
+            showModal("Erro", "Informe seu nome", "erro");
+            return false;
+        }
+
         const { userId } = await useAppData();
         const {sucessful, data, message} = await fetchPerfil({userId, avatar, avatarFile, name: userName});
 
         if (sucessful){
+            showModal("Parabéns,", message , "success");    
             loadData();
         }
+        setLoading(false);
     }
     const handlePicture = async () => {
         try {
@@ -105,6 +124,18 @@ const Perfil: React.FC<ScreensProps> = ({navigation}) =>{
             console.warn(err);
         }
     }
+
+    const showModal = (headText: string, message: string, type: string)=> {
+        setMessageHeadding(headText);
+        setMessageModal(message);
+        setType(type);
+        setVisible(true);
+      }
+  
+      const modalButtonHandle = () =>{
+          setVisible(false);
+      }
+
     return(
         <Container style={{backgroundColor: primaryColor}}>
             <ScreenHead 
@@ -216,13 +247,34 @@ const Perfil: React.FC<ScreensProps> = ({navigation}) =>{
                     />
                 </>
                 }
-                <RegularButton            
-                    btnStyles={{backgroundColor: secondColor, borderRadius: 5, padding: 10, display: 'flex', justifyContent:'center', alignItems: 'center'}}
+
+            {isLoading && <RegularButton 
+                btnStyles={{backgroundColor: secondColor, borderRadius: 5, padding: 10, display: 'flex', justifyContent:'center', alignItems: 'center', marginTop: 15}}
+                textStyles={{color: primaryColor, fontSize: 24, fontWeight: '500'}}
+                disabled={true}>
+                    <ActivityIndicator size={30} color="#fff" />
+                </RegularButton>}
+                    
+            {!isLoading &&
+            <RegularButton            
+                    btnStyles={{backgroundColor: secondColor, borderRadius: 5, padding: 10, display: 'flex', justifyContent:'center', alignItems: 'center', marginTop: 15}}
                     textStyles={{color: primaryColor, fontSize: 24, fontWeight: '500'}}
                     onPress={handSendData}>
                     Gravar
-                </RegularButton>
+            </RegularButton>}
+
             </StyledScrollView>
+
+            <MessageAlertModal 
+              visible={visible} 
+              heading={messageHeadding} 
+              message={messageModal} 
+              onPress={modalButtonHandle}
+              type={type}
+              primaryColor={primaryColor}
+              secondColor={secondColor}                
+            />
+
         </Container>
     );
 };

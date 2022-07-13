@@ -1,5 +1,4 @@
 import React from "react";
-import RegularButton from "../../../components/Buttons/RegularButton";
 import ScreenHead from "../../../components/Head/ScreenHead";
 import { Container, Row } from "../../../components/Shared";
 import { useAppData } from "../../../services";
@@ -90,10 +89,8 @@ const Resultado: React.FC<ScreensProps> = ({navigation}) =>{
                 primaryColor={primaryColor} 
                 secondColor={secondColor} 
                 onPress={() => navigation.navigate("Agendar")}
-                />
-
-
-
+            />
+            
         </Container>
     );
 }

@@ -2,9 +2,9 @@ import AsyncStorage from "@react-native-community/async-storage";
 import React from "react";
 import ScreenHead from "../../../components/Head/ScreenHead";
 import Services from "../../../components/Services/Services";
+import { Container } from "../../../components/Shared";
 import { useAppData } from "../../../services";
-import { schedulingData, ScreensProps } from "../../../types/AppType";
-import { Container } from "./Scheduling.s";
+import { TschedulingData, ScreensProps } from "../../../types/AppType";
 
 const Scheduling: React.FC<ScreensProps> = ({navigation}) =>{
     const [primaryColor, setPrimaryColor] = React.useState("#000");
@@ -26,7 +26,7 @@ const Scheduling: React.FC<ScreensProps> = ({navigation}) =>{
 
   },[]);
 
-  const cardService: Array<schedulingData> = [
+  const cardService: Array<TschedulingData> = [
     {
         id: "2cb32ade-ac5d-40b5-bf25-b135c85af097",
         order: 1,

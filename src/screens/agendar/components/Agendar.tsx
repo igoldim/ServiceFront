@@ -105,7 +105,9 @@ const Agendar: React.FC<ScreensProps> = ({navigation}) =>{
                 primaryColor={primaryColor} 
                 secondColor={secondColor} 
                 showIcon={true}
-                showRightMenu={false}
+                showRightIcon={true} 
+                RightIconName="heart"  //heart-outline
+                onRightPress={() => {}}
             />
             <View style={{backgroundColor: secondColor, width: '100%', height:'30%', padding: 10}}>
                 <View style={{display: 'flex', justifyContent: 'space-between', flexDirection: 'row'}}>
@@ -143,7 +145,6 @@ const Agendar: React.FC<ScreensProps> = ({navigation}) =>{
                 </View>
                 <View style={{width: '100%', height:'40%', margin: 0}}>
                     <CommentList
-                        style={{marginLeft: 20}} 
                         data={commenthResult} 
                         primaryColor={primaryColor} 
                         secondColor={secondColor} 

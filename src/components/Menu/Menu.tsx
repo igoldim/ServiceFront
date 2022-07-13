@@ -62,7 +62,7 @@ const Menu: React.FC<ScreensProps> = ({navigation}) => {
                         <MenuItem 
                             icon="calendar-today" 
                             title={userType === "P" ? "Agenda": "Agendamentos"} 
-                            onPress={() => userType === "1" ? navigation.navigate("Agenda") : null }
+                            onPress={() => userType === "1" ? navigation.navigate("Agenda") : navigation.navigate("Scheduling") }
                             primaryColor={primaryColor}
                             secondColor={secondColor}
                             />

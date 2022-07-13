@@ -6,7 +6,6 @@ import { Container, StyledFlatList } from "./StyledList.s";
 
 const SearchResultList: React.FC<SearchListProps> = ( props ) => {
     return (
-        <Container>
             <StyledFlatList 
                 style={props.style}
                 data={props.data} 
@@ -22,7 +21,6 @@ const SearchResultList: React.FC<SearchListProps> = ( props ) => {
                                                     onPress={props.onPress}
                                                     />}
                 />
-        </Container>
     );
 }
 export default SearchResultList;

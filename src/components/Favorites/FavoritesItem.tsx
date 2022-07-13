@@ -5,11 +5,13 @@ import { FavoritesButton, FavoritesDate, FavoritesFooter, FavoritesFooterItem, F
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useAppData } from '../../services';
 import Stars from '../Stars';
+import { useNavigation } from '@react-navigation/native';
 
 
 const FavoritesItem: React.FC<TFavoriteData> = ( props ) => {
     const [primaryColor, setPrimaryColor] = React.useState("#000");
     const [secondColor, setSecondColor] = React.useState("#000");
+    const navigation = useNavigation();
 
     React.useEffect(() =>{
         loadData();
@@ -77,7 +79,7 @@ const FavoritesItem: React.FC<TFavoriteData> = ( props ) => {
                         </RegularText>
                 </ FavoritesValor>                
                </ FavoritesFooterItem>               
-               <FavoritesButton  style={{backgroundColor: primaryColor}}>
+               <FavoritesButton  style={{backgroundColor: primaryColor}} onPress={() => navigation.navigate("Agendar")}>
                  <Icon name="arrow-right-thick"  size={30} color={secondColor} />
                </FavoritesButton>      
             </ FavoritesFooter>           
