@@ -7,39 +7,37 @@ import { useAppData } from '../../services';
 import Stars from '../Stars';
 
 
-
 const FavoritesItem: React.FC<TFavoriteData> = ( props ) => {
     const [primaryColor, setPrimaryColor] = React.useState("#000");
     const [secondColor, setSecondColor] = React.useState("#000");
 
     React.useEffect(() =>{
-    
-        const loadData = async () => {
+        loadData();
+    },[]);
+
+    const loadData = async () => {
         const {primaryColor:strPrimaryColor, secondColor: strSecondColor } = await useAppData();
 
         setPrimaryColor(strPrimaryColor); 
         setSecondColor(strSecondColor); 
-        };
+    };
         
-        loadData();
-
-    },[]);
 
     return (
-        <FavoritesRow style={{backgroundColor: secondColor}}>
+        <FavoritesRow style={{backgroundColor: secondColor}}>            
             <FavoritesHead>
                 <RegularText textStyles={{
                         color: primaryColor,
                         textAlign: 'left',
                         fontWeight:'800'                    
                     }}>
-                    {props.userName?.toString()}
+                    {props.professional.name?.toString()}
                 </RegularText>  
                 <Favoritestatus style={{backgroundColor: primaryColor}}>
                 <Stars 
                     isSave={false} 
                     onPress={() => {}}  
-                    value={props.stars} 
+                    value={Math.round(props.professional.servicesConcluido.reduce((a, b) => a + parseFloat(b.rateValue) , 0) / props.professional.servicesConcluido.length)} 
                     showNumber={false} 
                     width="15" 
                     height='15' 
@@ -55,7 +53,7 @@ const FavoritesItem: React.FC<TFavoriteData> = ( props ) => {
                             textAlign: 'left',
                             fontWeight:'400'                    
                         }}>
-                        {props.scheduleDate} - {props.scheduleTime}
+                        {props.scheduleDateTime}
                 </RegularText>
             </FavoritesDate>
             <FavoritesFooter>
@@ -75,7 +73,7 @@ const FavoritesItem: React.FC<TFavoriteData> = ( props ) => {
                                 textAlign: 'left',
                                 fontWeight:'800'                    
                             }}>
-                            {props.amount?.toString()}
+                            {props.amountValue?.toString()}
                         </RegularText>
                 </ FavoritesValor>                
                </ FavoritesFooterItem>               

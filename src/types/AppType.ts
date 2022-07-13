@@ -25,7 +25,6 @@ export type AppType = {
     updateAt: string;
 }
 
-
 export type ResendTimerProps = {
     activeResend: boolean;
     setActiveResend: Dispatch<SetStateAction<boolean>>;
@@ -74,11 +73,16 @@ export type TschedulingData = {
 
 export type TFavoriteData = {
     id: string,
-    userName: string,
-    scheduleDate: string,
-    scheduleTime: string,
-    amount: string,
-    stars: number
+    userId: string,
+    appId: string,
+    professionalId: string,
+    createAt: string,
+    updateAt: string,
+    professional: TUser,
+    user: TUser,
+    scheduleDateTime: string,
+    rateValue: string,
+    amountValue: string
 }
 
 export type TAgenda = {
@@ -106,7 +110,6 @@ export type TComment = {
     stars: number,
     comment: string
 }
-
 
 export type TUser = {
     id:  string,
@@ -143,7 +146,6 @@ export type TUser = {
 	servicesConcluido: Array<TServices>
 }
 
-
 export type TUserPerfil = {
     userId : string,
 	avatarFile: string | null,
@@ -161,7 +163,6 @@ export type TDocumento = {
     Latitude: string,
     Longitude: string,
 }
-    
 
 export type TCards = {
     id:  string,
@@ -182,7 +183,6 @@ export type TFavoriteUsers = {
 export type TPayments = {
     id:  string,
 }
-
 
 export type TSchedule = {
     id:  string,
@@ -215,4 +215,9 @@ export type TServices = {
     user : TUser,
     createAt : string,
     updateAt : string
+}
+
+export type TFavoritesSectionProps = {
+    data: Array<TFavoriteData>,
+    isLoading: boolean,
 }

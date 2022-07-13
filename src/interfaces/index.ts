@@ -179,6 +179,11 @@ export interface ILogin {
     password: string;
 }
 
+export interface IDefaultUserGet {
+    userId: string,
+    appId: string
+}
+
 export interface ILoginResult {
     sucessful: boolean,
     sendDocuments: boolean,
