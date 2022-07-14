@@ -14,19 +14,7 @@ const Start: React.FC<ScreensProps> = ({navigation}) => {
 
     React.useEffect(() =>{
     
-    const loadData = async () => {
-        var isLogado = await AsyncStorage.getItem("isLogged");
-        var userType = await AsyncStorage.getItem("userType");
-        
-        if (isLogado == "true"){
-          if (userType == "0"){
-            navigation.navigate('TakerDashboard');
-          }
-          else if (userType == "1"){
-              navigation.navigate('ProviderDashboard');
-          } 
-        }
-
+    const loadData = async () => {       
         const {primaryColor:strPrimaryColor, secondColor: strSecondColor } = await useAppData();
 
         setPrimaryColor(strPrimaryColor); 
@@ -47,9 +35,9 @@ const Start: React.FC<ScreensProps> = ({navigation}) => {
     return (
         <Container style={{backgroundColor: primaryColor}}>
             <StatusBar barStyle="light-content" backgroundColor={primaryColor} />
-            <BigText textStyles={{color: secondColor, textAlign: "center", marginTop: 33, marginBottom: 45, fontWeight: '800'}}>Vamos Começar</BigText>
+            <BigText textStyles={{color: secondColor, textAlign: "center", marginTop: 33, marginBottom: 30, fontWeight: '800'}}>Vamos Começar</BigText>
             
-            <RegularText textStyles={{color: secondColor, textAlign: "center", marginBottom: 50}}>Escolha um perfil</RegularText>
+            <RegularText textStyles={{color: secondColor, textAlign: "center", marginBottom: 30}}>Escolha um perfil</RegularText>
 
             <RegularButton 
                 btnStyles={{backgroundColor: secondColor, borderRadius: 5, padding: 10, display: 'flex', justifyContent:'center', alignItems: 'center', marginBottom: 50}}

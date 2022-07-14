@@ -3,53 +3,29 @@ import { Container, StyledView } from "./StartProvider.s";
 import RegularButton from "../../../components/Buttons/RegularButton";
 import BigText from "../../../components/Texts/BigText";
 import RegularText from "../../../components/Texts/RegularText";
-import { cleanData, useAppData } from "../../../services";
+import { useAppData } from "../../../services";
 import { ScreensProps } from "../../../types/AppType";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { StatusBar, Text, View } from "react-native";
-import MessageAlertModal from "../../../components/Modals/MessageAlertModal";
 
 const StartProvider: React.FC<ScreensProps> = ({navigation}) => {
     const [primaryColor, setPrimaryColor] = React.useState("#000");
     const [secondColor, setSecondColor] = React.useState("#000");
 
-    const [visible, setVisible] = React.useState(false);
-    const [messageHeadding, setMessageHeadding] = React.useState('');
-    const [messageModal, setMessageModal] = React.useState('');
-    const [type, setType] = React.useState("erro");
-
     React.useEffect(() =>{
         loadData();
     },[]);
     
-  const loadData = async () => {
-        const {primaryColor:strPrimaryColor, secondColor: strSecondColor, IsLogado } = await useAppData();
-        setPrimaryColor(strPrimaryColor); 
-        setSecondColor(strSecondColor); 
+    const loadData = async () => {
+            const {primaryColor:strPrimaryColor, secondColor: strSecondColor} = await useAppData();
+            setPrimaryColor(strPrimaryColor); 
+            setSecondColor(strSecondColor); 
+    };
 
-        //validar todas as telas
-        if (IsLogado == null || IsLogado == "false"){
-            showModal("Segurança", "suas credênciais expiraram, precisamos que você efetue novamente seu login.", "erro");
-            cleanData();
-        }    
-  };
-
-  const modalButtonHandle = () =>{
-    setVisible(false);
-    navigation.navigate("SignIn");
-  }
-
-  const showModal = (headText: string, message: string, type: string)=> {
-        setMessageHeadding(headText);
-        setMessageModal(message);
-        setType(type);
-        setVisible(true);
-  }
-
-return (
+    return (
         <Container style={{backgroundColor: primaryColor}}>
             <StatusBar barStyle="light-content" backgroundColor={primaryColor} />
-            <BigText textStyles={{color: secondColor, textAlign: "center", marginTop: 33, marginBottom: 45}}>
+            <BigText textStyles={{color: secondColor, textAlign: "center", marginTop: 15, marginBottom: 30}}>
                 Bem vindo(a) profissional.
             </BigText>
             
@@ -99,17 +75,6 @@ return (
                     </RegularText> 
                 </TouchableOpacity> 
             </StyledView>
-
-            <MessageAlertModal 
-                visible={visible} 
-                heading={messageHeadding} 
-                message={messageModal} 
-                onPress={modalButtonHandle}
-                type={type}
-                primaryColor={primaryColor}
-                secondColor={secondColor}                
-            />
-
         </Container>
     );
 };

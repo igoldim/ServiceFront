@@ -14,35 +14,19 @@ const StartTaker: React.FC<ScreensProps> = ({navigation}) => {
     const [secondColor, setSecondColor] = React.useState("#000");
 
     React.useEffect(() =>{
+        loadData();
+    },[]);
     
     const loadData = async () => {
-        var isLogado = await AsyncStorage.getItem("isLogged");
-        var userType = await AsyncStorage.getItem("userType");
-        
-        if (isLogado == "true"){
-          if (userType == "0"){
-            navigation.navigate('TakerDashboard');
-          }
-          else if (userType == "1"){
-              navigation.navigate('ProviderDashboard');
-          } 
-        }
-        
         const {primaryColor:strPrimaryColor, secondColor: strSecondColor } = await useAppData();
-        //const UserType = await AsyncStorage.getItem('UserType');
-        //console.log(UserType);
         setPrimaryColor(strPrimaryColor); 
         setSecondColor(strSecondColor); 
     };
     
-    loadData();
-
-  },[]);
-
     return (
         <Container style={{backgroundColor: primaryColor}}>
             <StatusBar barStyle="light-content" backgroundColor={primaryColor} />
-            <BigText textStyles={{color: secondColor, textAlign: "center", marginTop: 33, marginBottom: 45}}>
+            <BigText textStyles={{color: secondColor, textAlign: "center", marginTop: 15, marginBottom: 30}}>
                 Bem vindo(a) usuário(a).
             </BigText>
             
