@@ -28,7 +28,7 @@ const ValidandoDocumentos: React.FC<ScreensProps> = ({navigation}) =>{
                 secondColor={secondColor} 
                 showIcon={true}/>
              <StyledScrollView>
-                <BigText>Aguarde, estamos validadndo seus documentos, isso pode levar até 72h.</BigText>
+                <BigText>Aguarde, estamos validando seus documentos, isso pode levar até 72h.</BigText>
                 <RegularButton            
                         btnStyles={{backgroundColor: secondColor, borderRadius: 5, padding: 10, display: 'flex', justifyContent:'center', alignItems: 'center', marginTop: 15}}
                         textStyles={{color: primaryColor, fontSize: 24, fontWeight: '500'}}

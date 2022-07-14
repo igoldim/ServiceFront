@@ -87,10 +87,13 @@ export type TFavoriteData = {
 
 export type TAgenda = {
     id: string,
-    scheduleDate: string,
-    scheduleTime: string,
-    status: string,
+    userId: string,
+    appId: string,
+    scheduleDateTime: string,
     amount: string,
+    status: number,
+    createAt: string,
+    updateAt?: string | null
 }
 
 export type TSearch = {

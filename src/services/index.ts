@@ -52,9 +52,6 @@ export const useAppData= async (): Promise<IContextApp> => {
 }
 
 export const cleanData = async () => {    
-    
-    const navigation = useNavigation();
-
     await AsyncStorage.removeItem('titulo');
     await AsyncStorage.removeItem('subtitulo');
     await AsyncStorage.removeItem('logo');
@@ -71,6 +68,4 @@ export const cleanData = async () => {
     await AsyncStorage.removeItem("longitude");
     await AsyncStorage.removeItem("activateCode");    
     await AsyncStorage.removeItem("isLogged");       
-
-    navigation.navigate("SignIn");
 }

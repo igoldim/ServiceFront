@@ -6,9 +6,9 @@ import { api } from "../../../server"
 export const fetchData= async (
     params: TLoadData
 ): Promise<ILoginResult> => {    
-    //console.log(`/User/GetProvider/${params.id}/${params.appid}`);    
     const response = await api
         .get<any>(`/User/GetProvider/${params.id}/${params.appid}`)
         .then(({ data }) => data)
+        .catch(({ error }) => error )
     return response
 }

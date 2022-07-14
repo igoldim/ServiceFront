@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import BigText from "../../../components/Texts/BigText";
 import RegularText from "../../../components/Texts/RegularText";
 import TransactionSection from "../../../components/Transaction/TransactionSection";
-import { useAppData } from "../../../services";
+import { cleanData, useAppData } from "../../../services";
 import { ScreensProps, TUser } from "../../../types/AppType";
 import { Container } from "./ProviderDashboard.s";
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -14,6 +14,7 @@ import { fetchData } from "../service";
 import CardSectionFake from "../../../components/Cards/CardSectionFake";
 import TransactionSectionFake from "../../../components/Transaction/TransactionSectionFake";
 import AsyncStorage from "@react-native-community/async-storage";
+import MessageAlertModal from "../../../components/Modals/MessageAlertModal";
 
 const ProviderDashboard: React.FC<ScreensProps> = ({navigation}) => {
     const [name, setName] = React.useState("Usuário");
@@ -22,6 +23,11 @@ const ProviderDashboard: React.FC<ScreensProps> = ({navigation}) => {
 
     const [primaryColor, setPrimaryColor] = React.useState("#000");
     const [secondColor, setSecondColor] = React.useState("#000");
+
+    const [visible, setVisible] = React.useState(false);
+    const [messageHeadding, setMessageHeadding] = React.useState('');
+    const [messageModal, setMessageModal] = React.useState('');
+    const [type, setType] = React.useState("erro");
 
     React.useEffect(() =>{
     
@@ -32,23 +38,40 @@ const ProviderDashboard: React.FC<ScreensProps> = ({navigation}) => {
             setSecondColor(strSecondColor); 
             setName(Name);
 
-            var { sucessful, data, message } = await fetchData({id: userId,  appid: appKey}); 
+            var reponse = await fetchData({id: userId,  appid: appKey}); 
 
-            if (sucessful){
-                setAvar(data?.avatar as string);
-                await AsyncStorage.setItem("Avatar", data?.avatar as string);
-                setData(data);
-                //console.log(data?.avatar);   
+            if (reponse){
+                const {sucessful, data, message} = reponse;
+                if (sucessful){
+                    setAvar(data?.avatar as string);
+                    await AsyncStorage.setItem("Avatar", data?.avatar as string);
+                    setData(data);
+                    
+                }
             }
-        };
-        
+            else{
+                showModal("Seguran;a", "suas credênciais expiraram, precisamos que vocë efetue novamente seu login.", "erro");
+                cleanData();
+            }
+        };        
         loadData();
-
     },[]);
 
     const showModalScheduling = (item:TUser) =>{
 
     };
+
+    const modalButtonHandle = () =>{
+        setVisible(false);
+        navigation.navigate("SignIn");
+    }
+
+    const showModal = (headText: string, message: string, type: string)=> {
+        setMessageHeadding(headText);
+        setMessageModal(message);
+        setType(type);
+        setVisible(true);
+    }
 
     return (
         <Container style={{backgroundColor: primaryColor}}>
@@ -90,6 +113,17 @@ const ProviderDashboard: React.FC<ScreensProps> = ({navigation}) => {
             {data?.servicesConcluido && data?.servicesConcluido.length > 0  && 
                 <TransactionSection data={data?.servicesConcluido} title={"Serviços"} subtitle={"Recentes"} primaryColor={primaryColor} secondColor={secondColor}/>
             }           
+
+
+            <MessageAlertModal 
+                visible={visible} 
+                heading={messageHeadding} 
+                message={messageModal} 
+                onPress={modalButtonHandle}
+                type={type}
+                primaryColor={primaryColor}
+                secondColor={secondColor}                
+            />
 
         </Container>);
 }

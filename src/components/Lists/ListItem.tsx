@@ -12,7 +12,7 @@ const ListItem: React.FC<AgendaItemProps> = ( props ) => {
     return (
         <ListRow>
             <LeftRow>
-                <TransactionAvi primaryColor={props.primaryColor} secondColor={props.secondColor} icon='calendar' texto={props.scheduleDate.substring(0,2)}/>
+                <TransactionAvi primaryColor={props.primaryColor} secondColor={props.secondColor} icon='calendar'/>
                 <View style={{marginLeft: 10}}>
                     <RegularText textStyles={{
                         color: props.secondColor,
@@ -20,7 +20,7 @@ const ListItem: React.FC<AgendaItemProps> = ( props ) => {
                         marginBottom: 5,
                         fontWeight:'800'                    
                     }}>
-                        {props.scheduleDate}
+                        {props.scheduleDateTime.split('T')[0]}
                     </RegularText>
                 </View>
             </LeftRow>
@@ -31,16 +31,16 @@ const ListItem: React.FC<AgendaItemProps> = ( props ) => {
                         marginBottom: 5,
                         fontWeight:'800'                    
                     }}>
-                        {props.scheduleTime}
+                        {props.scheduleDateTime.split('T')[1]}
                     </RegularText>
             </RightRow>
             <RightRow>
-                <TouchableOpacity onPress={() => props.onPressEdit(props.id)}>                    
+                <TouchableOpacity onPress={() => props.onPressEdit(props)}>                    
                     <Icon name='pencil' size={25} color={props.secondColor} />
                 </TouchableOpacity>
             </RightRow>
             <RightRow>
-                <TouchableOpacity onPress={() => props.onPressDelete(props.id)}>
+                <TouchableOpacity onPress={() => props.onPressDelete(props)}>
                     <Icon name='trash' size={25} color={props.secondColor} />
                 </TouchableOpacity>
             </RightRow>

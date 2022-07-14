@@ -20,7 +20,7 @@ const ModalPressableContainer = styled.Pressable`
 const ModalView = styled.View`
     border-radius: 20px;
     width: 100%;
-    padding: 30px;
+    padding: 20px;
     align-items: center;
     /*elavation: 5;
     shadow-color: ${Colors.Black};

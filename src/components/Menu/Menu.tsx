@@ -33,7 +33,7 @@ const Menu: React.FC<ScreensProps> = ({navigation}) => {
         await AsyncStorage.removeItem("Name");
         await AsyncStorage.removeItem("Avatar");
         await AsyncStorage.removeItem("token");
-        await AsyncStorage.removeItem("userType");
+        await AsyncStorage.removeItem("UserType");
         await AsyncStorage.setItem("isLogged", "false");
         navigation.navigate('Welcome');
     }
@@ -61,7 +61,7 @@ const Menu: React.FC<ScreensProps> = ({navigation}) => {
                     <Row>
                         <MenuItem 
                             icon="calendar-today" 
-                            title={userType === "P" ? "Agenda": "Agendamentos"} 
+                            title={userType === "1" ? "Agenda": "Agendamentos"} 
                             onPress={() => userType === "1" ? navigation.navigate("Agenda") : navigation.navigate("Scheduling") }
                             primaryColor={primaryColor}
                             secondColor={secondColor}

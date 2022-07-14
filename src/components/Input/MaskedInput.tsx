@@ -1,9 +1,9 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconAddress from 'react-native-vector-icons/SimpleLineIcons';
-
 import styled from 'styled-components/native';
 import { Colors } from '../Colors';
+import MaskInput, {Masks} from 'react-native-mask-input'
 
 import { StyleProp
         ,TextStyle        
@@ -39,7 +39,7 @@ const LeftIcon = styled.View`
     padding-right: 1px;
 `;
 
-const StyledTextInput = styled.TextInput`
+const StyledTextInput = styled(MaskInput)`
     display: flex;
     padding-left: 10px;
     padding-right: 10px;
@@ -85,9 +85,10 @@ interface InputProps{
     multiline?: boolean;
     numberOfLines?: number;
     editable?: boolean; 
+    mask?: any,
 }
 
-const RegularInput: React.FC<InputProps> = (props) => {
+const MaskedInput: React.FC<InputProps> = (props) => {
     const [hidePassword, setHidePassword] = React.useState(true);
 
     return(<View>
@@ -106,7 +107,8 @@ const RegularInput: React.FC<InputProps> = (props) => {
                     keyboardType={props.keyboardType}
                     maxLength={props.maxLength}
                     autoCapitalize={props.autoCapitalize}
-                    value={props.value}         
+                    value={props.value} 
+                    mask={props.mask}
                     multiline={props.multiline}     
                     editable={props.editable}
                     numberOfLines={props.numberOfLines}     
@@ -131,4 +133,4 @@ const RegularInput: React.FC<InputProps> = (props) => {
     ;
 };  
 
-export default RegularInput;
+export default MaskedInput;

@@ -76,8 +76,8 @@ export interface AgendaProps {
     data: Array<TAgenda>; 
     primaryColor: string;
     secondColor: string;
-    onPressEdit: (value: string) => void;
-    onPressDelete: (value: string) => void;
+    onPressEdit: (value: TAgenda) => void;
+    onPressDelete: (value: TAgenda) => void;
 }
 
 export interface AgendarProps {
@@ -89,15 +89,18 @@ export interface AgendarProps {
 }
 
 export interface AgendaItemProps {
-    id: string;
-    scheduleDate: string;
-    scheduleTime: string;
-    status: string;
-    amount: string;
-    primaryColor: string;
-    secondColor: string;  
-    onPressEdit: (value: string) => void;
-    onPressDelete: (value: string) => void;
+    id: string,
+    userId: string,
+    appId: string,
+    scheduleDateTime: string,
+    amount: string,
+    status: number,
+    createAt: string,
+    updateAt?: string | null,
+    primaryColor: string,
+    secondColor: string, 
+    onPressEdit: (value: TAgenda) => void,
+    onPressDelete: (value: TAgenda) => void
 }
 
 export interface AgendarItemProps {
@@ -184,6 +187,12 @@ export interface IDefaultUserGet {
     appId: string
 }
 
+export interface IScheduleDelete {
+    userId: string,
+    appId: string
+    id: string;
+}
+
 export interface ILoginResult {
     sucessful: boolean,
     sendDocuments: boolean,
@@ -192,6 +201,7 @@ export interface ILoginResult {
 	type: string;
     userType: number,
     message: string;
+    status: any;
 }
 
 export interface ICepResult {
@@ -234,9 +244,29 @@ export interface IRegisterResult {
     message: string;
 }
 
+export interface IAgendaResult {
+    sucessful: boolean,
+	data: Array<TAgenda>,
+    message: string;
+}
+
+
 export interface IEmailValidation {
     email: string;
 	token: string;
 }
 
 
+export interface IAgendaRegister {
+    userId: string,
+    appId: string,
+    scheduleDateTime: string,
+    amount: string,
+}
+export interface IAgendaUpdate {
+    id: string,
+    userId: string,
+    appId: string,
+    scheduleDateTime: string,
+    amount: string,
+}
