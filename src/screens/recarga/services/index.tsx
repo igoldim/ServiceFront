@@ -1,11 +1,25 @@
-import { IApp, IResultApp } from "../../../interfaces"
+import { IPaymentSearch, IRecargaRegister, IRecargaResult } from "../../../interfaces"
 import { api } from "../../../server"
 
-export const getApp= async (
-    params: IApp
-): Promise<IResultApp> => {
+//valida email
+export const fetchRecarregar = async (
+    params: IRecargaRegister
+): Promise<IRecargaResult> => {
     const response = await api
-        .get<any>(`Secutiry/GetApp?slug=${params.slug}&applicationKey=${params.applicationkey}`)
+        .post<any>('/Pix/EnviarCobranca', params)
         .then(({ data }) => data)
-    return response.data
+
+    //console.log(response);
+
+    return response
+}
+
+export const fetchConsultaPagamento = async (
+ params : IPaymentSearch 
+): Promise<IRecargaResult> => {
+    const response = await api
+        .get<any>(`/Pix/ConsultaStatus/${params.id}`)
+        .then(({ data }) => data)
+    //console.log(response);
+    return response
 }

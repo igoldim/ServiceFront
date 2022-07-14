@@ -35,6 +35,11 @@ export type ResendTimerProps = {
     textColor: string;
 }
 
+export type PixTimerProps = {
+    targetTimeInSeconds?: number;
+    textColor: string;
+}
+
 export type TUsers =  {
     id?: string | null,
     order?: number,
@@ -183,8 +188,58 @@ export type TFavoriteUsers = {
     id:  string,
 }
 
+export type CalendarioDTO = {
+    criacao: string,
+    expiracao: string
+}
+
+export type LocationDTO = {
+    id: string,
+    location: string,
+    tipoCob: string,
+    criacao: string
+}
+
+export type DevedorDTO = {
+    cpf: string,
+    nome: string
+}
+
+export type ValorDTO = {
+    original: string
+}
+
+export type PixGNDTO = {
+    endToEndId: string,
+    txid: string,
+    valor: string,
+    chave: string,
+    horario: string
+}
+
+export type QRCodeDTO = {
+    qrcode: string,
+    imagemQrcode: string
+}
+
 export type TPayments = {
-    id:  string,
+    id: string,
+    userId: string,
+    appId: string,
+    transactionId: string,
+    endToEndId: string,
+    paymentDate: string,    
+    locationId: string,
+    paymentMethod: string,
+    qrcode: string,
+    qrcodeText: string,
+    digitableLine: string,
+    barcodeData: string,
+    barcode: string,
+    amount: string,
+    status: string,
+    createAt: string,
+    updateAt: string,    
 }
 
 export type TSchedule = {

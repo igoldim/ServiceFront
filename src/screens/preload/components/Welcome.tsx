@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Logo } from './Welcome.s';
 import { slug } from '../../../../app.json';
-import { getApp } from '../../../services';
+import { getApp, useAppData } from '../../../services';
 import BigText from '../../../components/Texts/BigText';
 import RegularText from '../../../components/Texts/RegularText';
 import RegularButton from '../../../components/Buttons/RegularButton';
@@ -26,70 +26,72 @@ const Welcome: React.FC<ScreensProps> = ({navigation}) => {
   const [type, setType] = React.useState("erro");
   
   React.useEffect(() =>{
-    const loadData = async () => {
-      setIsLoading(true);
-     
-      GetLocation.getCurrentPosition({
-        enableHighAccuracy: true,
-        timeout: 15000,
-      })
-      .then(location =>  {
-        AsyncStorage.setItem('latitude', `${location.latitude}`);
-        AsyncStorage.setItem('longitude', `${location.longitude}`);
-        //console.log(location);
-      })
-      .catch(error => {
-          const { code, message } = error;
-          showModal("Erro", "A Geolocalização está inativa, precisamos da geolocalização para localizarmos suas pesquisas com mais precisões.", "erro");
-          return false;            
-      });
+    GetLocation.getCurrentPosition({
+      enableHighAccuracy: true,
+      timeout: 15000,
+    })
+    .then(location =>  {
+      AsyncStorage.setItem('latitude', `${location.latitude}`);
+      AsyncStorage.setItem('longitude', `${location.longitude}`);
 
-      try {
-        var data: IResultApp = await getApp({slug, applicationkey: 'D47EE5680A60310E960CAA6BB2DA6638C53B5E04EB2F9FCBE6D04A953A1A7584'});
-
-        //console.log( data );
-        setApp( data );
-        setButtonLabel("Vamos Começar");     
-        setVersaoLabel(`Versão ${data.versao}`);
-
-        await AsyncStorage.setItem('appKey', data.id);
-        await AsyncStorage.setItem('primaryColor', data.primaryColor);
-        await AsyncStorage.setItem('secondColor', data.secondColor);
-        await AsyncStorage.setItem('versao', data.versao);
-        var isLogado = await AsyncStorage.getItem("isLogged");
-        var userType = await AsyncStorage.getItem("UserType");
-        
-       // console.log(userType);
-
-        setIsLoading(false);
-
-        if (isLogado == "true"){
-          if (userType == "0"){
-            navigation.reset({
-              index: 1,
-              routes: [
-                { name: 'TakerDashboard' },
-              ],
-            })
-          }
-          else if (userType == "1"){
-            navigation.reset({
-              index: 1,
-              routes: [                
-                { name: 'ProviderDashboard' },
-              ],
-            })
-          } 
-        }        
-      } catch (error) {
-        showModal("Erro", "Sem conexão com a internet", "erro");
-        return false;
-      } 
-    };
-
-    loadData();   
-
+      loadData();   
+    })
+    .catch(async error => {
+        const { code, message } = error;
+        console.log(message);
+        const {primaryColor, secondColor } = await useAppData();
+        setApp( {primaryColor, secondColor} as AppType);
+        showModal("Geolocalização inativa.", "precisamos da geolocalização para localizarmos suas pesquisas com mais precisão.", "erro");
+        return false;            
+    });
   },[]);
+
+  const loadData = async () => {
+    setIsLoading(true);
+    try {       
+      var data: IResultApp = await getApp({slug, applicationkey: 'D47EE5680A60310E960CAA6BB2DA6638C53B5E04EB2F9FCBE6D04A953A1A7584'});
+
+      //console.log( data );
+      setApp( data );
+      setButtonLabel("Vamos Começar");     
+      setVersaoLabel(`Versão ${data.versao}`);
+
+      await AsyncStorage.setItem('appKey', data.id);
+      await AsyncStorage.setItem('primaryColor', data.primaryColor);
+      await AsyncStorage.setItem('secondColor', data.secondColor);
+      await AsyncStorage.setItem('versao', data.versao);
+      var isLogado = await AsyncStorage.getItem("isLogged");
+      var userType = await AsyncStorage.getItem("UserType");
+      
+    // console.log(userType);
+
+      setIsLoading(false);
+
+      if (isLogado && isLogado == "true"){
+        if (userType == "0"){
+          navigation.reset({
+            index: 1,
+            routes: [
+              { name: 'TakerDashboard' },
+            ],
+          })
+        }
+        else if (userType == "1"){
+          navigation.reset({
+            index: 1,
+            routes: [                
+              { name: 'ProviderDashboard' },
+            ],
+          })
+        } 
+      }             
+    } catch (error) {
+      const {primaryColor, secondColor, appKey } = await useAppData();
+      setApp( {primaryColor, secondColor} as AppType);
+      showModal("Erro", "Sem conexão com a internet", "erro");
+      return false;
+    } 
+  };
  
   const showModal = (headText: string, message: string, type: string)=> {
     setMessageHeadding(headText);

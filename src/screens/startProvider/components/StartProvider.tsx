@@ -3,42 +3,50 @@ import { Container, StyledView } from "./StartProvider.s";
 import RegularButton from "../../../components/Buttons/RegularButton";
 import BigText from "../../../components/Texts/BigText";
 import RegularText from "../../../components/Texts/RegularText";
-import { useAppData } from "../../../services";
+import { cleanData, useAppData } from "../../../services";
 import { ScreensProps } from "../../../types/AppType";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { StatusBar, Text, View } from "react-native";
-import AsyncStorage from "@react-native-community/async-storage";
+import MessageAlertModal from "../../../components/Modals/MessageAlertModal";
 
 const StartProvider: React.FC<ScreensProps> = ({navigation}) => {
     const [primaryColor, setPrimaryColor] = React.useState("#000");
     const [secondColor, setSecondColor] = React.useState("#000");
 
+    const [visible, setVisible] = React.useState(false);
+    const [messageHeadding, setMessageHeadding] = React.useState('');
+    const [messageModal, setMessageModal] = React.useState('');
+    const [type, setType] = React.useState("erro");
+
     React.useEffect(() =>{
+        loadData();
+    },[]);
     
-    const loadData = async () => {
-        var isLogado = await AsyncStorage.getItem("isLogged");
-        var userType = await AsyncStorage.getItem("userType");
-        
-        if (isLogado == "true"){
-          if (userType == "0"){
-            navigation.navigate('TakerDashboard');
-          }
-          else if (userType == "1"){
-              navigation.navigate('ProviderDashboard');
-          } 
-        }
-        const {primaryColor:strPrimaryColor, secondColor: strSecondColor } = await useAppData();
-        //const UserType = await AsyncStorage.getItem('UserType');
-        //console.log(UserType);
+  const loadData = async () => {
+        const {primaryColor:strPrimaryColor, secondColor: strSecondColor, IsLogado } = await useAppData();
         setPrimaryColor(strPrimaryColor); 
         setSecondColor(strSecondColor); 
-    };
-    
-    loadData();
 
-  },[]);
+        //validar todas as telas
+        if (IsLogado == null || IsLogado == "false"){
+            showModal("Segurança", "suas credênciais expiraram, precisamos que você efetue novamente seu login.", "erro");
+            cleanData();
+        }    
+  };
 
-    return (
+  const modalButtonHandle = () =>{
+    setVisible(false);
+    navigation.navigate("SignIn");
+  }
+
+  const showModal = (headText: string, message: string, type: string)=> {
+        setMessageHeadding(headText);
+        setMessageModal(message);
+        setType(type);
+        setVisible(true);
+  }
+
+return (
         <Container style={{backgroundColor: primaryColor}}>
             <StatusBar barStyle="light-content" backgroundColor={primaryColor} />
             <BigText textStyles={{color: secondColor, textAlign: "center", marginTop: 33, marginBottom: 45}}>
@@ -91,6 +99,17 @@ const StartProvider: React.FC<ScreensProps> = ({navigation}) => {
                     </RegularText> 
                 </TouchableOpacity> 
             </StyledView>
+
+            <MessageAlertModal 
+                visible={visible} 
+                heading={messageHeadding} 
+                message={messageModal} 
+                onPress={modalButtonHandle}
+                type={type}
+                primaryColor={primaryColor}
+                secondColor={secondColor}                
+            />
+
         </Container>
     );
 };

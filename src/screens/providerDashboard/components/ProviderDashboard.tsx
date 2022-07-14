@@ -1,5 +1,5 @@
 import React from "react";
-import { View } from "react-native";
+import { ActivityIndicator, View } from "react-native";
 import CardSection from "../../../components/Cards/CardSection";
 import ScreenHeadUser from "../../../components/Head/ScreenHeadUser";
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -29,34 +29,48 @@ const ProviderDashboard: React.FC<ScreensProps> = ({navigation}) => {
     const [messageModal, setMessageModal] = React.useState('');
     const [type, setType] = React.useState("erro");
 
+    const [isLoading, setLoading] = React.useState(false);
+
     React.useEffect(() =>{
-    
-        const loadData = async () => {
-            const {primaryColor:strPrimaryColor, secondColor: strSecondColor, Name, userId, appKey, Avatar } = await useAppData();
-            setAvar(Avatar);
-            setPrimaryColor(strPrimaryColor); 
-            setSecondColor(strSecondColor); 
-            setName(Name);
-
-            var reponse = await fetchData({id: userId,  appid: appKey}); 
-
-            if (reponse){
-                const {sucessful, data, message} = reponse;
-                if (sucessful){
-                    setAvar(data?.avatar as string);
-                    await AsyncStorage.setItem("Avatar", data?.avatar as string);
-                    setData(data);
-                    
-                }
-            }
-            else{
-                showModal("Seguran;a", "suas credênciais expiraram, precisamos que vocë efetue novamente seu login.", "erro");
-                cleanData();
-            }
-        };        
         loadData();
     },[]);
 
+    const loadData = async () => {
+        setLoading(true);
+        const {primaryColor:strPrimaryColor, secondColor: strSecondColor, Name, userId, appKey, Avatar, IsLogado } = await useAppData();
+
+        //validar todas as telas
+        if (IsLogado == null || IsLogado == "false"){
+            setLoading(false);
+            showModal("Segurança", "suas credênciais expiraram, precisamos que você efetue novamente seu login.", "erro");
+            cleanData();
+        }    
+
+
+        setAvar(Avatar);
+        setPrimaryColor(strPrimaryColor); 
+        setSecondColor(strSecondColor); 
+        setName(Name);
+
+        var reponse = await fetchData({id: userId,  appid: appKey}); 
+
+        if (reponse){
+            const {sucessful, data, message} = reponse;
+            if (sucessful){
+                setAvar(data?.avatar as string);
+                await AsyncStorage.setItem("Avatar", data?.avatar as string);
+                setData(data);               
+                setLoading(false);
+            }
+        }
+        else{
+            setLoading(false);
+            showModal("Segurança", "suas credênciais expiraram, precisamos que você efetue novamente seu login.", "erro");
+            cleanData();
+        }
+    };  
+    
+    
     const showModalScheduling = (item:TUser) =>{
 
     };
@@ -91,11 +105,12 @@ const ProviderDashboard: React.FC<ScreensProps> = ({navigation}) => {
                 />
             <View style={{display: "flex", flexDirection: "row", justifyContent:'space-between',  marginTop: 75}}>
                 <BigText textStyles={{color: secondColor, fontSize: 28, fontWeight: '800'}}>Saldo</BigText>  
-                <TouchableOpacity>
-                    <Icon name="md-arrow-forward" color={secondColor} size={30} /> 
+                <TouchableOpacity onPress={loadData}>
+                    {isLoading && <ActivityIndicator size={30} color="#fff" />}
+                    {!isLoading && <Icon name="sync" color={secondColor} size={30} /> }                    
                 </TouchableOpacity>
             </View>           
-            <RegularText textStyles={{color: secondColor, fontSize: 28, fontWeight: '400'}}>R$ {data?.serviceAmount}</RegularText> 
+            <RegularText textStyles={{color: secondColor, fontSize: 28, fontWeight: '400'}}>R$ {data?.amount}</RegularText> 
 
             {data?.servicesAgendados.length == 0  && 
                 <CardSectionFake primaryColor={primaryColor} secondColor={secondColor} />

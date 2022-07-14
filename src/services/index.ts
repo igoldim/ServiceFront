@@ -32,7 +32,7 @@ export const useAppData= async (): Promise<IContextApp> => {
     const Longitude = await AsyncStorage.getItem("longitude") as string;
 
     const ActivateCode = await AsyncStorage.getItem("activateCode") as string;
-    
+    const IsLogado = await AsyncStorage.getItem("isLogged") as string;
 
     return {titulo
           , subtitulo
@@ -48,18 +48,12 @@ export const useAppData= async (): Promise<IContextApp> => {
           , Latitude
           , Longitude
           , ActivateCode
-          , Email  };
+          , Email
+          , IsLogado  };
 }
 
 export const cleanData = async () => {    
-    await AsyncStorage.removeItem('titulo');
-    await AsyncStorage.removeItem('subtitulo');
-    await AsyncStorage.removeItem('logo');
-    await AsyncStorage.removeItem('primaryColor');
-    await AsyncStorage.removeItem('secondColor');
-    await AsyncStorage.removeItem('versao');
     await AsyncStorage.removeItem('UserType');
-    await AsyncStorage.removeItem('appKey');
     await AsyncStorage.removeItem("userId");
     await AsyncStorage.removeItem("Name");
     await AsyncStorage.removeItem("Email");

@@ -1,18 +1,34 @@
+import AsyncStorage from "@react-native-community/async-storage";
 import React from "react";
+import { ActivityIndicator, Alert } from "react-native";
+import { Masks } from "react-native-mask-input";
 import ImageButton from "../../../components/Buttons/ImageButton";
 import RegularButton from "../../../components/Buttons/RegularButton";
 import ScreenHead from "../../../components/Head/ScreenHead";
+import MaskedInput from "../../../components/Input/MaskedInput";
 import RegularInput from "../../../components/Input/RegularInput";
+import MessageAlertModal from "../../../components/Modals/MessageAlertModal";
 import { Row } from "../../../components/Shared";
 import BigText from "../../../components/Texts/BigText";
-import { useAppData } from "../../../services";
+import { cleanData, useAppData } from "../../../services";
 import { ScreensProps } from "../../../types/AppType";
+import { fetchRecarregar } from "../services";
 import { Container } from "./Recarga.s";
 
 const Recarga: React.FC<ScreensProps> = ({navigation}) =>{
     const [primaryColor, setPrimaryColor] = React.useState("#000");
     const [secondColor, setSecondColor] = React.useState("#000");
     const [formaPagamento, setFormaPagamento] = React.useState("D");
+
+    const [amountRecarga, setamountRecarga] = React.useState("null");
+
+    const [isLoading, setLoading] = React.useState(false);
+
+    const [visible, setVisible] = React.useState(false);
+    const [messageHeadding, setMessageHeadding] = React.useState('');
+    const [messageModal, setMessageModal] = React.useState('');
+    const [type, setType] = React.useState("erro");
+
 
     React.useEffect(() =>{
     
@@ -27,6 +43,61 @@ const Recarga: React.FC<ScreensProps> = ({navigation}) =>{
 
     },[]);
 
+    const handlePayment = () => {
+        return Alert.alert(
+            "Recarga",
+            "Deseja realmente efetuar nova recarga?",
+            [
+                // The "Yes" button
+                {
+                    text: "Sim",
+                    onPress: async () => {
+                        setLoading(true);
+                        const { userId, appKey: appId } = await useAppData();
+
+                        if (formaPagamento === "D"){
+                            const response = await fetchRecarregar({userId, appId, valor: amountRecarga});
+                            if (response){
+                                const {sucessful, data, message} = response;
+                                if (sucessful){
+                                    //console.log(data.qrcode);
+                                    setLoading(false);
+                                    
+                                    await AsyncStorage.setItem("urlPix", data.qrcode);
+                                    await AsyncStorage.setItem("transactionId", data.id);
+
+                                    navigation.navigate("RecargaPagarPix");
+                                }
+                            }
+                            else{
+                                setLoading(false);
+                                showModal("Segurança", "suas credênciais expiraram, precisamos que você efetue novamente seu login.", "erro");
+                                cleanData();
+                            }                        
+                        }
+                        setLoading(false);
+                    },
+                },
+                // The "No" button
+                // Does nothing but dismiss the dialog when tapped
+                {
+                    text: "Não",
+                },
+            ]
+            );        
+    }
+    const showModal = (headText: string, message: string, type: string)=> {
+        setMessageHeadding(headText);
+        setMessageModal(message);
+        setType(type);
+        setVisible(true);
+    }
+
+    const modalButtonHandle = () =>{
+        setVisible(false);
+        navigation.navigate("SignIn");
+    }
+
     return (
         <Container style={{backgroundColor: primaryColor}}>
             <ScreenHead 
@@ -36,20 +107,23 @@ const Recarga: React.FC<ScreensProps> = ({navigation}) =>{
                 secondColor={secondColor} 
                 showIcon={true} />
 
-            <RegularInput 
+            <MaskedInput 
                 iconeName='currency-usd'
                 iconeColor={primaryColor}
                 title='Valor'
                 placeholder="0,00"
                 keyboardType="number-pad"
+                mask={Masks.CURRENCY_BRL}  
+                value={amountRecarga}
+                onChangeText={setamountRecarga}
                 placeholderColor={primaryColor}
                 titleStyle={{color: secondColor, fontSize: 18, fontWeight: '800'}}
-                inputStyles={{backgroundColor: secondColor, color: primaryColor, fontSize: 16, fontWeight: '800'}}
+                inputStyles={{backgroundColor: secondColor, color: primaryColor, fontSize: 16, fontWeight: '800', width:'85%'}}
                 iconStyles={{borderColor: primaryColor}}
-                ViewStyles={{marginTop: 25}}
+                ViewStyles={{backgroundColor: secondColor}}
             />
 
-            <BigText>Forma de Pagamento</BigText>
+            <BigText textStyles={{color: secondColor, fontSize: 18, fontWeight: '800'}} >Forma de Pagamento</BigText>
 
             {formaPagamento === "D" &&
             <Row>
@@ -97,12 +171,32 @@ const Recarga: React.FC<ScreensProps> = ({navigation}) =>{
                 </ImageButton>
             </Row> 
             }
-             <RegularButton 
-                btnStyles={{borderColor: primaryColor, borderTopWidth: 1,  borderLeftWidth: 1,  borderRightWidth: 1,  borderBottomWidth: 1 ,backgroundColor: secondColor, marginTop: 30}}
-                textStyles={{color: primaryColor, fontSize: 24, fontWeight: '500'}}
-                onPress={() => navigation.navigate("RecargaPagarPix")}>
+
+            {isLoading && <RegularButton 
+                        btnStyles={{backgroundColor: secondColor, borderRadius: 5, padding: 10, display: 'flex', justifyContent:'center', alignItems: 'center', marginTop: 15}}
+                        textStyles={{color: primaryColor, fontSize: 24, fontWeight: '500'}}
+                        disabled={true}>
+                            <ActivityIndicator size={30} color="#fff" />
+                        </RegularButton>}
+                
+            {!isLoading &&
+            <RegularButton            
+                    btnStyles={{backgroundColor: secondColor, borderRadius: 5, padding: 10, display: 'flex', justifyContent:'center', alignItems: 'center', marginTop: 15}}
+                    textStyles={{color: primaryColor, fontSize: 24, fontWeight: '500'}}
+                    onPress={handlePayment}>
                     Pagar
-            </RegularButton>
+            </RegularButton>}
+
+            <MessageAlertModal 
+                visible={visible} 
+                heading={messageHeadding} 
+                message={messageModal} 
+                onPress={modalButtonHandle}
+                type={type}
+                primaryColor={primaryColor}
+                secondColor={secondColor}                
+            />
+
         </Container>
     );
 }

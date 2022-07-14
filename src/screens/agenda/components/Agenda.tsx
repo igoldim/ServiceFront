@@ -26,7 +26,7 @@ const Agenda: React.FC<ScreensProps> = ({navigation}) =>{
 
     const [dataScheduling, setDataScheduling] = React.useState("");
     const [timeScheduling, setTimeScheduling] = React.useState("");
-    const [amountScheduling, setAmountScheduling] = React.useState("null");
+    const [amountScheduling, setAmountScheduling] = React.useState("");
     const [agendaData, setAgendaData]  = React.useState<Array<TAgenda> | null>(null);
     const [agenda, setAgenda]  = React.useState<TAgenda | null>(null);
 

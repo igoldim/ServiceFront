@@ -1,5 +1,5 @@
 import { StyleProp, ViewStyle } from "react-native";
-import { TAgenda, TComment, TSearch, TServices, TUser, TUsers } from "../types/AppType";
+import { TAgenda, TComment, TPayments, TSearch, TServices, TUser, TUsers } from "../types/AppType";
 
 export interface IApp {
     slug: string;
@@ -46,6 +46,7 @@ export interface IContextApp {
     Latitude: string;
     Longitude: string;
     ActivateCode: string;
+    IsLogado: string;
 }
 
 
@@ -250,6 +251,12 @@ export interface IAgendaResult {
     message: string;
 }
 
+export interface IRecargaResult {
+    sucessful: boolean,
+	data: TPayments,
+    message: string;
+    status: any;
+}
 
 export interface IEmailValidation {
     email: string;
@@ -263,6 +270,18 @@ export interface IAgendaRegister {
     scheduleDateTime: string,
     amount: string,
 }
+
+
+export interface IRecargaRegister {
+    userId: string,
+    appId: string,
+    valor: string,
+}
+
+export interface IPaymentSearch {
+    id: string,
+}
+
 export interface IAgendaUpdate {
     id: string,
     userId: string,
