@@ -10,11 +10,12 @@ import { cleanData, useAppData } from "../../../services";
 import { ScreensProps, TUser } from "../../../types/AppType";
 import { Container } from "./ProviderDashboard.s";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { fetchData } from "../service";
+import { fetchConsultaPagamentos, fetchData } from "../service";
 import CardSectionFake from "../../../components/Cards/CardSectionFake";
 import TransactionSectionFake from "../../../components/Transaction/TransactionSectionFake";
 import AsyncStorage from "@react-native-community/async-storage";
 import MessageAlertModal from "../../../components/Modals/MessageAlertModal";
+import { fetchConsultaPagamento } from "../../recarga/services";
 
 const ProviderDashboard: React.FC<ScreensProps> = ({navigation}) => {
     const [name, setName] = React.useState("Usuário");
@@ -33,6 +34,7 @@ const ProviderDashboard: React.FC<ScreensProps> = ({navigation}) => {
 
     React.useEffect(() =>{
         loadData();
+        handleCheckPayments();
     },[]);
 
     const loadData = async () => {
@@ -70,7 +72,29 @@ const ProviderDashboard: React.FC<ScreensProps> = ({navigation}) => {
         }
     };  
     
-    
+    const handleCheckPayments = async () => {
+        setLoading(true);
+        // consulta pagamento         
+        const {userId, appKey: appId } = await useAppData();    
+        const response = await fetchConsultaPagamentos({userId, appId});
+        if (response){
+            const {sucessful, data: dataP, message} = response;
+            if (sucessful){
+                console.log(dataP);
+                if (dataP && dataP.status === "CONCLUIDA"){
+                    showModal("Pix", "Obrigado, pagamento confirmado", "success");
+                }
+            }
+            loadData();
+            setLoading(false);
+        }
+        else{
+            setLoading(false);
+            showModal("Segurança", "suas credênciais expiraram, precisamos que você efetue novamente seu login.", "erro");
+            cleanData();
+        }  
+    }
+
     const showModalScheduling = (item:TUser) =>{
 
     };
@@ -105,7 +129,7 @@ const ProviderDashboard: React.FC<ScreensProps> = ({navigation}) => {
                 />
             <View style={{display: "flex", flexDirection: "row", justifyContent:'space-between',  marginTop: 75}}>
                 <BigText textStyles={{color: secondColor, fontSize: 28, fontWeight: '800'}}>Saldo</BigText>  
-                <TouchableOpacity onPress={loadData}>
+                <TouchableOpacity onPress={handleCheckPayments}>
                     {isLoading && <ActivityIndicator size={30} color="#fff" />}
                     {!isLoading && <Icon name="sync" color={secondColor} size={30} /> }                    
                 </TouchableOpacity>

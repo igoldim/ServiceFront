@@ -77,16 +77,19 @@ const SignUp: React.FC<ScreensProps> = ({navigation}) => {
         setLoading(true);
         //valida dados de entrada
         if (nome === "") {
+          setLoading(false);
           showModal("Erro", "Informe seu nome", "erro");
           return false;
         }
 
         if (email === "") {
+          setLoading(false);
           showModal("Erro", "Informe seu email", "erro");
           return false;
         }
 
         if (registro === "") {
+          setLoading(false);
           showModal("Erro", "Informe seu CPF", "erro");
           return false;
         }
@@ -96,16 +99,19 @@ const SignUp: React.FC<ScreensProps> = ({navigation}) => {
         //Consultar CPF na receita federal e na PF/PC
 
         if (password === "") {
+          setLoading(false);
           showModal("Erro", "Informe sua senha", "erro");
           return false;
         }
 
         if (passwordConfirm === "") {
+          setLoading(false);
           showModal("Erro", "Informe sua confirmação de senha", "erro");
           return false;
         }
 
         if (password != passwordConfirm) {
+          setLoading(false);
           showModal("Erro", "Senhas não conferem", "erro");
           return false;
         }

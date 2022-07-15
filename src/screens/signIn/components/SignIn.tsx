@@ -60,11 +60,13 @@ const SignIn: React.FC<ScreensProps> = ({navigation}) => {
           setLoading(true);
           //valida dados de entrada
           if (email === "") {
+            setLoading(false);
             showModal("Erro", "Informe seu email", "erro");
             return false;
           }
 
           if (password === "") {
+            setLoading(false);
             showModal("Erro", "Informe sua senha", "erro");
             return false;
           }
@@ -96,6 +98,7 @@ const SignIn: React.FC<ScreensProps> = ({navigation}) => {
                 navigation.navigate('ProviderDashboard');
             } 
             else{
+              setLoading(false);
               await AsyncStorage.removeItem("userId");
               await AsyncStorage.removeItem("Name");
               await AsyncStorage.removeItem("Avatar");
@@ -123,6 +126,7 @@ const SignIn: React.FC<ScreensProps> = ({navigation}) => {
             }
           }
       } catch (error) {
+        setLoading(false);
         console.log(error);
       } 
     }

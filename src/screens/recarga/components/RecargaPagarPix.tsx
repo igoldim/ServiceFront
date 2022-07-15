@@ -53,7 +53,7 @@ const RecargaPagarPix: React.FC<ScreensProps> = ({navigation}) =>{
                     showModal("Segurança", "suas credênciais expiraram, precisamos que você efetue novamente seu login.", "erro");
                     cleanData();
                 }  
-            }, 5000);
+            }, 1000);
         };
         
         loadData();
@@ -124,7 +124,7 @@ const RecargaPagarPix: React.FC<ScreensProps> = ({navigation}) =>{
                 visible={visible} 
                 heading={messageHeadding} 
                 message={messageModal} 
-                onPress={modalButtonHandle}
+                onPress={async () => modalButtonHandle()}
                 type={type}
                 primaryColor={primaryColor}
                 secondColor={secondColor}                
