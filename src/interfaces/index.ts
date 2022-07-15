@@ -1,5 +1,5 @@
 import { StyleProp, ViewStyle } from "react-native";
-import { TAgenda, TComment, TPayments, TSearch, TServices, TUser, TUsers } from "../types/AppType";
+import { TAgenda, TComment, TPayments, TschedulingData, TSearch, TServices, TUser, TUsers } from "../types/AppType";
 
 export interface IApp {
     slug: string;
@@ -10,6 +10,8 @@ export interface ServicesSectionProps {
     data: Array<TUsers>;
     onRefresh?: () => void; 
     refreshing?: boolean;
+    primaryColor: string;
+    secondColor: string;  
 }
 export interface PaymentsProps {
     data: Array<TPayments>;
@@ -224,6 +226,16 @@ export interface ILoginResult {
     message: string;
     status: any;
 }
+
+export interface IScheduleResult {
+    sucessful: boolean,
+	data: Array<TServices>,
+    message: string;
+}
+
+
+
+
 
 export interface ICepResult {
     cep: string,

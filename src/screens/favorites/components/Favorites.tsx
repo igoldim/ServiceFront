@@ -42,7 +42,13 @@ const Favorites: React.FC<ScreensProps> = ({navigation}) =>{
                 primaryColor={primaryColor} 
                 secondColor={secondColor} 
                 showIcon={true} />
-            <FavoriteList refreshing={isLoading} onRefresh={loadData} data={favoriteData as Array<TFavoriteData>} isLoading={isLoading}/>
+            <FavoriteList 
+              primaryColor={primaryColor} 
+              secondColor={secondColor} 
+              refreshing={isLoading} 
+              onRefresh={loadData} 
+              data={favoriteData as Array<TFavoriteData>} 
+              isLoading={isLoading}/>
         </Container>
     );
 }

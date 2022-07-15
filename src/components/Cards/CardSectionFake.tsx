@@ -16,8 +16,8 @@ type CardItemType = {
 const CardSectionFake: React.FC<CardItemType> = (props) => {
 
     return(
-        <CardBackgroundF style={{backgroundColor: props.secondColor, marginTop: 20, marginBottom: 0}}>
-            <BigText>Sem Agendamento</BigText>
+        <CardBackgroundF style={{backgroundColor: props.secondColor, marginTop: 20}}>
+            <BigText textStyles={{color:props.primaryColor, fontSize: 20}}>Sem Agendamento</BigText>
         </CardBackgroundF>
     );
 };  

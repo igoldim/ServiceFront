@@ -70,7 +70,7 @@ const ProviderTransaction: React.FC<ScreensProps> = ({navigation})  => {
                 onPress={() => navigation.navigate("Menu")} 
                 showRightIcon={true} 
                 RightIconName="sync" 
-                onRightPress={loadData}
+                onRightPress={() => loadData()}
                 />
             <Payments refreshing={isLoading} onRefresh={loadData}  data={data as Array<TPayments>} primaryColor={primaryColor} secondColor={secondColor}/>                   
 

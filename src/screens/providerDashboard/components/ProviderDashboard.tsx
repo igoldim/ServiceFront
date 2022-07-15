@@ -7,7 +7,7 @@ import BigText from "../../../components/Texts/BigText";
 import RegularText from "../../../components/Texts/RegularText";
 import TransactionSection from "../../../components/Transaction/TransactionSection";
 import { cleanData, useAppData } from "../../../services";
-import { ScreensProps, TUser } from "../../../types/AppType";
+import { ScreensProps, TSchedule, TServices, TUser } from "../../../types/AppType";
 import { Container } from "./ProviderDashboard.s";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { fetchConsultaPagamentos, fetchData } from "../service";
@@ -20,6 +20,13 @@ import { fetchConsultaPagamento } from "../../recarga/services";
 const ProviderDashboard: React.FC<ScreensProps> = ({navigation}) => {
     const [name, setName] = React.useState("Usuário");
     const [data, setData] = React.useState<TUser>();
+
+
+    const [dataSchedule, setDataSchedule] = React.useState<Array<TServices> | null>( []);
+    const [dataServices, setDataServices] = React.useState<Array<TServices> | null>( [] );
+
+
+
     const [avatar, setAvar] = React.useState("https://imagens.circuit.inf.br/noAvatar.png");
 
     const [primaryColor, setPrimaryColor] = React.useState("#000");
@@ -60,7 +67,9 @@ const ProviderDashboard: React.FC<ScreensProps> = ({navigation}) => {
             if (sucessful){
                 setAvar(data?.avatar as string);
                 await AsyncStorage.setItem("Avatar", data?.avatar as string);
-                setData(data);               
+                setData(data);      
+                setDataSchedule(data?.servicesAgendados);         
+                setDataServices(data?.servicesConcluido);      
                 setLoading(false);
             }
         }
@@ -133,26 +142,13 @@ const ProviderDashboard: React.FC<ScreensProps> = ({navigation}) => {
                     {!isLoading && <Icon name="sync" color={secondColor} size={30} /> }                    
                 </TouchableOpacity>
             </View>           
-            <TouchableOpacity onPress={() => navigation.navigate("Menu")}>
+            <TouchableOpacity onPress={() => navigation.navigate("ProviderTransaction")}>
                 <RegularText textStyles={{color: secondColor, fontSize: 28, fontWeight: '400'}}>R$ {data?.amount}</RegularText> 
             </TouchableOpacity>
 
-            {data?.servicesAgendados.length == 0  && 
-                <CardSectionFake primaryColor={primaryColor} secondColor={secondColor} />
-            }           
+            <CardSection refreshing={isLoading} onRefresh={loadData}  data={dataSchedule as Array<TServices>} primaryColor={primaryColor} secondColor={secondColor} />
 
-            {data?.servicesAgendados   &&  
-                <CardSection refreshing={isLoading} onRefresh={loadData}  data={data?.servicesAgendados} primaryColor={primaryColor} secondColor={secondColor} />
-            }
-
-            {data?.servicesConcluido && data?.servicesConcluido.length == 0  && 
-                <TransactionSectionFake title={"Serviços"} subtitle={"Recentes"} primaryColor={primaryColor} secondColor={secondColor}/>
-            }           
-
-            {data?.servicesConcluido && data?.servicesConcluido.length > 0  && 
-                <TransactionSection refreshing={isLoading} onRefresh={loadData}  data={data?.servicesConcluido} title={"Serviços"} subtitle={"Recentes"} primaryColor={primaryColor} secondColor={secondColor}/>
-            }           
-
+            <TransactionSection refreshing={isLoading} onRefresh={loadData}  data={dataServices as Array<TServices>} title={"Serviços"} subtitle={"Recentes"} primaryColor={primaryColor} secondColor={secondColor}/>
 
             <MessageAlertModal 
                 visible={visible} 

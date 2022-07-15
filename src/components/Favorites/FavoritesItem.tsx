@@ -9,33 +9,19 @@ import { useNavigation } from '@react-navigation/native';
 
 
 const FavoritesItem: React.FC<TFavoriteData> = ( props ) => {
-    const [primaryColor, setPrimaryColor] = React.useState("#000");
-    const [secondColor, setSecondColor] = React.useState("#000");
     const navigation = useNavigation();
 
-    React.useEffect(() =>{
-        loadData();
-    },[]);
-
-    const loadData = async () => {
-        const {primaryColor:strPrimaryColor, secondColor: strSecondColor } = await useAppData();
-
-        setPrimaryColor(strPrimaryColor); 
-        setSecondColor(strSecondColor); 
-    };
-        
-
     return (
-        <FavoritesRow style={{backgroundColor: secondColor}}>            
+        <FavoritesRow style={{backgroundColor: props.secondColor}}>            
             <FavoritesHead>
                 <RegularText textStyles={{
-                        color: primaryColor,
+                        color: props.primaryColor,
                         textAlign: 'left',
                         fontWeight:'800'                    
                     }}>
                     {props.professional.name?.toString()}
                 </RegularText>  
-                <Favoritestatus style={{backgroundColor: primaryColor}}>
+                <Favoritestatus style={{backgroundColor: props.primaryColor}}>
                 <Stars 
                     isSave={false} 
                     onPress={() => {}}  
@@ -44,13 +30,13 @@ const FavoritesItem: React.FC<TFavoriteData> = ( props ) => {
                     width="15" 
                     height='15' 
                     startStyle={{marginTop: 10, marginBottom: 10, alignSelf: 'center'}}
-                    color={secondColor}
+                    color={props.secondColor}
                     />
                </Favoritestatus>                                         
             </FavoritesHead>
             <FavoritesDate>
                 <RegularText textStyles={{
-                            color: primaryColor,
+                            color: props.primaryColor,
                             fontSize: 16,
                             textAlign: 'left',
                             fontWeight:'400'                    
@@ -62,7 +48,7 @@ const FavoritesItem: React.FC<TFavoriteData> = ( props ) => {
                <FavoritesFooterItem>
                 <FavoritesValor>
                         <RegularText textStyles={{
-                                color: primaryColor,
+                                color: props.primaryColor,
                                 fontSize: 20,
                                 textAlign: 'left',
                                 fontWeight:'400'                    
@@ -70,7 +56,7 @@ const FavoritesItem: React.FC<TFavoriteData> = ( props ) => {
                             Valor
                         </RegularText>
                         <RegularText textStyles={{
-                                color: primaryColor,
+                                color: props.primaryColor,
                                 fontSize: 24,
                                 textAlign: 'left',
                                 fontWeight:'800'                    
@@ -79,8 +65,8 @@ const FavoritesItem: React.FC<TFavoriteData> = ( props ) => {
                         </RegularText>
                 </ FavoritesValor>                
                </ FavoritesFooterItem>               
-               <FavoritesButton  style={{backgroundColor: primaryColor}} onPress={() => navigation.navigate("Agendar")}>
-                 <Icon name="arrow-right-thick"  size={30} color={secondColor} />
+               <FavoritesButton  style={{backgroundColor: props.primaryColor}} onPress={() => navigation.navigate("Agendar")}>
+                 <Icon name="arrow-right-thick"  size={30} color={props.secondColor} />
                </FavoritesButton>      
             </ FavoritesFooter>           
         </FavoritesRow>

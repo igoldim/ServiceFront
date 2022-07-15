@@ -54,32 +54,32 @@ const CardItem: React.FC<CardItemType> = (props) => {
                  <CardRow>
                     {props.item.user &&
                         <View style={{flex: 3}}>
-                            <SmallText textStyles={{fontSize: 11, color: props.primaryColor}}>
+                            <SmallText textStyles={{fontSize: 14, color: props.primaryColor}}>
                                 {props.item.user.address}
                             </SmallText>
-                            <SmallText textStyles={{fontSize: 11, color: props.primaryColor}}>
+                            <SmallText textStyles={{fontSize: 14, color: props.primaryColor}}>
                                 {props.item.user.district}
                             </SmallText>
-                            <SmallText textStyles={{fontSize: 11, color: props.primaryColor}}>
+                            <SmallText textStyles={{fontSize: 14, color: props.primaryColor}}>
                                 {props.item.user.city}, {props.item.user.state}
                             </SmallText>
-                            <SmallText textStyles={{fontSize: 11, color: props.primaryColor}}>
+                            <SmallText textStyles={{fontSize: 14, color: props.primaryColor}}>
                                 {props.item.user.complement}
                             </SmallText>
                         </View>
                     }
                     {props.item.proffisional &&
                         <View style={{flex: 3}}>
-                            <SmallText textStyles={{fontSize: 11, color: props.primaryColor}}>
+                            <SmallText textStyles={{fontSize: 14, color: props.primaryColor}}>
                                 {props.item.proffisional.address}
                             </SmallText>
-                            <SmallText textStyles={{fontSize: 11, color: props.primaryColor}}>
+                            <SmallText textStyles={{fontSize: 14, color: props.primaryColor}}>
                                 {props.item.proffisional.district}
                             </SmallText>
-                            <SmallText textStyles={{fontSize: 11, color: props.primaryColor}}>
+                            <SmallText textStyles={{fontSize: 14, color: props.primaryColor}}>
                                 {props.item.proffisional.city}, {props.item.proffisional.state}
                             </SmallText>
-                            <SmallText textStyles={{fontSize: 11, color: props.primaryColor}}>
+                            <SmallText textStyles={{fontSize: 14, color: props.primaryColor}}>
                                 {props.item.proffisional.complement}
                             </SmallText>
                         </View>
@@ -93,7 +93,7 @@ const CardItem: React.FC<CardItemType> = (props) => {
                     {props.item.proffisional &&
                         <Avatar 
                             source={{uri: props.item.proffisional.avatar ? props.item.proffisional.avatar : 'https://imagens.circuit.inf.br/noAvatar.png'}} 
-                            style={{backgroundColor: props.primaryColor, borderRadius: 100, width: 40, height: 45}}  
+                            style={{backgroundColor: props.primaryColor, borderRadius: 100}}  
                         />
                     }
                  </CardRow>   

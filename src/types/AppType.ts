@@ -88,6 +88,8 @@ export type TFavoriteData = {
     scheduleDateTime: string,
     rateValue: string,
     amountValue: string
+    primaryColor: string, 
+    secondColor: string   
 }
 
 export type TAgenda = {
@@ -275,6 +277,31 @@ export type TSchedule = {
     updateAt: string,
 }
 
+export type TServicesProps = {
+    id:  string,
+    appId : string,
+    profissionalId : string,
+    latitude : string,
+    longitude : string,
+    userId : string,
+    amountValue : string,
+    endTime : string,
+    rateValue : string,
+    scheduleId : string,
+    schedule : TSchedule,
+    serviceValue : string,
+    order : number,
+    startTime : string,
+    status : string,
+    proffisional : TUser,
+    user : TUser,
+    createAt : string,
+    updateAt : string,
+    primaryColor: string, 
+    secondColor: string    
+}
+
+
 export type TServices = {
     id:  string,
     appId : string,
@@ -290,7 +317,7 @@ export type TServices = {
     serviceValue : string,
     order : number,
     startTime : string,
-    status : boolean,
+    status : string,
     proffisional : TUser,
     user : TUser,
     createAt : string,
@@ -302,4 +329,6 @@ export type TFavoritesSectionProps = {
     isLoading: boolean,
     onRefresh?: () => void; 
     refreshing?: boolean;  
+    primaryColor: string, 
+    secondColor: string    
 }

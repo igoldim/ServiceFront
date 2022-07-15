@@ -1,16 +1,13 @@
 import React from "react";
 import CardSection from "../../../components/Cards/CardSection";
-import CardSectionFake from "../../../components/Cards/CardSectionFake";
-import { Colors } from "../../../components/Colors";
 import ScreenHeadUser from "../../../components/Head/ScreenHeadUser";
 import SearchInput from "../../../components/Input/SearchInput";
 import MessageAlertModal from "../../../components/Modals/MessageAlertModal";
 import BigText from "../../../components/Texts/BigText";
 import RegularText from "../../../components/Texts/RegularText";
 import TransactionSection from "../../../components/Transaction/TransactionSection";
-import TransactionSectionFake from "../../../components/Transaction/TransactionSectionFake";
 import { cleanData, useAppData } from "../../../services";
-import { ScreensProps, TUser } from "../../../types/AppType";
+import { ScreensProps, TServices, TUser } from "../../../types/AppType";
 import { fetchData } from "../service";
 import { Container } from "./TakerDashboard.s";
 
@@ -18,6 +15,9 @@ const TakerDashboard: React.FC<ScreensProps> = ({navigation}) => {
     const [name, setName] = React.useState("Usuário");
     const [avatar, setAvatar] = React.useState("");
     const [data, setData] = React.useState<TUser>();
+
+    const [dataSchedule, setDataSchedule] = React.useState<Array<TServices> | null>( []);
+    const [dataServices, setDataServices] = React.useState<Array<TServices> | null>( [] );
 
     const [primaryColor, setPrimaryColor] = React.useState("#000");
     const [secondColor, setSecondColor] = React.useState("#000");
@@ -35,6 +35,7 @@ const TakerDashboard: React.FC<ScreensProps> = ({navigation}) => {
 
 
     const loadData = async () => {
+        setLoading(true);
         const {primaryColor:strPrimaryColor, secondColor: strSecondColor, Name, userId, appKey, Avatar} = await useAppData();
         setPrimaryColor(strPrimaryColor); 
         setSecondColor(strSecondColor); 
@@ -45,7 +46,9 @@ const TakerDashboard: React.FC<ScreensProps> = ({navigation}) => {
         if (reponse){
             const {sucessful, data, message} = reponse;
             if (sucessful){
-                setData(data);               
+                setData(data);       
+                setDataSchedule(data?.servicesAgendados);         
+                setDataServices(data?.servicesConcluido);          
                 setLoading(false);
             }
         }
@@ -104,24 +107,9 @@ const TakerDashboard: React.FC<ScreensProps> = ({navigation}) => {
                 <BigText textStyles={{color: secondColor, fontSize: 28, fontWeight: '800'}}>Total de Serviços</BigText>  
                 <RegularText textStyles={{color: secondColor, fontSize: 28, fontWeight: '400'}}>R$ {data?.amount}</RegularText> 
 
-                {data?.servicesAgendados.length == 0  && 
-                    <CardSectionFake primaryColor={primaryColor} secondColor={secondColor} />
-                }           
+                <CardSection refreshing={isLoading} onRefresh={loadData}  data={dataSchedule as Array<TServices>} primaryColor={primaryColor} secondColor={secondColor} />
 
-                {data?.servicesAgendados   &&  
-                    <CardSection refreshing={isLoading} onRefresh={loadData} data={data?.servicesAgendados} primaryColor={primaryColor} secondColor={secondColor} />
-                }
-
-
-                {data?.servicesConcluido && data?.servicesConcluido.length == 0  && 
-                    <TransactionSectionFake title={"Serviços"} subtitle={"Recentes"} primaryColor={primaryColor} secondColor={secondColor}/>
-                }           
-
-                {data?.servicesConcluido && data?.servicesConcluido.length > 0  && 
-                    <TransactionSection refreshing={isLoading} onRefresh={loadData}  data={data?.servicesConcluido} title={"Serviços"} subtitle={"Recentes"} primaryColor={primaryColor} secondColor={secondColor}/>
-                }
-
-
+                <TransactionSection refreshing={isLoading} onRefresh={loadData}  data={dataServices as Array<TServices>} title={"Serviços"} subtitle={"Recentes"} primaryColor={primaryColor} secondColor={secondColor}/>
            
             <MessageAlertModal 
                 visible={visible} 

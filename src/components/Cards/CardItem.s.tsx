@@ -2,9 +2,8 @@ import styled from 'styled-components/native';
 import { ScreenWidth } from '../Shared';
 
 export const CardBackground = styled.View`
-    height: 100%;
-    width: ${ScreenWidth * 0.60}px;
-    border-radius: 15px;
+    width: ${ScreenWidth * 0.80}px;
+    border-radius: 10px;
     margin-right: 25px;
     overflow: hidden;
 `;
@@ -18,6 +17,8 @@ export const CardBackgroundF = styled.View`
     border-radius: 15px;
     overflow: hidden;
     align-self: center ;
+    padding: 10px;
+    margin-bottom: 20px;
 `;
 
 export const CardTouchable = styled.TouchableHighlight`
@@ -49,5 +50,4 @@ export const Avatar = styled.Image`
     width: 50px;
     height: 50px;
     border-radius: 100px;
-    flex: 1;
 `;
