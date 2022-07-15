@@ -9,7 +9,7 @@ export const fetchRegister= async (
     const response = await api
         .post<any>('/Secutiry/Register', params)
         .then(({ data }) => data)
-
+        .catch(({ error }) => error )
     //console.log(response);
 
     return response

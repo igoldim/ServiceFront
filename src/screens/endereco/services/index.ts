@@ -7,6 +7,7 @@ export const fetchCep = async (
     const response = await apiCEP
         .get<any>(`${id}/json`)
         .then(({ data }) => data)
+        .catch(({ error }) => error )
     return response
 }
 
@@ -17,6 +18,7 @@ export const fetchEndereco = async (
     const response = await api
         .put<any>(`User/Endereco/`, params)
         .then(({ data }) => data)
+        .catch(({ error }) => error )
     return response
 }
 

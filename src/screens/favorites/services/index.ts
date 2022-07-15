@@ -9,6 +9,6 @@ export const fetchFavorite = async (
     const response = await api
         .get<any>(`/User/Favorite/${params.userId}/${params.appId}`)
         .then(({ data }) => data)
-   
+        .catch(({ error }) => error )
     return response
 }

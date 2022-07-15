@@ -48,7 +48,6 @@ const ProviderDashboard: React.FC<ScreensProps> = ({navigation}) => {
             cleanData();
         }    
 
-
         setAvar(Avatar);
         setPrimaryColor(strPrimaryColor); 
         setSecondColor(strSecondColor); 
@@ -80,7 +79,7 @@ const ProviderDashboard: React.FC<ScreensProps> = ({navigation}) => {
         if (response){
             const {sucessful, data: dataP, message} = response;
             if (sucessful){
-                console.log(dataP);
+                //console.log(message);
                 if (dataP && dataP.status === "CONCLUIDA"){
                     showModal("Pix", "Obrigado, pagamento confirmado", "success");
                 }
@@ -134,7 +133,9 @@ const ProviderDashboard: React.FC<ScreensProps> = ({navigation}) => {
                     {!isLoading && <Icon name="sync" color={secondColor} size={30} /> }                    
                 </TouchableOpacity>
             </View>           
-            <RegularText textStyles={{color: secondColor, fontSize: 28, fontWeight: '400'}}>R$ {data?.amount}</RegularText> 
+            <TouchableOpacity onPress={() => navigation.navigate("Menu")}>
+                <RegularText textStyles={{color: secondColor, fontSize: 28, fontWeight: '400'}}>R$ {data?.amount}</RegularText> 
+            </TouchableOpacity>
 
             {data?.servicesAgendados.length == 0  && 
                 <CardSectionFake primaryColor={primaryColor} secondColor={secondColor} />
@@ -143,7 +144,6 @@ const ProviderDashboard: React.FC<ScreensProps> = ({navigation}) => {
             {data?.servicesAgendados   &&  
                 <CardSection data={data?.servicesAgendados} primaryColor={primaryColor} secondColor={secondColor} />
             }
-
 
             {data?.servicesConcluido && data?.servicesConcluido.length == 0  && 
                 <TransactionSectionFake title={"Serviços"} subtitle={"Recentes"} primaryColor={primaryColor} secondColor={secondColor}/>

@@ -9,5 +9,6 @@ export const fetchConfirmEmail= async (
     const response = await api
         .get<any>(`/Secutiry/ConfirmEmail?email=${params.email}&token=${params.token}`)
         .then(({ data }) => data)
+        .catch(({ error }) => error )
     return response
 }

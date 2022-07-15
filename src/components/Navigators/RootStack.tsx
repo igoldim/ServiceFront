@@ -25,7 +25,8 @@ import Resultado from '../../screens/resultado/components/Resultado';
 import Agendar from '../../screens/agendar/components/Agendar';
 import Confirmar from '../../screens/confirmar/components/Confirmar';
 import ValidandoDocumentos from '../../screens/documentos/components/ValidandoDocumentos';
-
+import ProviderTransaction from '../../screens/providerTransaction/components/ProviderTransaction';
+//
 //
 
 import Menu from '../Menu/Menu';
@@ -55,6 +56,7 @@ export type RootStackParamList = {
     Agendar: undefined;
     Confirmar: undefined;
     ValidandoDocumentos: undefined;
+    ProviderTransaction: undefined;
 }
 
 
@@ -183,6 +185,10 @@ const RootStack: React.FC = () => {
                     component={ValidandoDocumentos}
                     options={{headerShown:false }} />
 
+                <Stack.Screen
+                    name="ProviderTransaction"
+                    component={ProviderTransaction}
+                    options={{headerShown:false }} />
 
                 <Stack.Screen 
                     name="Menu" 

@@ -9,6 +9,12 @@ export interface IApp {
 export interface ServicesSectionProps {
     data: Array<TUsers>;
 }
+export interface PaymentsProps {
+    data: Array<TPayments>;
+    primaryColor: string;
+    secondColor: string;
+}
+
 
 export interface FavoritesSectionProps {
     data: Array<TUsers>;
@@ -254,6 +260,13 @@ export interface IAgendaResult {
 export interface IRecargaResult {
     sucessful: boolean,
 	data: TPayments,
+    message: string;
+    status: any;
+}
+
+export interface IPaymentsResult {
+    sucessful: boolean,
+	data: Array<TPayments>,
     message: string;
     status: any;
 }

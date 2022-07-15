@@ -8,6 +8,7 @@ export const fetchGetPerfil = async (
     const response = await api
         .get<any>(`/User/${id}`)
         .then(({ data }) => data)
+        .catch(({ error }) => error )
         //console.log(response);
     return response
 }
@@ -39,5 +40,6 @@ export const fetchPerfil = async (
             }
         })
         .then(({ data }) => data)
+        .catch(({ error }) => error )
     return response;
 }

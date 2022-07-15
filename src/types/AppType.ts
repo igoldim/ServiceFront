@@ -242,6 +242,28 @@ export type TPayments = {
     updateAt: string,    
 }
 
+export type TPaymentsProps = {
+    id: string,
+    userId: string,
+    appId: string,
+    transactionId: string,
+    endToEndId: string,
+    paymentDate: string,    
+    locationId: string,
+    paymentMethod: string,
+    qrcode: string,
+    qrcodeText: string,
+    digitableLine: string,
+    barcodeData: string,
+    barcode: string,
+    amount: string,
+    status: string,
+    createAt: string,
+    updateAt: string,    
+    primaryColor: string, 
+    secondColor: string     
+}
+
 export type TSchedule = {
     id:  string,
     userId: string,

@@ -17,7 +17,7 @@ export const fetchData= async (
 export const fetchConsultaPagamentos = async (
     params: IDefaultUserGet
 ): Promise<IRecargaResult> => {    
-    console.log(`/Pix/ConsultaPayments/${params.userId}/${params.appId}`);
+    //console.log(`/Pix/ConsultaPayments/${params.userId}/${params.appId}`);
     const response = await api
         .get<any>(`/Pix/ConsultaPayments/${params.userId}/${params.appId}`)
         .then(({ data }) => data)

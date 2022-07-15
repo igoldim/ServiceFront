@@ -92,7 +92,7 @@ const Menu: React.FC<ScreensProps> = ({navigation}) => {
                         <MenuItem 
                             icon="text-snippet" 
                             title="Transações" 
-                            onPress={() => {}}
+                            onPress={() => navigation.navigate("ProviderTransaction")}
                             primaryColor={primaryColor}
                             secondColor={secondColor}
                             />

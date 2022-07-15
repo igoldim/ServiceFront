@@ -20,6 +20,7 @@ export const fetchConsultaPagamento = async (
     const response = await api
         .get<any>(`/Pix/ConsultaStatus/${params.id}`)
         .then(({ data }) => data)
+        .catch(({ error }) => error )
     //console.log(response);
     return response
 }

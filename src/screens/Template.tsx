@@ -9,17 +9,16 @@ const Template: React.FC<ScreensProps> = ({navigation})  => {
     const [secondColor, setSecondColor] = React.useState("#000");
 
     React.useEffect(() =>{
-    
-    const loadData = async () => {
+      loadData();
+  },[]);
+
+  const loadData = async () => {
       const {primaryColor:strPrimaryColor, secondColor: strSecondColor } = await useAppData();
       setPrimaryColor(strPrimaryColor); 
       setSecondColor(strSecondColor); 
 
       //carrega dados da api
-    };
-    
-    loadData();
-  },[]);
+  };
 
     return (
           <Container style={{backgroundColor: primaryColor}}>

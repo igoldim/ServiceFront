@@ -8,6 +8,7 @@ export const fetchLogin= async (
     const response = await api
         .post<any>('/Secutiry/Authentication', params)
         .then(({ data }) => data)
+        .catch(({ error }) => error )
     //console.log(response);
     return response
 }
@@ -19,5 +20,6 @@ export const fetchResetPassword= async (
     const response = await api
         .get<any>(`/Secutiry/ResetPassword?email=${params}`)
         .then(({ data }) => data)
+        .catch(({ error }) => error )
     return response
 }

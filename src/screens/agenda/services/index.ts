@@ -23,7 +23,7 @@ export const fetchIncluir = async (
     const response = await api
         .post<any>('/Schedule', params)
         .then(({ data }) => data)
-
+        .catch(({ error }) => error )
     //console.log(response);
 
     return response
@@ -36,7 +36,7 @@ export const fetchAtualizar = async (
     const response = await api
         .put<any>('/Schedule', params)
         .then(({ data }) => data)
-
+        .catch(({ error }) => error )
     //console.log(response);
 
     return response
@@ -49,7 +49,7 @@ export const fetchDeletar = async (
     const response = await api
         .delete<any>(`/Schedule/${params.id}/${params.userId}/${params.appId}`)
         .then(({ data }) => data)
-
+        .catch(({ error }) => error )
     //console.log(response);
 
     return response

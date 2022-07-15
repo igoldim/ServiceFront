@@ -11,6 +11,7 @@ export const getApp= async (
     const response = await api
         .get<any>(`Secutiry/GetApp?slug=${params.slug}&applicationKey=${params.applicationkey}`)
         .then(({ data }) => data)
+        .catch(({ error }) => error )
     return response.data
 }
 

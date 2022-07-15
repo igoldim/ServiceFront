@@ -8,5 +8,6 @@ export const fetchChangePassword= async (
     const response = await api
         .post<any>('/Secutiry/ChangePassword', params)
         .then(({ data }) => data)
+        .catch(({ error }) => error )
     return response
 }

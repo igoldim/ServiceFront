@@ -10,5 +10,6 @@ export const fetchData= async (
     const response = await api
         .get<any>(`/User/GetTaker/${params.id}/${params.appid}`)
         .then(({ data }) => data)
+        .catch(({ error }) => error )
     return response
 }
