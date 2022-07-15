@@ -1,8 +1,7 @@
 import React from "react";
 import { SearchListProps } from "../../interfaces";
-import BigText from "../Texts/BigText";
 import SearchResultListItem from "./SearchResultListItem";
-import { Container, StyledFlatList } from "./StyledList.s";
+import { StyledFlatList } from "./StyledList.s";
 
 const SearchResultList: React.FC<SearchListProps> = ( props ) => {
     return (
@@ -13,6 +12,8 @@ const SearchResultList: React.FC<SearchListProps> = ( props ) => {
                 contentContainerStyle={{
                     paddingBottom: 25
                 }}
+                onRefresh={props.onRefresh}
+                refreshing={props.refreshing}
                 keyExtractor={({ id }: any )=> id.toString()}
                 renderItem={({ item }: any ) => <SearchResultListItem 
                                                     {...item} 

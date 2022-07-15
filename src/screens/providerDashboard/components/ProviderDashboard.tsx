@@ -142,7 +142,7 @@ const ProviderDashboard: React.FC<ScreensProps> = ({navigation}) => {
             }           
 
             {data?.servicesAgendados   &&  
-                <CardSection data={data?.servicesAgendados} primaryColor={primaryColor} secondColor={secondColor} />
+                <CardSection refreshing={isLoading} onRefresh={loadData}  data={data?.servicesAgendados} primaryColor={primaryColor} secondColor={secondColor} />
             }
 
             {data?.servicesConcluido && data?.servicesConcluido.length == 0  && 
@@ -150,7 +150,7 @@ const ProviderDashboard: React.FC<ScreensProps> = ({navigation}) => {
             }           
 
             {data?.servicesConcluido && data?.servicesConcluido.length > 0  && 
-                <TransactionSection data={data?.servicesConcluido} title={"Serviços"} subtitle={"Recentes"} primaryColor={primaryColor} secondColor={secondColor}/>
+                <TransactionSection refreshing={isLoading} onRefresh={loadData}  data={data?.servicesConcluido} title={"Serviços"} subtitle={"Recentes"} primaryColor={primaryColor} secondColor={secondColor}/>
             }           
 
 

@@ -11,6 +11,8 @@ const Payments: React.FC<PaymentsProps> = ( props ) => {
                 contentContainerStyle={{
                     paddingBottom: 25
                 }}
+                onRefresh={props.onRefresh}
+                refreshing={props.refreshing}
                 keyExtractor={({ id }: any )=> id.toString()}
                 renderItem={({ item }: any ) => <PaymentsItem {...item} primaryColor={props.primaryColor} secondColor={props.secondColor} />}
             />

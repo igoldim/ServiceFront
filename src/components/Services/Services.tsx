@@ -12,6 +12,8 @@ const Services: React.FC<ServicesSectionProps> = ( props ) => {
                 contentContainerStyle={{
                     paddingBottom: 25
                 }}
+                onRefresh={props.onRefresh}
+                refreshing={props.refreshing}
                 keyExtractor={({ id }: any )=> id.toString()}
                 renderItem={({ item }: any ) => <ServicesItem {...item} />}
             />

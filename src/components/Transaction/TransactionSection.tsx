@@ -1,7 +1,6 @@
 import React from 'react';
 import RegularText from '../Texts/RegularText';
 import { TransactionList, TransactionRow, TransactionSectionBackground } from './Transaction.s';
-
 import Icon from 'react-native-vector-icons/Ionicons';
 import TransactionItem from './TransactionItem';
 import { TransactionSectionProps } from '../../interfaces';
@@ -23,6 +22,8 @@ const TransactionSection: React.FC<TransactionSectionProps> = ( props ) => {
             contentContainerStyle={{
                 paddingBottom: 25
             }}
+            onRefresh={props.onRefresh}
+            refreshing={props.refreshing}
             keyExtractor={({ id }: any )=> id.toString()}
             renderItem={({ item }: any ) => <TransactionItem {...item} primaryColor={props.primaryColor} secondColor={props.secondColor}/>}
             />

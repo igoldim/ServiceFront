@@ -1,5 +1,4 @@
 import React from 'react';
-import { ActivityIndicator, View } from 'react-native';
 import ScreenHead from '../../../components/Head/ScreenHead';
 import MessageAlertModal from '../../../components/Modals/MessageAlertModal';
 import Payments from '../../../components/Payments/Payments';
@@ -73,8 +72,7 @@ const ProviderTransaction: React.FC<ScreensProps> = ({navigation})  => {
                 RightIconName="sync" 
                 onRightPress={loadData}
                 />
-            {isLoading && <View style={{display: 'flex', height:'100%', justifyContent: 'center', alignSelf: 'center'}}><ActivityIndicator size={30} color="#fff" /></View>}
-            {!isLoading && <Payments data={data as Array<TPayments>} primaryColor={primaryColor} secondColor={secondColor}/>}                   
+            <Payments refreshing={isLoading} onRefresh={loadData}  data={data as Array<TPayments>} primaryColor={primaryColor} secondColor={secondColor}/>                   
 
             <MessageAlertModal 
                 visible={visible} 

@@ -1,6 +1,5 @@
 import React from "react";
 import {AgendarProps } from "../../interfaces";
-import BigText from "../Texts/BigText";
 import AgendarListItem from "./AgendarListItem";
 import { StyledFlatList } from "./StyledList.s";
 
@@ -13,6 +12,8 @@ const StyledAgendarList: React.FC<AgendarProps> = ( props ) => {
                 contentContainerStyle={{
                     paddingBottom: 25
                 }}
+                onRefresh={props.onRefresh}
+                refreshing={props.refreshing}
                 keyExtractor={({ id }: any )=> id.toString()}
                 renderItem={({ item }: any ) => <AgendarListItem 
                                                     {...item} 

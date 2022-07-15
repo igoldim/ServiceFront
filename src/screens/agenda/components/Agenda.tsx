@@ -265,20 +265,16 @@ const Agenda: React.FC<ScreensProps> = ({navigation}) =>{
                     Gravar
             </RegularButton>}
 
-            {isLoadingData && 
-             <ActivityIndicator size={30} color="#fff" />
-            }
-
-            {!isLoadingData && 
             <StyledList 
+                refreshing={isLoadingData} 
+                onRefresh={loadData} 
                 style={{marginTop: 15}}
                 data={agendaData as Array<TAgenda>} 
                 primaryColor={primaryColor} 
                 secondColor={secondColor} 
                 onPressEdit={handleEdit}
                 onPressDelete={handleDelete}
-                />
-            }
+            />
             <MessageAlertModal 
                 visible={visible} 
                 heading={messageHeadding} 

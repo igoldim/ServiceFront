@@ -8,11 +8,15 @@ export interface IApp {
 
 export interface ServicesSectionProps {
     data: Array<TUsers>;
+    onRefresh?: () => void; 
+    refreshing?: boolean;
 }
 export interface PaymentsProps {
     data: Array<TPayments>;
     primaryColor: string;
     secondColor: string;
+    onRefresh?: () => void; 
+    refreshing?: boolean;
 }
 
 
@@ -62,6 +66,8 @@ export interface TransactionSectionProps {
     subtitle: string;
     primaryColor: string;
     secondColor: string;    
+    onRefresh?: () => void; 
+    refreshing?: boolean;
 }
 
 export interface TransactionSectionFakeProps {
@@ -85,6 +91,8 @@ export interface AgendaProps {
     secondColor: string;
     onPressEdit: (value: TAgenda) => void;
     onPressDelete: (value: TAgenda) => void;
+    onRefresh?: () => void; 
+    refreshing?: boolean;   
 }
 
 export interface AgendarProps {
@@ -93,6 +101,8 @@ export interface AgendarProps {
     primaryColor: string;
     secondColor: string;
     onPress: () => void;
+    onRefresh?: () => void; 
+    refreshing?: boolean;    
 }
 
 export interface AgendaItemProps {
@@ -127,6 +137,8 @@ export interface SearchListProps {
     primaryColor: string;
     secondColor: string;
     onPress: () => void;
+    onRefresh?: () => void; 
+    refreshing?: boolean;
 }
 
 export interface CommentProps {
@@ -134,6 +146,8 @@ export interface CommentProps {
     data: Array<TComment>; 
     primaryColor: string;
     secondColor: string;
+    onRefresh?: () => void; 
+    refreshing?: boolean;
 }
 
 export interface SearchListItemProps {

@@ -13,6 +13,8 @@ const CardSection: React.FC<CardSectionProps> = (props) => {
                 paddingRight: 25,
                 alignItems: "center"
             }}
+            onRefresh={props.onRefresh}
+            refreshing={props.refreshing}
             keyExtractor={({id}:any) => id}
             renderItem={({item}: any) => <CardItem item={item} primaryColor={props.primaryColor} secondColor={props.secondColor} />}
             />

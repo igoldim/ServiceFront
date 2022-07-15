@@ -300,4 +300,6 @@ export type TServices = {
 export type TFavoritesSectionProps = {
     data: Array<TFavoriteData>,
     isLoading: boolean,
+    onRefresh?: () => void; 
+    refreshing?: boolean;  
 }

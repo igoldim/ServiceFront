@@ -13,6 +13,8 @@ const CommentList: React.FC<CommentProps> = ( props ) => {
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{
             }}
+            onRefresh={props.onRefresh}
+            refreshing={props.refreshing}
             keyExtractor={({id}:any) => id}
             renderItem={({item}: any) =>    <CommentItem 
                                                 {...item} 
