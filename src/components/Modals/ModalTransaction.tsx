@@ -7,7 +7,7 @@ import { GestureResponderEvent, Modal, StyleProp, TextStyle, ViewStyle } from "r
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import RegularButton from '../Buttons/RegularButton';
-import TransactionSection from '../Transaction/TransactionSection';
+import TransactionSection from '../Transaction/TransactionSectionTaker';
 
 const ModalPressableContainer = styled.Pressable`
     flex: 1;

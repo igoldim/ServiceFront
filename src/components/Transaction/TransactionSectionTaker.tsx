@@ -2,10 +2,10 @@ import React from 'react';
 import RegularText from '../Texts/RegularText';
 import { TransactionList, TransactionRow, TransactionSectionBackground } from './Transaction.s';
 import Icon from 'react-native-vector-icons/Ionicons';
-import TransactionItem from './TransactionItem';
 import { TransactionSectionProps } from '../../interfaces';
+import TransactionTakerItem from './TransactionTakerItem';
 
-const TransactionSection: React.FC<TransactionSectionProps> = ( props ) => {
+const TransactionSectionTaker: React.FC<TransactionSectionProps> = ( props ) => {
     return (
         <TransactionSectionBackground>
             <TransactionRow style={{marginBottom: 15}}>
@@ -25,10 +25,10 @@ const TransactionSection: React.FC<TransactionSectionProps> = ( props ) => {
             onRefresh={props.onRefresh}
             refreshing={props.refreshing}
             keyExtractor={({ id }: any )=> id.toString()}
-            renderItem={({ item }: any ) => <TransactionItem {...item} primaryColor={props.primaryColor} secondColor={props.secondColor}/>}
+            renderItem={({ item }: any ) => <TransactionTakerItem {...item} primaryColor={props.primaryColor} secondColor={props.secondColor}/>}
             />
         </TransactionSectionBackground>
     );
 };  
 
-export default TransactionSection;
+export default TransactionSectionTaker;

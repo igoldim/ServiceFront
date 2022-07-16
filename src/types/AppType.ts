@@ -103,15 +103,6 @@ export type TAgenda = {
     updateAt?: string | null
 }
 
-export type TSearch = {
-    id: string,
-    name: string;
-    avatar: string,
-    amount: string,
-    stars: number,
-    distance: number
-}
-
 export type TComment = {
     id: string,
     name: string;
@@ -152,9 +143,19 @@ export type TUser = {
 	favoriteUsers: Array<TFavoriteUsers>,
 	payments: Array<TPayments>,
 	schedules: Array<TSchedule>,
-	servicesAgendados: Array<TServices>
+	servicesAgendados: Array<TServices>,
 	servicesConcluido: Array<TServices>
 }
+
+export type TSearch = {
+    id: string;
+    name: string;
+    avatar: string;
+    amount: string;
+    stars: number;
+    distance: number;
+}
+
 
 export type TUserPerfil = {
     userId : string,

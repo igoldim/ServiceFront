@@ -7,7 +7,8 @@ import { StyleProp
         ,NativeSyntheticEvent,
         KeyboardTypeOptions,
         TextInputFocusEventData,
-        ViewStyle
+        ViewStyle,
+        ActivityIndicator
      } from "react-native";
 import SmallText from '../Texts/SmallText';
 
@@ -48,6 +49,15 @@ const RightIcon = styled.TouchableOpacity`
     height: 35px;
 `;
 
+
+const RightIconF = styled.View`
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    width: 35px;
+    height: 35px;
+`;
+
 interface InputProps{
     ViewStyles?: StyleProp<ViewStyle>;
     textStyles?: StyleProp<TextStyle>;
@@ -65,6 +75,7 @@ interface InputProps{
     iconeColor?: string,
     value?: string | undefined;
     isPassword?: boolean | undefined;
+    locationIsLoading: boolean;
     onSearchButton: () => void;
     onLocationhButton: () => void;
 }
@@ -85,9 +96,17 @@ const SearchInput: React.FC<InputProps> = (props) => {
                 autoCapitalize={props.autoCapitalize}
                 value={props.value}            
             />
+            {props.locationIsLoading && 
+            <RightIconF  style={props.iconStyles} >
+                <ActivityIndicator size={30} color="#fff" />
+            </RightIconF>
+            }
+            {!props.locationIsLoading && 
             <RightIcon  style={props.iconStyles}  onPress={props.onLocationhButton}>
                 <Icon name={'my-location'} size={30} color={props.iconeColor} />
             </RightIcon>
+            }
+
           </StyledView>
         )
     ;

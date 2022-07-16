@@ -158,7 +158,7 @@ export interface SearchListItemProps {
     avatar: string;
     amount: string;
     stars: number;
-    distance: number;
+    distance: string;
     primaryColor: string;
     secondColor: string;  
     onPress: () => void;
@@ -210,6 +210,13 @@ export interface IDefaultUserGet {
     appId: string
 }
 
+export interface ISerach {
+    userId: string,
+    appId: string,
+    query: string,
+    latitude: string,
+    longitude: string
+}
 export interface IScheduleDelete {
     userId: string,
     appId: string
@@ -269,19 +276,30 @@ export interface IChangePassword {
 
 export interface IDefaultResult {
     sucessful: string,
-    message: string,
+    message: string,    
 }
 export interface IRegisterResult {
     sucessful: boolean,
 	data: TUser,
     message: string;
+    status: any;
 }
 
 export interface IAgendaResult {
     sucessful: boolean,
 	data: Array<TAgenda>,
     message: string;
+    status: any;
 }
+
+
+export type TSearchResult = {
+    sucessful: boolean,
+	data: Array<TSearch>,
+    message: string;
+    status: any;
+}
+
 
 export interface IRecargaResult {
     sucessful: boolean,

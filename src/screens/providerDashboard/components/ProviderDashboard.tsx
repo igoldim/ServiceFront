@@ -5,17 +5,14 @@ import ScreenHeadUser from "../../../components/Head/ScreenHeadUser";
 import Icon from 'react-native-vector-icons/Ionicons';
 import BigText from "../../../components/Texts/BigText";
 import RegularText from "../../../components/Texts/RegularText";
-import TransactionSection from "../../../components/Transaction/TransactionSection";
 import { cleanData, useAppData } from "../../../services";
 import { ScreensProps, TSchedule, TServices, TUser } from "../../../types/AppType";
 import { Container } from "./ProviderDashboard.s";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { fetchConsultaPagamentos, fetchData } from "../service";
-import CardSectionFake from "../../../components/Cards/CardSectionFake";
-import TransactionSectionFake from "../../../components/Transaction/TransactionSectionFake";
 import AsyncStorage from "@react-native-community/async-storage";
 import MessageAlertModal from "../../../components/Modals/MessageAlertModal";
-import { fetchConsultaPagamento } from "../../recarga/services";
+import TransactionSectionProvider from "../../../components/Transaction/TransactionSectionProvider";
 
 const ProviderDashboard: React.FC<ScreensProps> = ({navigation}) => {
     const [name, setName] = React.useState("Usuário");
@@ -148,7 +145,7 @@ const ProviderDashboard: React.FC<ScreensProps> = ({navigation}) => {
 
             <CardSection refreshing={isLoading} onRefresh={loadData}  data={dataSchedule as Array<TServices>} primaryColor={primaryColor} secondColor={secondColor} />
 
-            <TransactionSection refreshing={isLoading} onRefresh={loadData}  data={dataServices as Array<TServices>} title={"Serviços"} subtitle={"Recentes"} primaryColor={primaryColor} secondColor={secondColor}/>
+            <TransactionSectionProvider refreshing={isLoading} onRefresh={loadData}  data={dataServices as Array<TServices>} title={"Serviços"} subtitle={"Recentes"} primaryColor={primaryColor} secondColor={secondColor}/>
 
             <MessageAlertModal 
                 visible={visible} 

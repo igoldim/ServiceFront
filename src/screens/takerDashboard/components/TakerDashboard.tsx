@@ -1,11 +1,13 @@
+import AsyncStorage from "@react-native-community/async-storage";
 import React from "react";
+import GetLocation from "react-native-get-location";
 import CardSection from "../../../components/Cards/CardSection";
 import ScreenHeadUser from "../../../components/Head/ScreenHeadUser";
 import SearchInput from "../../../components/Input/SearchInput";
 import MessageAlertModal from "../../../components/Modals/MessageAlertModal";
 import BigText from "../../../components/Texts/BigText";
 import RegularText from "../../../components/Texts/RegularText";
-import TransactionSection from "../../../components/Transaction/TransactionSection";
+import TransactionSectionTaker from "../../../components/Transaction/TransactionSectionTaker";
 import { cleanData, useAppData } from "../../../services";
 import { ScreensProps, TServices, TUser } from "../../../types/AppType";
 import { fetchData } from "../service";
@@ -14,6 +16,8 @@ import { Container } from "./TakerDashboard.s";
 const TakerDashboard: React.FC<ScreensProps> = ({navigation}) => {
     const [name, setName] = React.useState("Usuário");
     const [avatar, setAvatar] = React.useState("");
+    const [serachValue, setSerachValue] = React.useState("");
+    
     const [data, setData] = React.useState<TUser>();
 
     const [dataSchedule, setDataSchedule] = React.useState<Array<TServices> | null>( []);
@@ -23,11 +27,16 @@ const TakerDashboard: React.FC<ScreensProps> = ({navigation}) => {
     const [secondColor, setSecondColor] = React.useState("#000");
 
     const [visible, setVisible] = React.useState(false);
+
+    const [temLocation, setTemLocation] = React.useState(false);
+    const [temConnection, setTemConnection] = React.useState(false);
+
     const [messageHeadding, setMessageHeadding] = React.useState('');
     const [messageModal, setMessageModal] = React.useState('');
     const [type, setType] = React.useState("erro");
 
     const [isLoading, setLoading] = React.useState(false);
+    const [locationIsLoading, setLocationIsLoading] = React.useState(false);
     
     React.useEffect(() =>{
         loadData();
@@ -41,9 +50,11 @@ const TakerDashboard: React.FC<ScreensProps> = ({navigation}) => {
         setSecondColor(strSecondColor); 
         setName(Name);
         setAvatar(Avatar);
+        await AsyncStorage.removeItem('q');
 
         var reponse = await fetchData({id: userId,  appid: appKey}); 
         if (reponse){
+            setTemConnection(true);
             const {sucessful, data, message} = reponse;
             if (sucessful){
                 setData(data);       
@@ -53,15 +64,19 @@ const TakerDashboard: React.FC<ScreensProps> = ({navigation}) => {
             }
         }
         else{
+            setTemConnection(false);
             setLoading(false);
             showModal("Segurança", "suas credênciais expiraram, precisamos que você efetue novamente seu login.", "erro");
             cleanData();
         }
 
     };
+
     const modalButtonHandle = () =>{
         setVisible(false);
-        navigation.navigate("SignIn");
+        if (!temConnection){
+            navigation.navigate("SignIn");
+        }
     }
 
     const showModal = (headText: string, message: string, type: string)=> {
@@ -70,6 +85,54 @@ const TakerDashboard: React.FC<ScreensProps> = ({navigation}) => {
         setType(type);
         setVisible(true);
     }
+
+    const handleSearching = async () => {
+
+        if (serachValue === ""){
+            showModal("Busca", "informe pelo menos uma letra para pesquisar.", "erro");
+            return false;
+        }
+
+        AsyncStorage.setItem('searchByLocation', "false");
+        AsyncStorage.setItem('q', serachValue);
+        navigation.reset({
+            index: 1,
+            routes: [
+              { name: 'Resultado' },
+            ],
+        });
+    } 
+
+    const handleLocation = async () => {
+        setLocationIsLoading(true);
+        GetLocation.getCurrentPosition({
+            enableHighAccuracy: true,
+            timeout: 15000,
+          })
+          .then(async location =>  {
+            setLocationIsLoading(false);
+            setTemLocation(true);
+            await AsyncStorage.setItem('searchByLocation', "true");
+            await AsyncStorage.setItem('q', serachValue);
+            await AsyncStorage.setItem('latitude', `${location.latitude}`);
+            await AsyncStorage.setItem('longitude', `${location.longitude}`);     
+
+            //pesquisa com base na localização passando lat and lon
+            navigation.reset({
+                index: 1,
+                routes: [
+                  { name: 'Resultado' },
+                ],
+            });
+          })
+          .catch(async error => {
+            setLocationIsLoading(false);
+            setTemLocation(false);
+            const { code, message } = error;
+            showModal("Localização", message, "erro");
+            return false;            
+          });
+    } 
 
     return (
         <Container style={{backgroundColor: primaryColor}}>
@@ -87,29 +150,35 @@ const TakerDashboard: React.FC<ScreensProps> = ({navigation}) => {
                         ],
                       })}
             />
+
             <SearchInput
-                    onSearchButton={() => navigation.navigate('Resultado')} 
+                    locationIsLoading={locationIsLoading}
+                    onSearchButton={handleSearching} 
                     iconeName='account-search-outline'
                     iconeColor={secondColor}
                     placeholder="Buscar prestador de serviço"
                     placeholderColor={primaryColor}
                     inputStyles={{                       
                         color: primaryColor, 
-                        fontSize: 17.8, 
-                        fontWeight: '800',
+                        fontSize: 17, 
+                        fontWeight: '600',
                     }}
                     ViewStyles={{
                         backgroundColor: secondColor, 
                     }}
                     iconStyles={{backgroundColor: primaryColor}}
-                    onLocationhButton={() => navigation.navigate('Resultado')} 
-                /> 
-                <BigText textStyles={{color: secondColor, fontSize: 28, fontWeight: '800'}}>Total de Serviços</BigText>  
-                <RegularText textStyles={{color: secondColor, fontSize: 28, fontWeight: '400'}}>R$ {data?.amount}</RegularText> 
+                    onLocationhButton={handleLocation} 
+                    value={serachValue}
+                    onChangeText={setSerachValue}
+            /> 
 
-                <CardSection refreshing={isLoading} onRefresh={loadData}  data={dataSchedule as Array<TServices>} primaryColor={primaryColor} secondColor={secondColor} />
+            <BigText textStyles={{color: secondColor, fontSize: 28, fontWeight: '700'}}>Total de Serviços</BigText>  
 
-                <TransactionSection refreshing={isLoading} onRefresh={loadData}  data={dataServices as Array<TServices>} title={"Serviços"} subtitle={"Recentes"} primaryColor={primaryColor} secondColor={secondColor}/>
+            <RegularText textStyles={{color: secondColor, fontSize: 28, fontWeight: '400'}}>R$ {data?.amount}</RegularText> 
+
+            <CardSection refreshing={isLoading} onRefresh={loadData}  data={dataSchedule as Array<TServices>} primaryColor={primaryColor} secondColor={secondColor} />
+
+            <TransactionSectionTaker refreshing={isLoading} onRefresh={loadData}  data={dataServices as Array<TServices>} title={"Serviços"} subtitle={"Recentes"} primaryColor={primaryColor} secondColor={secondColor}/>
            
             <MessageAlertModal 
                 visible={visible} 

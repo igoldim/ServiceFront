@@ -46,7 +46,8 @@ const Perfil: React.FC<ScreensProps> = ({navigation}) =>{
         //carrega dados da api
         var { sucessful, data, message } = await fetchGetPerfil(userId); 
         if (sucessful){
-            setAvatar(data.avatar && data.avatar != "" ? data.avatar : Avatar);
+            setAvatar(data.avatar!.toString());
+            await AsyncStorage.setItem("Avatar", data.avatar!.toString());
             setUserNAme(data.name);
             setEmail(data.email as string);
             setRegistro(data.register as string);
@@ -147,7 +148,7 @@ const Perfil: React.FC<ScreensProps> = ({navigation}) =>{
             <StyledScrollView>
                 <IconImg style={{backgroundColor: secondColor, marginTop: 10}} onPress={handlePicture}>
                         <Image 
-                            source={{uri: avatar, width: 150, height:150 }}
+                            source={{uri: avatarFile ? avatarFile : avatar, width: 150, height:150 }}
                             style={{borderRadius: 100}}/>
                 </IconImg>
                 <RegularInput 

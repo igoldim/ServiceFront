@@ -4,11 +4,10 @@ import { useAppData } from '../../services';
 import { TServices } from '../../types/AppType';
 import RegularText from '../Texts/RegularText';
 import SmallText from '../Texts/SmallText';
-import { TransactionProps } from './Transaction.t';
 import TransactionAvi from './TransactionAvi';
 import { LeftRow, RightRow, TransactionRow } from './TransactionItem.s';
 
-const TransactionItem: React.FC<TServices> = ( props ) => {
+const TransactionProviderItem: React.FC<TServices> = ( props ) => {
     const [primaryColor, setPrimaryColor] = React.useState("#000");
     const [secondColor, setSecondColor] = React.useState("#000");
 
@@ -34,14 +33,13 @@ const TransactionItem: React.FC<TServices> = ( props ) => {
                         marginBottom: 5,
                         fontWeight:'800'                    
                     }}>
-                        {props.user && props.user.name}
-                        {props.proffisional && props.proffisional.name}
+                        {props.user && props.user.name.split(" ")[0]} {props.user && props.user.name.split(" ")[props.user.name.split(" ").length -1]}
                     </RegularText>
                     <SmallText textStyles={{
                         color: secondColor,
                         textAlign: 'left',
                     }}>
-                        {props.schedule && props.schedule.scheduleDateTime.split("T")[0]}
+                        {props.schedule && props.schedule.scheduleDateTime.replace("T", " ")}
                     </SmallText>
                 </View>
             </LeftRow>
@@ -50,19 +48,19 @@ const TransactionItem: React.FC<TServices> = ( props ) => {
                     color: secondColor,
                     textAlign: 'right',
                     marginBottom: 5,                    
-                    fontWeight:'800'
+                    fontWeight:'600'
                 }}>
-                    {props.amountValue}
+                    Tx {((parseFloat(props.amountValue) * 10)/100).toFixed(2).replace(",", "").replace(".",",")}
                 </RegularText>
                 <SmallText textStyles={{
                     color: secondColor,
                     textAlign: 'right',
                 }}>
-                    {props.schedule && props.schedule.scheduleDateTime.split("T")[1]}
+                    R$ {props.amountValue}
                 </SmallText>
             </RightRow>
         </TransactionRow>
     );
 }
 
-export default TransactionItem;
+export default TransactionProviderItem;

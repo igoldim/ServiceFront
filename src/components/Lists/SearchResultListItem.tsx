@@ -21,14 +21,13 @@ const SearchResultListItem: React.FC<SearchListItemProps> = ( props ) => {
                     color={props.primaryColor}
                     />
                     <ListStatus>
-                        <Icon name="currency-usd" size={20} color={props.primaryColor} />
                         <RegularText textStyles={{
                                 color: props.primaryColor,
                                 fontSize: 20,
                                 textAlign: 'left',
                                 fontWeight:'800'                    
                             }}>
-                            {props.amount?.toString()}
+                         R$ {props.amount?.toString()}
                         </RegularText>
                     </ListStatus>
             </ListHead>
