@@ -215,7 +215,8 @@ export interface ISerach {
     appId: string,
     query: string,
     latitude: string,
-    longitude: string
+    longitude: string,
+    distance: number
 }
 export interface IScheduleDelete {
     userId: string,
@@ -296,8 +297,8 @@ export interface IAgendaResult {
 export type TSearchResult = {
     sucessful: boolean,
 	data: Array<TSearch>,
-    message: string;
-    status: any;
+    message: string,
+    status: any,
 }
 
 

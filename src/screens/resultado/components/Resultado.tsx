@@ -46,14 +46,37 @@ const Resultado: React.FC<ScreensProps> = ({navigation}) =>{
         const q = await AsyncStorage.getItem('q') as string;
         const latitude = await AsyncStorage.getItem('latitude')  as string;
         const longitude = await AsyncStorage.getItem('longitude')  as string;
-        //console.log(`${latitude} ${longitude}`);
         
+        //console.log(`${latitude} ${longitude}`);
+        //console.log(searchByLocation);
+
         if (searchByLocation == "true"){
-            const reponse  = await fetchSearchByLocation({userId, appId, query: q, latitude, longitude});
+            const reponse  = await fetchSearchByLocation({userId, appId, query: q, latitude, longitude, distance: 10});
+            if (reponse){
+                //console.log(reponse);
+                setTemConnection(true);
+                const {sucessful, data, message} = reponse;
+                if (sucessful){
+                    setSearchResult(data);       
+                    setLoading(false);
+                }
+                else {
+                    showModal("Busca", "não localizamos nenhum registro com os dados fornecidos", "erro");
+                }
+            }
+            else{
+                setTemConnection(false);
+                setLoading(false);
+                showModal("Segurança", "suas credênciais expiraram, precisamos que você efetue novamente seu login.", "erro");
+                cleanData();
+            }
         }
         else{
-            const reponse  = await fetchSearchByQ({userId, appId, query: q, latitude, longitude});
+            const reponse  = await fetchSearchByQ({userId, appId, query: q, latitude, longitude, distance: 10});
+            //console.log(reponse);
+
             if (reponse){
+                //console.log(reponse);
                 setTemConnection(true);
                 const {sucessful, data, message} = reponse;
                 if (sucessful){
