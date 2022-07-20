@@ -1,9 +1,10 @@
+import AsyncStorage from "@react-native-community/async-storage";
 import React from "react";
 import FavoriteList from "../../../components/Favorites/FavoriteList";
 import ScreenHead from "../../../components/Head/ScreenHead";
 import { Container } from "../../../components/Shared";
 import { useAppData } from "../../../services";
-import { TFavoriteData, ScreensProps } from "../../../types/AppType";
+import { TFavoriteData, ScreensProps, TUsers } from "../../../types/AppType";
 import { fetchFavorite } from '../services/index'
 
 const Favorites: React.FC<ScreensProps> = ({navigation}) =>{
@@ -33,24 +34,33 @@ const Favorites: React.FC<ScreensProps> = ({navigation}) =>{
     }
     setLoading(false);
   };
+
+  const handleSelectedItem = async (item: TFavoriteData) => {
+    //console.log(item.professional.id);
+    await AsyncStorage.setItem("route", "Favorites");
+    await AsyncStorage.setItem("selectedUserId", item.professional.id as string);
+    navigation.navigate("Agendar");
+
+  }
   
-    return (
-        <Container style={{backgroundColor: primaryColor}}>
-            <ScreenHead 
-                screenName="Favoritos"  
-                onPress={() => navigation.navigate("Menu")}
-                primaryColor={primaryColor} 
-                secondColor={secondColor} 
-                showIcon={true} />
-            <FavoriteList 
+  return (
+      <Container style={{backgroundColor: primaryColor}}>
+          <ScreenHead 
+              screenName="Favoritos"  
+              onPress={() => navigation.navigate("Menu")}
               primaryColor={primaryColor} 
               secondColor={secondColor} 
-              refreshing={isLoading} 
-              onRefresh={loadData} 
-              data={favoriteData as Array<TFavoriteData>} 
-              isLoading={isLoading}/>
-        </Container>
-    );
+              showIcon={true} />
+          <FavoriteList 
+            primaryColor={primaryColor} 
+            secondColor={secondColor} 
+            refreshing={isLoading} 
+            onRefresh={loadData} 
+            onPress={(item) => handleSelectedItem(item)}
+            data={favoriteData as Array<TFavoriteData>} 
+            isLoading={isLoading}/>
+      </Container>
+  );
 }
 
 export default Favorites;

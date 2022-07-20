@@ -16,7 +16,11 @@ const FavoriteList: React.FC<TFavoritesSectionProps> = ( props ) => {
                 onRefresh={props.onRefresh}
                 refreshing={props.refreshing}
                 keyExtractor={({ id }: any )=> id.toString()}
-                renderItem={({ item }: any ) => <FavoritesItem {...item}  primaryColor={props.primaryColor} secondColor={props.secondColor} />}
+                renderItem={({ item }: any ) => <FavoritesItem {...item}  
+                                                    primaryColor={props.primaryColor} 
+                                                    secondColor={props.secondColor} 
+                                                    onPress={props.onPress}
+                                                    />}
             />
         </View>
     );

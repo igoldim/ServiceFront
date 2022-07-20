@@ -50,6 +50,7 @@ const TakerDashboard: React.FC<ScreensProps> = ({navigation}) => {
         setSecondColor(strSecondColor); 
         setName(Name);
         setAvatar(Avatar);
+
         await AsyncStorage.removeItem('q');
 
         var reponse = await fetchData({id: userId,  appid: appKey}); 
@@ -58,6 +59,8 @@ const TakerDashboard: React.FC<ScreensProps> = ({navigation}) => {
             const {sucessful, data, message} = reponse;
             if (sucessful){
                 setData(data);       
+                setAvatar(data.avatar!);
+                await AsyncStorage.setItem("Avatar", data.avatar! as string);
                 setDataSchedule(data?.servicesAgendados);         
                 setDataServices(data?.servicesConcluido);          
                 setLoading(false);
@@ -69,7 +72,6 @@ const TakerDashboard: React.FC<ScreensProps> = ({navigation}) => {
             showModal("Segurança", "suas credênciais expiraram, precisamos que você efetue novamente seu login.", "erro");
             cleanData();
         }
-
     };
 
     const modalButtonHandle = () =>{

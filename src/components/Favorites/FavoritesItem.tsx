@@ -65,7 +65,7 @@ const FavoritesItem: React.FC<TFavoriteData> = ( props ) => {
                         </RegularText>
                 </ FavoritesValor>                
                </ FavoritesFooterItem>               
-               <FavoritesButton  style={{backgroundColor: props.primaryColor}} onPress={() => navigation.navigate("Agendar")}>
+               <FavoritesButton  style={{backgroundColor: props.primaryColor}} onPress={() => props.onPress(props)}>
                  <Icon name="arrow-right-thick"  size={30} color={props.secondColor} />
                </FavoritesButton>      
             </ FavoritesFooter>           

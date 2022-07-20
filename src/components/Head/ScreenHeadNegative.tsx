@@ -9,8 +9,8 @@ type Props = {
     primaryColor: string;
     secondColor: string;
     screenName: string;
-    onPress?: () => void | undefined | null;
-    onRightPress?: () => void | undefined | null;
+    onPress?: () => void;
+    onRightPress?: () => void;
     showIcon?: boolean;
     showRightIcon?: boolean;
     showRightMenu?: boolean;

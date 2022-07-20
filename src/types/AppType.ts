@@ -89,6 +89,7 @@ export type TFavoriteData = {
     rateValue: string,
     amountValue: string
     primaryColor: string, 
+    onPress: (item : TFavoriteData) => void,
     secondColor: string   
 }
 
@@ -137,6 +138,8 @@ export type TUser = {
 	longitude: string | null,
 	status: boolean,
     favorite?: boolean,
+    rate?: number,
+    distance?: number,
 	createAt: string | null,
 	updateAt: string | null,
 	cards: Array<TCards>,
@@ -334,5 +337,6 @@ export type TFavoritesSectionProps = {
     onRefresh?: () => void; 
     refreshing?: boolean;  
     primaryColor: string, 
+    onPress: (item : TFavoriteData) => void,
     secondColor: string    
 }

@@ -227,7 +227,18 @@ export interface IDefaultUserGet {
 export interface ISelectedUser {
     id: string,
     userId: string,
-    appId: string
+    appId: string,
+    latitude: string,
+    longitude: string,
+    distance: number
+}
+
+
+export interface ISetFavorite {
+    userId: string,
+    profissionalId: string,
+    appId: string,
+    favorite: boolean
 }
 
 export interface ISerach {
@@ -303,8 +314,10 @@ export interface IChangePassword {
 }
 
 export interface IDefaultResult {
-    sucessful: string,
-    message: string,    
+    sucessful: boolean,
+	data?: any,
+    message: string;
+    status?: any;
 }
 export interface IRegisterResult {
     sucessful: boolean,

@@ -114,6 +114,7 @@ const Resultado: React.FC<ScreensProps> = ({navigation}) =>{
 
     const handleSelectedItem = async (item: TUsers) => {
         //console.log(item);
+        await AsyncStorage.setItem("route", "Resultado");
         await AsyncStorage.setItem("selectedUserId", item.id?.toString() as string);
         navigation.navigate("Agendar");
     }

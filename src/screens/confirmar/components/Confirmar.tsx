@@ -37,7 +37,7 @@ const Confirmar: React.FC<ScreensProps> = ({navigation})  => {
                 primaryColor={primaryColor} 
                 secondColor={secondColor} 
                 showIcon={true} 
-                onPress={() => navigation.navigate("Menu")} />
+                onPress={() => navigation.goBack()} />
             <CardRow style={{marginTop:30, marginBottom:30}}>
                 <RegularText textStyles={{color: secondColor, fontSize: 24, fontWeight: '600'}}>
                     <Icon name="calendar" color={secondColor} size={24}/> 
