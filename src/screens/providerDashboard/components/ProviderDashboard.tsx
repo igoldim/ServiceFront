@@ -106,7 +106,13 @@ const ProviderDashboard: React.FC<ScreensProps> = ({navigation}) => {
 
     const modalButtonHandle = () =>{
         setVisible(false);
-        navigation.navigate("SignIn");
+        navigation.reset({
+            index: 1,
+            routes: [
+              { name: 'SignIn' },
+            ],
+          });
+
     }
 
     const showModal = (headText: string, message: string, type: string)=> {

@@ -77,7 +77,12 @@ const TakerDashboard: React.FC<ScreensProps> = ({navigation}) => {
     const modalButtonHandle = () =>{
         setVisible(false);
         if (!temConnection){
-            navigation.navigate("SignIn");
+            navigation.reset({
+                index: 1,
+                routes: [
+                  { name: 'SignIn' },
+                ],
+              });
         }
     }
 

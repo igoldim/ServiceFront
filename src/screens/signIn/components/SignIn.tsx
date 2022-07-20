@@ -88,11 +88,21 @@ const SignIn: React.FC<ScreensProps> = ({navigation}) => {
 
             if (data!.userType == 0){
                 setLoading(false);
-                navigation.navigate('TakerDashboard');
+                navigation.reset({
+                  index: 1,
+                  routes: [
+                    { name: 'TakerDashboard' },
+                  ],
+                });
             }
             else if (data!.userType == 1){
                 setLoading(false);
-                navigation.navigate('ProviderDashboard');
+                navigation.reset({
+                  index: 1,
+                  routes: [
+                    { name: 'ProviderDashboard' },
+                  ],
+                });
             } 
             else{
               setLoading(false);
@@ -115,7 +125,12 @@ const SignIn: React.FC<ScreensProps> = ({navigation}) => {
             setUserType(userType);
             setLoading(false);
             if (userType == 1 &&  boolSendDocuments){
-              navigation.navigate('ValidandoDocumentos');
+              navigation.reset({
+                index: 1,
+                routes: [
+                  { name: 'ValidandoDocumentos' },
+                ],
+              });              
               return false;
             }
             else{
@@ -209,7 +224,7 @@ const SignIn: React.FC<ScreensProps> = ({navigation}) => {
               visible={visible} 
               heading={messageHeadding} 
               message={messageModal} 
-              onPress={modalButtonHandle}
+              onPress={() => modalButtonHandle()}
               type={type}
               primaryColor={primaryColor}
               secondColor={secondColor}                
