@@ -73,7 +73,7 @@ const Endereco: React.FC<ScreensProps> = ({navigation}) =>{
     }
 
     const handleConsultaCep = async () => {
-
+        setLoading(true);
         const reslult = await fetchCep(zip); 
 
         if (!reslult?.erro){
@@ -81,8 +81,10 @@ const Endereco: React.FC<ScreensProps> = ({navigation}) =>{
             setDistrict(reslult?.bairro as string);
             setCity(reslult?.localidade as string);
             setState(reslult?.uf as string);
+            setLoading(false);
         }
         else{
+            setLoading(false);
             showModal("Cep Não localizado.", "Caso esteja correto, preencha os demais campos.", "erro");
         }
     }
@@ -162,7 +164,7 @@ const Endereco: React.FC<ScreensProps> = ({navigation}) =>{
                     value={zip}
                     onChangeText={setZip}
                     onBlur={handleConsultaCep}
-                    onPressMenu={handleConsultaCep}
+                    onPressMenu={!isLoading ? handleConsultaCep : null}
                 />
                 <View style={{display: 'flex', flexDirection:'row', justifyContent:'space-between'}}>
                     <EnderecoInput 
@@ -236,7 +238,7 @@ const Endereco: React.FC<ScreensProps> = ({navigation}) =>{
                         onChangeText={setState}
                     />
                 </View>
-                
+
                 <EnderecoInput 
                         iconeColor={primaryColor}
                         title='Complemento'
