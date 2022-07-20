@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-community/async-storage";
 import React from "react";
-import { ScrollView, View } from "react-native";
+import { ActivityIndicator, ScrollView, View } from "react-native";
 import RegularButton from "../../../components/Buttons/RegularButton";
 import ScreenHead from "../../../components/Head/ScreenHead";
 import EnderecoInput from "../../../components/Input/EnderecoInput";
@@ -32,8 +32,11 @@ const Endereco: React.FC<ScreensProps> = ({navigation}) =>{
     const [messageModal, setMessageModal] = React.useState('');
     const [type, setType] = React.useState("erro");
 
+    const [isLoading, setLoading] = React.useState(false);
 
     React.useEffect(() =>{
+        loadData();
+    },[]);
     
     const loadData = async () => {
         const {primaryColor:strPrimaryColor, secondColor: strSecondColor, userId } = await useAppData();
@@ -56,11 +59,7 @@ const Endereco: React.FC<ScreensProps> = ({navigation}) =>{
             setLatitude(data?.latitude as string);
             setLongitude(data?.longitude as string);
         }
-        };
-        
-        loadData();
-
-    },[]);
+    };        
 
     const showModal = (headText: string, message: string, type: string)=> {
         setMessageHeadding(headText);
@@ -89,30 +88,36 @@ const Endereco: React.FC<ScreensProps> = ({navigation}) =>{
     }
 
     const handleAddress= async () =>{
+        setLoading(true);
         try {
   
             //valida dados de entrada
             if (zip === "") {
+              setLoading(false);
               showModal("Informe o Cep", "email é obrigatório", "erro");
               return false;
             }
   
             if (address === "") {
+                setLoading(false);
                 showModal("Informe a Rua", "rua é obrigatório", "erro");
                 return false;
             }
 
             if (district === "") {
+                setLoading(false);
                 showModal("Informe o Bairro", "bairo é obrigatório", "erro");
                 return false;
             }
     
             if (city === "") {
+                setLoading(false);
                 showModal("Informe a Cidade", "cidade é obrigatório", "erro");
                 return false;
             }
 
             if (state === "") {
+                setLoading(false);
                 showModal("Informe a UF", "uf é obrigatório", "erro");
                 return false;
             }
@@ -122,16 +127,15 @@ const Endereco: React.FC<ScreensProps> = ({navigation}) =>{
             var { sucessful, message } = await fetchEndereco({userId, zip, address, number, complement, district, city, state, latitude, longitude});       
   
             if (sucessful){
+                setLoading(false);
                 showModal("Parabéns,", message , "success");               
             }
-            else{
 
-            }
         } catch (error) {
-          console.log(error);
+            setLoading(false);
+            console.log(error);
         } 
-    }
-  
+    }  
 
     return(
         <Container style={{backgroundColor: primaryColor}}>
@@ -232,6 +236,7 @@ const Endereco: React.FC<ScreensProps> = ({navigation}) =>{
                         onChangeText={setState}
                     />
                 </View>
+                
                 <EnderecoInput 
                         iconeColor={primaryColor}
                         title='Complemento'
@@ -245,22 +250,31 @@ const Endereco: React.FC<ScreensProps> = ({navigation}) =>{
                         value={complement}
                         onChangeText={setComplement}
                     />
-                 <RegularButton            
-                    btnStyles={{backgroundColor: secondColor, borderRadius: 5, padding: 10, display: 'flex', justifyContent:'center', alignItems: 'center'}}
-                    textStyles={{color: primaryColor, fontSize: 24, fontWeight: '500'}}
-                    onPress={handleAddress}>
-                    Gravar
-                </RegularButton>
+
+                    {isLoading && <RegularButton 
+                        btnStyles={{backgroundColor: secondColor, borderRadius: 5, padding: 10, display: 'flex', justifyContent:'center', alignItems: 'center', marginTop: 15}}
+                        textStyles={{color: primaryColor, fontSize: 24, fontWeight: '500'}}
+                        disabled={true}>
+                            <ActivityIndicator size={30} color="#fff" />
+                        </RegularButton>}
+                            
+                    {!isLoading && <RegularButton            
+                            btnStyles={{backgroundColor: secondColor, borderRadius: 5, padding: 10, display: 'flex', justifyContent:'center', alignItems: 'center', marginTop: 15}}
+                            textStyles={{color: primaryColor, fontSize: 24, fontWeight: '500'}}
+                            onPress={handleAddress}>
+                            Gravar
+                    </RegularButton>}
+
             </ScrollView>
 
             <MessageAlertModal 
-              visible={visible} 
-              heading={messageHeadding} 
-              message={messageModal} 
-              onPress={modalButtonHandle}
-              type={type}
-              primaryColor={primaryColor}
-              secondColor={secondColor}                
+                visible={visible} 
+                heading={messageHeadding} 
+                message={messageModal} 
+                onPress={modalButtonHandle}
+                type={type}
+                primaryColor={primaryColor}
+                secondColor={secondColor}                
             />
 
         </Container>
