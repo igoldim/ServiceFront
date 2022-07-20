@@ -164,7 +164,7 @@ const Endereco: React.FC<ScreensProps> = ({navigation}) =>{
                     value={zip}
                     onChangeText={setZip}
                     onBlur={handleConsultaCep}
-                    onPressMenu={!isLoading ? handleConsultaCep : null}
+                    onPressMenu={() => !isLoading ? handleConsultaCep() : null}
                 />
                 <View style={{display: 'flex', flexDirection:'row', justifyContent:'space-between'}}>
                     <EnderecoInput 
