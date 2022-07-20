@@ -81,7 +81,13 @@ const Agendar: React.FC<ScreensProps> = ({navigation}) =>{
         }
     }
 
-
+    const handleAgendar = async (item: TSchedule) => {
+        //console.log(item.id);
+        await AsyncStorage.setItem("scheduleId", item.id?.toString() as string);            
+        await AsyncStorage.setItem("scheduleDateTime", item.scheduleDateTime?.toString() as string);
+        await AsyncStorage.setItem("scheduleAmount", item.amount?.toString() as string);
+        navigation.navigate("Confirmar");
+    }
     return (
         <Container style={{backgroundColor: secondColor}}>
             <ScreenHeadNegative 
@@ -127,7 +133,7 @@ const Agendar: React.FC<ScreensProps> = ({navigation}) =>{
                         secondColor={secondColor} 
                         onRefresh={loadData}
                         refreshing={isLoading}
-                        onPress={() => navigation.navigate("Confirmar")}
+                        onPress={handleAgendar}
                     />
                 </View>
                 <View style={{width: '100%', height:'40%', margin: 0}}>

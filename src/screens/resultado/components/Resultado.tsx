@@ -101,7 +101,12 @@ const Resultado: React.FC<ScreensProps> = ({navigation}) =>{
     const modalButtonHandle = () =>{
         setVisible(false);
         if (!temConnection){
-            navigation.navigate("SignIn");
+            navigation.reset({
+                index: 1,
+                routes: [
+                  { name: 'SignIn' },
+                ],
+              });
         }
     }
 
@@ -112,11 +117,17 @@ const Resultado: React.FC<ScreensProps> = ({navigation}) =>{
         setVisible(true);
     }
 
-    const handleSelectedItem = async (item: TUsers) => {
+    const handleSelectedItem = async (item: TUser) => {
         //console.log(item);
         await AsyncStorage.setItem("route", "Resultado");
-        await AsyncStorage.setItem("selectedUserId", item.id?.toString() as string);
-        navigation.navigate("Agendar");
+        await AsyncStorage.setItem("scheduleName", item.name  as string);    
+        await AsyncStorage.setItem("selectedUserId", item.id as string);
+        navigation.reset({
+            index: 1,
+            routes: [
+              { name: 'Agendar' },
+            ],
+          });
     }
 
     return (

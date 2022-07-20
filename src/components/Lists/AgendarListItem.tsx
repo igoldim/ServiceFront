@@ -35,7 +35,7 @@ const AgendarListItem: React.FC<AgendarItemProps> = ( props ) => {
                     </RegularText>
             </RightRow>
             <RightRow>
-                <TouchableOpacity onPress={props.onPress}>
+                <TouchableOpacity onPress={() => props.onPress(props)}>
                     <Icon name='arrow-forward' size={25} color={props.secondColor} />
                 </TouchableOpacity>
             </RightRow>

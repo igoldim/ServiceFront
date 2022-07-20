@@ -112,7 +112,7 @@ export interface ScheduleProps {
     data: Array<TSchedule>; 
     primaryColor: string;
     secondColor: string;
-    onPress: () => void;
+    onPress: (item: TSchedule) => void;
     onRefresh?: () => void; 
     refreshing?: boolean;    
 }
@@ -143,7 +143,7 @@ export interface AgendarItemProps {
     updateAt?: string | null
     primaryColor: string;
     secondColor: string;  
-    onPress: () => void;
+    onPress: (item: TSchedule) => void;
 }
 
 export interface SearchListProps {
@@ -151,7 +151,7 @@ export interface SearchListProps {
     data: Array<TSearch>; 
     primaryColor: string;
     secondColor: string;
-    onPress: (item : TUsers) => void;
+    onPress: (item : TUser) => void;
     onRefresh?: () => void; 
     refreshing?: boolean;
 }
@@ -174,7 +174,7 @@ export interface SearchListItemProps {
     distance: string;
     primaryColor: string;
     secondColor: string;  
-    onPress: (item : TUsers) => void;
+    onPress: (item : TUser) => void;
 }
 
 export interface CommentItemProps {
@@ -273,6 +273,13 @@ export interface IUserResult {
     status: any;
 }
 
+export interface ISelectedSchedule {
+    userId: string;
+    appId: string;
+    profissionalId: string;
+    scheduleId: string;
+    serviceValue: string;
+}
 export interface IScheduleResult {
     sucessful: boolean,
 	data: Array<TServices>,

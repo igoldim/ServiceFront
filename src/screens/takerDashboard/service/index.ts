@@ -6,10 +6,12 @@ import { api } from "../../../server"
 export const fetchData= async (
     params: TLoadData
 ): Promise<ILoginResult> => {    
-    //console.log(`/User/GetTaker/${params.id}/${params.appid}`);    
+    console.log(`/User/GetTaker/${params.id}/${params.appid}`);    
     const response = await api
         .get<any>(`/User/GetTaker/${params.id}/${params.appid}`)
         .then(({ data }) => data)
         .catch(({ error }) => error )
+
+    console.log(response);  
     return response
 }

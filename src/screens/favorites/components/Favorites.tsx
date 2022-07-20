@@ -36,11 +36,16 @@ const Favorites: React.FC<ScreensProps> = ({navigation}) =>{
   };
 
   const handleSelectedItem = async (item: TFavoriteData) => {
-    //console.log(item.professional.id);
+    //console.log(item.professional.name);
     await AsyncStorage.setItem("route", "Favorites");
+    await AsyncStorage.setItem("scheduleName", item.professional.name as string);    
     await AsyncStorage.setItem("selectedUserId", item.professional.id as string);
-    navigation.navigate("Agendar");
-
+    navigation.reset({
+      index: 1,
+      routes: [
+        { name: 'Agendar' },
+      ],
+    });
   }
   
   return (
