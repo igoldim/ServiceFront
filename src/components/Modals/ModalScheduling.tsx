@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 import { Colors } from '../Colors';
 import BigText from '../Texts/BigText';
 import RegularText from '../Texts/RegularText';
-import { GestureResponderEvent, Image, Modal, StyleProp, TextInput, TextStyle, ViewStyle } from "react-native";
+import { GestureResponderEvent, Image, Modal, StatusBar, StyleProp, TextInput, TextStyle, ViewStyle } from "react-native";
 
 import RegularButton from '../Buttons/RegularButton';
 import { Row } from '../Shared';
@@ -116,6 +116,7 @@ const ModalScheduling: React.FC<ButtonProps> = (props) => {
                 <ModalPressableContainer style={{backgroundColor: props.primaryColor}}>
                     <ModalView style={{backgroundColor: props.secondColor}}>
                         <ScreenHead screenName='Agendamento' showIcon={true} onPress={props.onPress} primaryColor={props.secondColor} secondColor={props.primaryColor}/>
+                        <StatusBar barStyle="light-content" backgroundColor={props.primaryColor} />
                         {!viewComment && status === "" &&
                         <Row>
                             <RegularButton 
