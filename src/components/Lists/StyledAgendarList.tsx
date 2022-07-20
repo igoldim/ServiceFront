@@ -1,9 +1,9 @@
 import React from "react";
-import {AgendarProps } from "../../interfaces";
+import { ScheduleProps } from "../../interfaces";
 import AgendarListItem from "./AgendarListItem";
 import { StyledFlatList } from "./StyledList.s";
 
-const StyledAgendarList: React.FC<AgendarProps> = ( props ) => {
+const StyledAgendarList: React.FC<ScheduleProps> = ( props ) => {
     return (
             <StyledFlatList 
                 style={props.style}

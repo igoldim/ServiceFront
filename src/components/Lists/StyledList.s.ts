@@ -24,7 +24,7 @@ export const ListContainer = styled.TouchableOpacity`
 `;
 
 export const CommentItemContainer = styled.View`
-    width: ${ScreenHeight * 0.35}px;
+    width: ${ScreenHeight * 0.42}px;
     border-radius: 5px;
     margin-right: 10px;
     overflow: hidden;

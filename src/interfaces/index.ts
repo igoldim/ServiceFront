@@ -1,5 +1,5 @@
 import { StyleProp, ViewStyle } from "react-native";
-import { TAgenda, TComment, TPayments, TschedulingData, TSearch, TServices, TUser, TUsers } from "../types/AppType";
+import { TAgenda, TComment, TPayments, TSchedule, TschedulingData, TSearch, TServices, TUser, TUsers } from "../types/AppType";
 
 export interface IApp {
     slug: string;
@@ -107,6 +107,16 @@ export interface AgendarProps {
     refreshing?: boolean;    
 }
 
+export interface ScheduleProps {
+    style?: StyleProp<ViewStyle>;
+    data: Array<TSchedule>; 
+    primaryColor: string;
+    secondColor: string;
+    onPress: () => void;
+    onRefresh?: () => void; 
+    refreshing?: boolean;    
+}
+
 export interface AgendaItemProps {
     id: string,
     userId: string,
@@ -123,11 +133,14 @@ export interface AgendaItemProps {
 }
 
 export interface AgendarItemProps {
-    id: string;
-    scheduleDate: string;
-    scheduleTime: string;
-    status: string;
-    amount: string;
+    id: string,
+    userId: string,
+    appId: string,
+    scheduleDateTime: string,
+    amount: string,
+    status: number,
+    createAt: string,
+    updateAt?: string | null
     primaryColor: string;
     secondColor: string;  
     onPress: () => void;
@@ -138,7 +151,7 @@ export interface SearchListProps {
     data: Array<TSearch>; 
     primaryColor: string;
     secondColor: string;
-    onPress: () => void;
+    onPress: (item : TUsers) => void;
     onRefresh?: () => void; 
     refreshing?: boolean;
 }
@@ -161,16 +174,17 @@ export interface SearchListItemProps {
     distance: string;
     primaryColor: string;
     secondColor: string;  
-    onPress: () => void;
+    onPress: (item : TUsers) => void;
 }
 
 export interface CommentItemProps {
     id: string,
-    name: string;
-    avatar: string,
-    amount: string,
+    serviceId: string,
+    appId: string,
+    commentary: string,
     stars: number,
-    comment: string,
+    service: TServices,
+    createAt: string,
     primaryColor: string;
     secondColor: string;  
 }
@@ -210,6 +224,12 @@ export interface IDefaultUserGet {
     appId: string
 }
 
+export interface ISelectedUser {
+    id: string,
+    userId: string,
+    appId: string
+}
+
 export interface ISerach {
     userId: string,
     appId: string,
@@ -231,6 +251,13 @@ export interface ILoginResult {
 	token: string;
 	type: string;
     userType: number,
+    message: string;
+    status: any;
+}
+
+export interface IUserResult {
+    sucessful: boolean,
+	data: TUser,
     message: string;
     status: any;
 }

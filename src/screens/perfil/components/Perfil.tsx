@@ -36,9 +36,7 @@ const Perfil: React.FC<ScreensProps> = ({navigation}) =>{
     },[]);
 
     const loadData = async () => {
-        const {primaryColor:strPrimaryColor, secondColor: strSecondColor, userId, Avatar } = await useAppData();
-        const UserType = await AsyncStorage.getItem('UserType');
-        setAvatar(Avatar);
+        const {primaryColor:strPrimaryColor, secondColor: strSecondColor, userId,  UserType } = await useAppData();
         setUserType(UserType as string);
         setPrimaryColor(strPrimaryColor); 
         setSecondColor(strSecondColor); 
@@ -46,15 +44,14 @@ const Perfil: React.FC<ScreensProps> = ({navigation}) =>{
         //carrega dados da api
         var { sucessful, data, message } = await fetchGetPerfil(userId); 
         if (sucessful){
-            setAvatar(data.avatar!.toString());
-            await AsyncStorage.setItem("Avatar", data.avatar!.toString());
+            setAvatar(data.avatar?.toString() as string + '?'+Math.random().toString(36).substring(9));
+            await AsyncStorage.setItem("Avatar", avatar);
             setUserNAme(data.name);
             setEmail(data.email as string);
             setRegistro(data.register as string);
-
-            setEndereco(`${data.number} - ${data.address?.substring(0,19)}...`)
+            setEndereco(`${data.number} - ${data.address?.substring(0,19)}...`);
+            setAvatarFile(null);
         }
-
     };
 
     const handSendData = async () => {
@@ -148,7 +145,7 @@ const Perfil: React.FC<ScreensProps> = ({navigation}) =>{
             <StyledScrollView>
                 <IconImg style={{backgroundColor: secondColor, marginTop: 10}} onPress={handlePicture}>
                         <Image 
-                            source={{uri: avatarFile ? avatarFile : avatar, width: 150, height:150 }}
+                            source={{uri: (avatarFile ? avatarFile : avatar), width: 150, height:150 }}
                             style={{borderRadius: 100}}/>
                 </IconImg>
                 <RegularInput 

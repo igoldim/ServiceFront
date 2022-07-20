@@ -105,11 +105,12 @@ export type TAgenda = {
 
 export type TComment = {
     id: string,
-    name: string;
-    avatar: string,
-    amount: string,
+    serviceId: string,
+    appId: string,
+    commentary: string,
     stars: number,
-    comment: string
+    service: TServices,
+    createAt: string
 }
 
 export type TUser = {
@@ -135,6 +136,7 @@ export type TUser = {
 	latitude: string | null,
 	longitude: string | null,
 	status: boolean,
+    favorite?: boolean,
 	createAt: string | null,
 	updateAt: string | null,
 	cards: Array<TCards>,
@@ -145,6 +147,7 @@ export type TUser = {
 	schedules: Array<TSchedule>,
 	servicesAgendados: Array<TServices>,
 	servicesConcluido: Array<TServices>
+    comments: Array<TComment>
 }
 
 export type TSearch = {

@@ -20,7 +20,7 @@ const CommentItem: React.FC<CommentItemProps> = ( props ) => {
                     color={props.primaryColor}
                     />
                     <ListStatus>
-                        <Avatar source={{uri: props.avatar as string}} style={{backgroundColor: props.primaryColor}}  />             
+                        <Avatar source={{uri: props.service.user.avatar as string}} style={{backgroundColor: props.primaryColor}}  />             
                     </ListStatus>
             </ListHead>
             <ListFooter style={{marginTop: -25}}>                
@@ -32,7 +32,7 @@ const CommentItem: React.FC<CommentItemProps> = ( props ) => {
                                             textAlign: 'left',
                                             fontWeight:'800'                    
                                         }}>
-                                        {props.name}
+                                        {props.service.user.name}
                         </RegularText>
                     </View>
                     <RegularText textStyles={{
@@ -42,7 +42,7 @@ const CommentItem: React.FC<CommentItemProps> = ( props ) => {
                                     textAlign: 'left',
                                     fontWeight:'400'                    
                                 }}>
-                                {props.comment}
+                                {props.commentary}
                             </RegularText>
                 </ ListFooterItem>               
             </ ListFooter>           

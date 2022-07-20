@@ -2,7 +2,7 @@ import React from "react";
 import ScreenHead from "../../../components/Head/ScreenHead";
 import { Container, Row } from "../../../components/Shared";
 import { cleanData, useAppData } from "../../../services";
-import { ScreensProps, TSearch, TUser } from "../../../types/AppType";
+import { ScreensProps, TSearch, TUser, TUsers } from "../../../types/AppType";
 import { Menu, MenuItem, MenuDivider } from 'react-native-material-menu';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 import SmallText from "../../../components/Texts/SmallText";
@@ -112,6 +112,12 @@ const Resultado: React.FC<ScreensProps> = ({navigation}) =>{
         setVisible(true);
     }
 
+    const handleSelectedItem = async (item: TUsers) => {
+        //console.log(item);
+        await AsyncStorage.setItem("selectedUserId", item.id?.toString() as string);
+        navigation.navigate("Agendar");
+    }
+
     return (
         <Container style={{backgroundColor: primaryColor}}>
             <ScreenHead 
@@ -142,7 +148,7 @@ const Resultado: React.FC<ScreensProps> = ({navigation}) =>{
                 data={searchResult as Array<TSearch>} 
                 primaryColor={primaryColor} 
                 secondColor={secondColor} 
-                onPress={() => navigation.navigate("Agendar")}
+                onPress={(item) => handleSelectedItem(item)}
                 onRefresh={loadData}
                 refreshing={isLoading}
             />

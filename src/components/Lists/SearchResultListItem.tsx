@@ -8,7 +8,7 @@ import { Image, View } from 'react-native';
 
 const SearchResultListItem: React.FC<SearchListItemProps> = ( props ) => {
     return (
-        <ListContainer style={{backgroundColor: props.secondColor}} onPress={props.onPress}>
+        <ListContainer style={{backgroundColor: props.secondColor}} onPress={() => props.onPress(props)}>
             <ListHead>               
                 <Stars 
                     isSave={false} 
