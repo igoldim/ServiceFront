@@ -47,7 +47,9 @@ export const fetchDocumento = async (
             }
         })
         .then(({ data }) => data)
-        .catch(({ error }) => error )
-    //console.log(formData);
+        .catch(({ error }) => error );
+
+    console.log(formData);
+
     return response;
 }

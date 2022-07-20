@@ -55,7 +55,7 @@ const CardItem: React.FC<CardItemType> = (props) => {
                     {props.item.user &&
                         <View style={{flex: 3}}>
                             <SmallText textStyles={{fontSize: 14, color: props.primaryColor}}>
-                                {props.item.user.address}
+                                {props.item.user.address} {props.item.user.number && ', ' + props.item.user.number}
                             </SmallText>
                             <SmallText textStyles={{fontSize: 14, color: props.primaryColor}}>
                                 {props.item.user.district}
@@ -71,7 +71,7 @@ const CardItem: React.FC<CardItemType> = (props) => {
                     {props.item.proffisional &&
                         <View style={{flex: 3}}>
                             <SmallText textStyles={{fontSize: 14, color: props.primaryColor}}>
-                                {props.item.proffisional.address}
+                                {props.item.proffisional.address}{props.item.proffisional.number && ', ' + props.item.proffisional.number}
                             </SmallText>
                             <SmallText textStyles={{fontSize: 14, color: props.primaryColor}}>
                                 {props.item.proffisional.district}

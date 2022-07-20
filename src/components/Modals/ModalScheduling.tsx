@@ -167,10 +167,10 @@ const ModalScheduling: React.FC<ButtonProps> = (props) => {
                         </Row>
                         <Row style={{width: '100%'}}>
                             {props.item.user && 
-                                <BigText textStyles={{fontSize: 16, color: props.primaryColor}} >{props.item.user.address}</BigText>
+                                <BigText textStyles={{fontSize: 16, color: props.primaryColor}} >{props.item.user.address}{props.item.user.number && ', ' +props.item.user.number}</BigText>
                             }
                             {props.item.proffisional && 
-                                <BigText textStyles={{fontSize: 16, color: props.primaryColor}} >{props.item.proffisional.address}</BigText>
+                                <BigText textStyles={{fontSize: 16, color: props.primaryColor}} >{props.item.proffisional.address}{props.item.proffisional.number && ', ' + props.item.proffisional.number}</BigText>
                             }
                         </Row>
                         <Row style={{width: '100%'}}>

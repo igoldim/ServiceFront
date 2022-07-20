@@ -31,22 +31,19 @@ const Documentos: React.FC<ScreensProps> = ({navigation}) =>{
     const [DocumentoSefie, setDocumentoSefie] =  React.useState<string>("");
 
 
-    React.useEffect(() =>{
-    
-        const loadData = async () => {
-            const {primaryColor:strPrimaryColor, secondColor: strSecondColor } = await useAppData();
-            setPrimaryColor(strPrimaryColor); 
-            setSecondColor(strSecondColor); 
-
-            const validaDocumento = await AsyncStorage.getItem("validaDocumento");
-            setValidaDocumento(validaDocumento ? validaDocumento: "false");
-
-        };
-        
+    React.useEffect(() =>{        
         loadData();
-
     },[]);
 
+    const loadData = async () => {
+        const {primaryColor:strPrimaryColor, secondColor: strSecondColor } = await useAppData();
+        setPrimaryColor(strPrimaryColor); 
+        setSecondColor(strSecondColor); 
+
+        const validaDocumento = await AsyncStorage.getItem("validaDocumento");
+        setValidaDocumento(validaDocumento ? validaDocumento: "false");
+
+    };
 
     const takePictureIdentidade = async () => {
         try {
@@ -73,7 +70,7 @@ const Documentos: React.FC<ScreensProps> = ({navigation}) =>{
               );
 
             if (granted === PermissionsAndroid.RESULTS.GRANTED && grantedstorage ===  PermissionsAndroid.RESULTS.GRANTED) {
-                await ImagePicker.launchCamera({mediaType: 'photo', saveToPhotos: true, quality: 1, cameraType:'back'}, (data) =>{
+                await ImagePicker.launchCamera({mediaType: 'photo', saveToPhotos: true, quality: 0.5, cameraType:'back'}, (data) =>{
 
                     if (data.assets){
                         setDocumentoIdentidade(data.assets[0].uri as string);
@@ -115,7 +112,7 @@ const Documentos: React.FC<ScreensProps> = ({navigation}) =>{
               );
 
             if (granted === PermissionsAndroid.RESULTS.GRANTED && grantedstorage ===  PermissionsAndroid.RESULTS.GRANTED) {
-                await ImagePicker.launchCamera({mediaType: 'photo', saveToPhotos: true, quality: 1, cameraType:'back'}, (data) =>{
+                await ImagePicker.launchCamera({mediaType: 'photo', saveToPhotos: true, quality: 0.5, cameraType:'back'}, (data) =>{
                     if (data.assets){
                         setDocumentoEndereco(data.assets[0].uri as string);
                         setEnderecoStatus(true);
@@ -155,7 +152,7 @@ const Documentos: React.FC<ScreensProps> = ({navigation}) =>{
               );
 
             if (granted === PermissionsAndroid.RESULTS.GRANTED && grantedstorage ===  PermissionsAndroid.RESULTS.GRANTED) {
-                await ImagePicker.launchCamera({mediaType: 'photo', saveToPhotos: true, quality: 1, cameraType:'back'}, (data) =>{
+                await ImagePicker.launchCamera({mediaType: 'photo', saveToPhotos: true, quality: 0.5, cameraType:'back'}, (data) =>{
                     if (data.assets){
                         setDocumentoAntecedente(data.assets[0].uri as string);
                         setAntecendeteCriminalStatus(true);
@@ -195,7 +192,7 @@ const Documentos: React.FC<ScreensProps> = ({navigation}) =>{
               );
 
             if (granted === PermissionsAndroid.RESULTS.GRANTED && grantedstorage ===  PermissionsAndroid.RESULTS.GRANTED) {
-                await ImagePicker.launchCamera({mediaType: 'photo', saveToPhotos: true, quality: 1, cameraType:'back'}, (data) =>{
+                await ImagePicker.launchCamera({mediaType: 'photo', saveToPhotos: true, quality: 0.5, cameraType:'back'}, (data) =>{
                     if (data.assets){
                         setDocumentoSefie(data.assets[0].uri as string);
                         setSelfieStatus(true);
@@ -214,6 +211,8 @@ const Documentos: React.FC<ScreensProps> = ({navigation}) =>{
         setLoading(true);
         const { userId, appKey: appId, Latitude, Longitude } = await useAppData();
         const {sucessful, data, message} = await fetchDocumento({userId, appId, DocumentoIdentidade, DocumentoEndereco, DocumentoAntecedente, DocumentoSefie, Latitude, Longitude});
+        
+        console.log(message);
 
         if (sucessful){
             navigation.reset({

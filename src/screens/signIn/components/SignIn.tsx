@@ -72,12 +72,9 @@ const SignIn: React.FC<ScreensProps> = ({navigation}) => {
           }
 
           //call backend
-          var { sucessful, data, message, token, sendDocuments: boolSendDocuments, userType:NUserType } = await fetchLogin({appId, email, password});       
+          var { sucessful, data, message, token, sendDocuments: boolSendDocuments, userType} = await fetchLogin({appId, email, password});       
           setSendDocuments(boolSendDocuments);
-          setUserType(NUserType);
-
           //console.log(sucessful);
-
           if (sucessful){
             await AsyncStorage.setItem("userId", data?.id);
             await AsyncStorage.setItem("Name", data?.name);
@@ -109,13 +106,15 @@ const SignIn: React.FC<ScreensProps> = ({navigation}) => {
             }
           }
           else{
+            await AsyncStorage.setItem("userId", data?.id);
             await AsyncStorage.setItem("Email", email);
             await AsyncStorage.setItem("isLogged", "false");
             
             //console.log(NUserType);
             //console.log(boolSendDocuments);
+            setUserType(userType);
             setLoading(false);
-            if (NUserType == 1 &&  boolSendDocuments){
+            if (userType == 1 &&  boolSendDocuments){
               navigation.navigate('ValidandoDocumentos');
               return false;
             }
@@ -151,7 +150,7 @@ const SignIn: React.FC<ScreensProps> = ({navigation}) => {
       else{
         setVisible(false);
       }    
-      //console.log(messageResponse);
+      //console.log(userType);
     }
 
     return (

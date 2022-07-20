@@ -20,7 +20,6 @@ const bigdatacloud = axios.create({
 
 api.interceptors.request.use(async (config) => {
   const token = await AsyncStorage.getItem('token');
-
   if (token) {
     config.headers = {
       Authorization: `Bearer ${token}`,
@@ -29,12 +28,14 @@ api.interceptors.request.use(async (config) => {
   return config;
 });
 
-api.interceptors.response.use(undefined, async (error) => {
- 
+api.interceptors.response.use(undefined, async (error) => { 
+  
+  //console.log(error.response);
+
   if (error.response) {
     //trata erro da api
     //console.log(error.response);
-    //alert(error.response.data.message);
+    return Promise.resolve(error.response);
   }
 
   if (error.response.status === 400) {
@@ -46,9 +47,8 @@ api.interceptors.response.use(undefined, async (error) => {
  if (error.response.status === 401) {
     //chama tela de login
     //window.location.href = "/?notAuthorized=true";
-   //return Promise.resolve(error.response);
-   //return Promise.resolve(error.response);
-
+    //return Promise.resolve(error.response);
+    return Promise.resolve(error.response);
   }
 
   if (error.response.status === 404) {
