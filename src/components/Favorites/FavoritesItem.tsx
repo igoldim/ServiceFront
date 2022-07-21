@@ -25,7 +25,7 @@ const FavoritesItem: React.FC<TFavoriteData> = ( props ) => {
                 <Stars 
                     isSave={false} 
                     onPress={() => {}}  
-                    value={Math.round(props.professional.servicesConcluido.reduce((a, b) => a + parseFloat(b.rateValue) , 0) / props.professional.servicesConcluido.length)} 
+                    value={parseInt(props.rateValue)} 
                     showNumber={false} 
                     width="15" 
                     height='15' 

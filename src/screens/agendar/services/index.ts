@@ -9,7 +9,7 @@ export const fetchGetPerfilAgenda = async (
         .post<any>(`/User/Agendar/`, params)
         .then(({ data }) => data)
         .catch(({ error }) => error )
-    //    console.log(response);
+        //console.log(response.data);
     return response
 }
 
