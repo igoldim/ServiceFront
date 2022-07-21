@@ -105,7 +105,7 @@ export type TAgenda = {
 }
 
 export type TComment = {
-    id: string,
+    id?: string,
     serviceId: string,
     appId: string,
     commentary: string,
@@ -329,8 +329,9 @@ export type TServices = {
     user : TUser,
     createAt : string,
     updateAt : string,
-    comment: TComment
+    comments: TComment
 }
+
 
 export type TFavoritesSectionProps = {
     data: Array<TFavoriteData>,

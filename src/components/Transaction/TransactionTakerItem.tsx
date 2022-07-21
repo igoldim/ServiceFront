@@ -1,3 +1,5 @@
+import AsyncStorage from '@react-native-community/async-storage';
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { View } from 'react-native';
 import { useAppData } from '../../services';
@@ -8,22 +10,37 @@ import TransactionAvi from './TransactionAvi';
 import { LeftRow, RightRow, TransactionRow } from './TransactionItem.s';
 
 const TransactionTakerItem: React.FC<TServices> = ( props ) => {
+
+    const navigation = useNavigation();
+
     const [primaryColor, setPrimaryColor] = React.useState("#000");
     const [secondColor, setSecondColor] = React.useState("#000");
 
     React.useEffect(() =>{
-    
-        const loadData = async () => {
-            const {primaryColor:strPrimaryColor, secondColor: strSecondColor} = await useAppData();
-            setPrimaryColor(strPrimaryColor); 
-            setSecondColor(strSecondColor); 
-        };
-        
         loadData();
-
     },[]);
+
+    const loadData = async () => {
+        const {primaryColor:strPrimaryColor, secondColor: strSecondColor} = await useAppData();
+        setPrimaryColor(strPrimaryColor); 
+        setSecondColor(strSecondColor); 
+    };
+
+    const handleDetails = async () => {
+
+        await AsyncStorage.setItem("serviceId", props.id);
+
+        navigation.reset({
+            index: 1,
+            routes: [
+            { name: "ScheduleDatailsProvider" },
+            ],
+        });
+
+    }
+
     return (
-        <TransactionRow>
+        <TransactionRow onPress={handleDetails}>
             <LeftRow>
                 <TransactionAvi primaryColor={primaryColor} secondColor={secondColor} icon='checkmark-done'/>
                 <View style={{marginLeft: 10}}>
@@ -58,7 +75,7 @@ const TransactionTakerItem: React.FC<TServices> = ( props ) => {
                 }}>
                     {props.schedule && props.schedule.scheduleDateTime.split("T")[1]}
                 </SmallText>
-            </RightRow>
+            </RightRow>           
         </TransactionRow>
     );
 }

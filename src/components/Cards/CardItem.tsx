@@ -6,8 +6,9 @@ import RegularText from '../Texts/RegularText';
 import { Alert, View } from 'react-native';
 import SmallText from '../Texts/SmallText';
 import Icon from 'react-native-vector-icons/Ionicons';
-import ModalScheduling from '../Modals/ModalScheduling';
 import { TServices, TUser } from '../../types/AppType';
+import AsyncStorage from '@react-native-community/async-storage';
+import { useNavigation } from '@react-navigation/native';
 
 type CardItemType = {
     item: TServices,
@@ -17,15 +18,24 @@ type CardItemType = {
 
 const CardItem: React.FC<CardItemType> = (props) => {
 
-    const [visibleScheduling , setVisibleScheduling ] = React.useState(false);
+    const navigation = useNavigation();
 
-    const showModalScheduling  = () => {
-        setVisibleScheduling(true);        
+    const handleDetails = async () => {
+
+        await AsyncStorage.setItem("serviceId", props.item.id);
+
+        navigation.reset({
+            index: 1,
+            routes: [
+            { name: "ScheduleDatailsProvider" },
+            ],
+        });
+
     }
 
     return(
         <CardBackground style={{backgroundColor: props.secondColor}}  >
-            <CardTouchable underlayColor={props.secondColor} onPress={showModalScheduling}>
+            <CardTouchable underlayColor={props.secondColor} onPress={handleDetails}>
                 <TouchableView>
                  <CardRow style={{marginBottom:5}}>
                     <RegularText textStyles={{color: props.primaryColor, fontSize: 18, fontWeight: '600'}}>
@@ -98,15 +108,7 @@ const CardItem: React.FC<CardItemType> = (props) => {
                     }
                  </CardRow>   
                 </TouchableView>
-            </CardTouchable>
-            <ModalScheduling 
-                item= {props.item}
-                visible={visibleScheduling} 
-                onPress={() => setVisibleScheduling(false)} 
-                onPressTransaction={() => {}}
-                secondColor={props.secondColor}
-                primaryColor={props.primaryColor}
-                />
+            </CardTouchable>           
         </CardBackground>
     );
 };  

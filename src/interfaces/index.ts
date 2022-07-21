@@ -1,4 +1,4 @@
-import { StyleProp, ViewStyle } from "react-native";
+import { GestureResponderEvent, StyleProp, TextStyle, ViewStyle } from "react-native";
 import { TAgenda, TComment, TPayments, TSchedule, TschedulingData, TSearch, TServices, TUser, TUsers } from "../types/AppType";
 
 export interface IApp {
@@ -60,7 +60,6 @@ export interface IContextApp {
     ActivateCode: string;
     IsLogado: string;
 }
-
 
 export interface TransactionSectionProps {
     data: Array<TServices> | undefined;
@@ -273,6 +272,13 @@ export interface IUserResult {
     status: any;
 }
 
+export interface ICommentResult {
+    sucessful: boolean,
+	data: TComment,
+    message: string;
+    status: any;
+}
+
 export interface ISelectedSchedule {
     userId: string;
     appId: string;
@@ -287,8 +293,11 @@ export interface IScheduleResult {
 }
 
 
-
-
+export interface IServiceResult {
+    sucessful: boolean,
+	data: TServices
+    message: string;
+}
 
 export interface ICepResult {
     cep: string,
@@ -393,4 +402,18 @@ export interface IAgendaUpdate {
     appId: string,
     scheduleDateTime: string,
     amount: string,
+}
+
+export interface IButtonProps{
+    item : TServices;
+    btnStyles?: StyleProp<ViewStyle>;
+    onPress:() => void;
+    textStyles?: StyleProp<TextStyle>;
+    children?: React.ReactNode;
+    visible?:boolean | undefined;
+    heading?: string | undefined;
+    message?: string | undefined;
+    onPressTransaction?: ((event:GestureResponderEvent) => void | undefined);
+    primaryColor: string;
+    secondColor: string;
 }

@@ -31,7 +31,7 @@ export const ServiceStatus = styled.View`
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    width: 85px;
+    width: 90px;
     height: 25px;
     border-radius: 4px;
 `;

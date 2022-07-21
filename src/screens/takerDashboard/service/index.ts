@@ -1,5 +1,6 @@
-import { ILoginResult, TLoadData } from "../../../interfaces"
+import { ICommentResult, ILoginResult, IScheduleDelete, IScheduleResult, IServiceResult, TLoadData } from "../../../interfaces"
 import { api } from "../../../server"
+import { TComment } from "../../../types/AppType"
 
 //valida email
 export const fetchData= async (
@@ -15,40 +16,50 @@ export const fetchData= async (
     return response
 }
 
-
 //valida email
-export const fetchGetAgendamento = async (
-    params: TLoadData
-): Promise<ILoginResult> => {    
-    //console.log(`/User/GetTaker/${params.id}/${params.appid}`);    
+export const fetchGetAgendamentoProvider = async (
+    params: IScheduleDelete
+): Promise<IServiceResult> => {    
+    //console.log(`/Service/GetScheduleDatailsProvider/${params.id}/${params.userId}/${params.appId}`);    
     const response = await api
-        .get<any>(`/User/GetTaker/${params.id}/${params.appid}`)
+        .get<any>(`/Service/GetScheduleDatailsProvider/${params.id}/${params.userId}/${params.appId}`)
         .then(({ data }) => data)
-        .catch(({ error }) => error )
-
+        .catch(({ error }) => error );
     //console.log(response);  
     return response
 }
 
-export const fetchUpAgendamento = async (
-    params: TLoadData
-): Promise<ILoginResult> => {    
+
+export const fetchGetAgendamentoTaker = async (
+    params: IScheduleDelete
+): Promise<IServiceResult> => {    
+    //console.log(`/Service/GetScheduleDatailsTaker/${params.id}/${params.userId}/${params.appId}`);    
+    const response = await api
+        .get<any>(`/Service/GetScheduleDatailsTaker/${params.id}/${params.userId}/${params.appId}`)
+        .then(({ data }) => data)
+        .catch(({ error }) => error );
+    //console.log(response);  
+    return response
+}
+
+export const fetchUpgendamento = async (
+    params: IScheduleDelete
+): Promise<IScheduleResult> => {    
     //console.log(`/User/GetTaker/${params.id}/${params.appid}`);    
     const response = await api
-        .get<any>(`/User/GetTaker/${params.id}/${params.appid}`)
+        .put<any>(`/Service/Conclude/${params.id}/${params.userId}/${params.appId}`)
         .then(({ data }) => data)
         .catch(({ error }) => error )
-
     //console.log(response);  
     return response
 }
 
 export const fetchCancelAgendamento = async (
-    params: TLoadData
-): Promise<ILoginResult> => {    
+    params: IScheduleDelete
+): Promise<IScheduleResult> => {    
     //console.log(`/User/GetTaker/${params.id}/${params.appid}`);    
     const response = await api
-        .get<any>(`/User/GetTaker/${params.id}/${params.appid}`)
+        .put<any>(`/Service/Canceled/${params.id}/${params.userId}/${params.appId}`)
         .then(({ data }) => data)
         .catch(({ error }) => error )
 
@@ -56,16 +67,14 @@ export const fetchCancelAgendamento = async (
     return response
 }
 
-
 export const fetchAgendamentoComment = async (
-    params: TLoadData
-): Promise<ILoginResult> => {    
+    params: TComment
+): Promise<ICommentResult> => {    
     //console.log(`/User/GetTaker/${params.id}/${params.appid}`);    
     const response = await api
-        .get<any>(`/User/GetTaker/${params.id}/${params.appid}`)
+        .post<any>("/Comment", params )
         .then(({ data }) => data)
         .catch(({ error }) => error )
-
-    //console.log(response);  
+    console.log(response);  
     return response
 }

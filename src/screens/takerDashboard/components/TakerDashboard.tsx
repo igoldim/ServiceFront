@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-community/async-storage";
 import React from "react";
+import { Alert } from "react-native";
 import GetLocation from "react-native-get-location";
 import CardSection from "../../../components/Cards/CardSection";
 import ScreenHeadUser from "../../../components/Head/ScreenHeadUser";
@@ -76,6 +77,7 @@ const TakerDashboard: React.FC<ScreensProps> = ({navigation}) => {
 
     const modalButtonHandle = () =>{
         setVisible(false);
+        loadData();
         if (!temConnection){
             navigation.reset({
                 index: 1,
@@ -140,6 +142,7 @@ const TakerDashboard: React.FC<ScreensProps> = ({navigation}) => {
             return false;            
           });
     } 
+
 
     return (
         <Container style={{backgroundColor: primaryColor}}>

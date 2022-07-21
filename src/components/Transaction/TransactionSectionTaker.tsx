@@ -25,7 +25,7 @@ const TransactionSectionTaker: React.FC<TransactionSectionProps> = ( props ) => 
             onRefresh={props.onRefresh}
             refreshing={props.refreshing}
             keyExtractor={({ id }: any )=> id.toString()}
-            renderItem={({ item }: any ) => <TransactionTakerItem {...item} primaryColor={props.primaryColor} secondColor={props.secondColor}/>}
+            renderItem={({ item }: any ) => <TransactionTakerItem {...item} primaryColor={props.primaryColor} secondColor={props.secondColor} />}
             />
         </TransactionSectionBackground>
     );
