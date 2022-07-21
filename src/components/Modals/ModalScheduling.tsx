@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 import { Colors } from '../Colors';
 import BigText from '../Texts/BigText';
 import RegularText from '../Texts/RegularText';
-import { GestureResponderEvent, Image, Modal, StatusBar, StyleProp, TextInput, TextStyle, ViewStyle } from "react-native";
+import { Alert, GestureResponderEvent, Image, Modal, StatusBar, StyleProp, TextInput, TextStyle, ViewStyle } from "react-native";
 
 import RegularButton from '../Buttons/RegularButton';
 import { Row } from '../Shared';
@@ -69,10 +69,13 @@ const ModalScheduling: React.FC<ButtonProps> = (props) => {
     const [messageType, setMessageType] = React.useState('');
     const [messageHeadding, setMessageHeadding] = React.useState('');
     const [modalButtonText, setmodalButtonText] = React.useState('');     
+    const [commentary, setCommentary] = React.useState('');     
     const [status, setStatus] = React.useState('');     
     const [startValue, setStarValue] = React.useState(0);
 
+    const [temComment, setTemComment] = React.useState(false);
     const [viewComment, serViewComment] = React.useState(false);
+    
     const handleSetStarValue = (value : number) => {
 
     };
@@ -92,22 +95,86 @@ const ModalScheduling: React.FC<ButtonProps> = (props) => {
         }
     }
 
-    const modalMessageHandle = () =>{
-        setVisibleMessage(false);
-        showModal("success", "Serviço concluído com sucesso!", "Obrigado", "Concluir");
-        setStatus("Concluído");
+    const modalMessageHandleTaker = () =>{
+        return Alert.alert(
+            "Concluir Atendimento",
+            "Deseja realmente concluir este atendimento?, está ação não poderá ser desfeita.",
+            [
+                // The "Yes" button
+                {
+                    text: "Sim",
+                    onPress: () => {
+                        setVisibleMessage(false);
+                        showModal("success", "Atendimento concluído com sucesso!", "Obrigado", "Concluir");
+                        setStatus("Concluído");
+                    },
+                },
+                // The "No" button
+                // Does nothing but dismiss the dialog when tapped
+                {
+                    text: "Não",
+                },
+            ]
+        );
     }
 
-    const modalMessageHandleCancel = () =>{
-        setVisibleMessage(false);
-        serViewComment(false)
-        showModal("cancel", "Serviço cancelado com sucesso!", "Obrigado", "Fechar");
-        setStatus("Cancelado");
+    const modalMessageHandleProvider = () =>{
+        return Alert.alert(
+            "Iniciar Serviço",
+            "Deseja realmente iniciar o atendimento?, está ação não poderá ser desfeito.",
+            [
+                // The "Yes" button
+                {
+                    text: "Sim",
+                    onPress: () => {
+                        setVisibleMessage(false);
+                        showModal("success", "Atendimento concluído com sucesso!", "Obrigado", "Concluir");
+                        setStatus("Concluído");
+                    },
+                },
+                // The "No" button
+                // Does nothing but dismiss the dialog when tapped
+                {
+                    text: "Não",
+                },
+            ]
+        );
     }
+
+
+    const modalMessageHandleCancel = () =>{
+        return Alert.alert(
+            "Cancelar Atendimento",
+            "Deseja realmente cancelar o atendimento?, está ação não poderá ser desfeito.",
+            [
+                // The "Yes" button
+                {
+                    text: "Sim",
+                    onPress: () => {
+                        setVisibleMessage(false);
+                        serViewComment(false)
+                        showModal("cancel", "Atendimento cancelado com sucesso!", "Obrigado", "Fechar");
+                        setStatus("Cancelado");
+                    },
+                },
+                // The "No" button
+                // Does nothing but dismiss the dialog when tapped
+                {
+                    text: "Não",
+                },
+            ]
+        );      
+    }
+
 
     const handleSetSatrValue = (newValue : number) =>{
         setStarValue(startValue !== newValue ? newValue : 0);
     };
+
+    const handleComment = () => {
+        props.onPress();
+        setTemComment(true);
+    }
 
     return(<>
             <Modal
@@ -117,31 +184,41 @@ const ModalScheduling: React.FC<ButtonProps> = (props) => {
                     <ModalView style={{backgroundColor: props.secondColor}}>
                         <ScreenHead screenName='Agendamento' showIcon={true} onPress={props.onPress} primaryColor={props.secondColor} secondColor={props.primaryColor}/>
                         <StatusBar barStyle="light-content" backgroundColor={props.primaryColor} />
-                        {!viewComment && status === "" &&
+                        {!viewComment && status === "" &&                        
                         <Row>
-                            <RegularButton 
-                                btnStyles={{backgroundColor:  props.primaryColor, width: '45%', borderRadius: 5, display: 'flex', justifyContent:'center', alignItems: 'center'}}
-                                textStyles={{color: props.secondColor, fontSize: 24, fontWeight: '500'}}
-                                onPress={modalMessageHandle}>
-                                    Concluído
-                            </RegularButton>
-
-                            <RegularButton 
-                                btnStyles={{width: '45%', borderColor: props.primaryColor, borderTopWidth: 1,  borderLeftWidth: 1,  borderRightWidth: 1,  borderBottomWidth: 1 ,backgroundColor: props.secondColor}}
-                                textStyles={{color: props.primaryColor, fontSize: 24, fontWeight: '500'}}
-                                onPress={modalMessageHandleCancel}>
-                                    Cancelar
-                            </RegularButton>
-
+                            { props.item.proffisional && 
+                                <RegularButton 
+                                    btnStyles={{backgroundColor:  props.primaryColor, width: '45%', borderRadius: 5, display: 'flex', justifyContent:'center', alignItems: 'center'}}
+                                    textStyles={{color: props.secondColor, fontSize: 24, fontWeight: '500'}}
+                                    onPress={modalMessageHandleTaker}>
+                                        Concluído
+                                </RegularButton>
+                            }
+                            { props.item.user && 
+                            <>
+                                <RegularButton 
+                                    btnStyles={{backgroundColor:  props.primaryColor, width: '45%', borderRadius: 5, display: 'flex', justifyContent:'center', alignItems: 'center'}}
+                                    textStyles={{color: props.secondColor, fontSize: 24, fontWeight: '500'}}
+                                    onPress={modalMessageHandleProvider}>
+                                        Concluído
+                                </RegularButton>
+                            </>    
+                            }
+                                <RegularButton 
+                                    btnStyles={{width: '45%', borderColor: props.primaryColor, borderTopWidth: 1,  borderLeftWidth: 1,  borderRightWidth: 1,  borderBottomWidth: 1 ,backgroundColor: props.secondColor}}
+                                    textStyles={{color: props.primaryColor, fontSize: 24, fontWeight: '500'}}
+                                    onPress={modalMessageHandleCancel}>
+                                        Cancelar
+                                </RegularButton>
                         </Row>
                         }
                         {status !== "" && 
-                        <Row style={{marginTop: 10}}>
+                        <Row>
                             <BigText textStyles={{fontSize: 25, color: props.primaryColor, fontWeight: '800'}} >Status: {status}</BigText>
                         </Row>
                     
                         }
-                        <Row style={{marginTop: 10}}>
+                        <Row>
                             <RegularText textStyles={{fontSize: 25, color: props.primaryColor, fontWeight: '800'}} >Data</RegularText>
                             <RegularText textStyles={{fontSize: 25, color: props.primaryColor, fontWeight: '800'}} >Hora</RegularText>
                         </Row>
@@ -153,62 +230,73 @@ const ModalScheduling: React.FC<ButtonProps> = (props) => {
                             <BigText textStyles={{textAlign: 'left', fontSize: 20, color: props.primaryColor, marginVertical: 2, fontWeight: 'bold'}} >Cliente</BigText>
                             <BigText textStyles={{textAlign: 'left', fontSize: 20, color: props.primaryColor, marginVertical: 2, fontWeight: 'bold'}} >Valor</BigText>
                         </Row>
-                        <Row style={{width: '100%'}}>
-                            { props.item.user && 
+                        { props.item.user && 
+                            <Row style={{width: '100%'}}>
                                 <RegularText textStyles={{fontSize: 16, color: props.primaryColor}} >{ props.item.user.name}</RegularText>
-                            }
-                           
-                           {props.item.proffisional && 
+                                <RegularText textStyles={{fontSize: 16, color: props.primaryColor}} >{props.item.amountValue && props.item.amountValue}</RegularText>
+                            </Row>
+                        }
+                        
+                        {props.item.proffisional && 
+                            <Row style={{width: '100%'}}>
                                 <RegularText textStyles={{fontSize: 16, color: props.primaryColor}} >{props.item.proffisional.name.split(' ')[0] + ' ' + props.item.proffisional.name.split(' ')[props.item.proffisional.name.split(' ').length-1]}</RegularText>
-                            }
-                            <RegularText textStyles={{fontSize: 16, color: props.primaryColor}} >{props.item.amountValue && props.item.amountValue}</RegularText>
-                        </Row>
+                                <RegularText textStyles={{fontSize: 16, color: props.primaryColor}} >{props.item.amountValue && props.item.amountValue}</RegularText>
+                            </Row>
+                        }
                         <Row style={{width: '100%'}}>
                             <BigText textStyles={{fontSize: 20, color: props.primaryColor, marginVertical: 2, fontWeight: 'bold'}} >Endereço</BigText>
                         </Row>
+                        {props.item.user && 
                         <Row style={{width: '100%'}}>
-                            {props.item.user && 
-                                <BigText textStyles={{fontSize: 16, color: props.primaryColor}} >{props.item.user.address}{props.item.user.number && ', ' +props.item.user.number}</BigText>
-                            }
-                            {props.item.proffisional && 
-                                <BigText textStyles={{fontSize: 16, color: props.primaryColor}} >{props.item.proffisional.address}{props.item.proffisional.number && ', ' + props.item.proffisional.number}</BigText>
-                            }
+                            <BigText textStyles={{fontSize: 16, color: props.primaryColor}} >{props.item.user.address}{props.item.user.number && ', ' +props.item.user.number}</BigText>
                         </Row>
+                        }
+                        {props.item.proffisional && 
                         <Row style={{width: '100%'}}>
-                            {props.item.user && 
-                                <BigText textStyles={{fontSize: 16, color: props.primaryColor}} >{props.item.user.district}</BigText>
-                            }
-                            {props.item.proffisional && 
-                                <BigText textStyles={{fontSize: 16, color: props.primaryColor}} >{props.item.proffisional.district}</BigText>
-                            }
+                            <BigText textStyles={{fontSize: 16, color: props.primaryColor}} >{props.item.proffisional.address}{props.item.proffisional.number && ', ' + props.item.proffisional.number}</BigText>
                         </Row>
+                        }
+                        {props.item.user && 
                         <Row style={{width: '100%'}}>
-                            {props.item.user && 
-                                <BigText textStyles={{fontSize: 16, color: props.primaryColor}} >{props.item.user.complement}</BigText>
-                            }
-                            {props.item.proffisional && 
-                                <BigText textStyles={{fontSize: 16, color: props.primaryColor}} >{props.item.proffisional.complement}</BigText>
-                            }
+                            <BigText textStyles={{fontSize: 16, color: props.primaryColor}} >{props.item.user.district}</BigText>
                         </Row>
+                        }
+                        {props.item.proffisional && 
                         <Row style={{width: '100%'}}>
-                            {props.item.user && 
-                                <BigText textStyles={{fontSize: 16, color: props.primaryColor}} >{props.item.user.city}{" / " + props.item.user.state}</BigText>
-                            }
-                            {props.item.proffisional && 
-                                <BigText textStyles={{fontSize: 16, color: props.primaryColor}} >{props.item.proffisional.city}{" / " + props.item.proffisional.state}</BigText>
-                            }
+                            <BigText textStyles={{fontSize: 16, color: props.primaryColor}} >{props.item.proffisional.district}</BigText>
                         </Row>
+                        }
+                        {props.item.user?.complement != null && ( 
+                        <Row style={{width: '100%'}}>
+                            <BigText textStyles={{fontSize: 16, color: props.primaryColor}} >{props.item.user.complement}</BigText>
+                        </Row>)
+                        }
+                        {props.item.proffisional?.complement != null && 
+                        <Row style={{width: '100%'}}>
+                            <BigText textStyles={{fontSize: 16, color: props.primaryColor}} >{props.item.proffisional.complement}</BigText>
+                        </Row>
+                        }
+                        {props.item.user && 
+                        <Row style={{width: '100%'}}>
+                            <BigText textStyles={{fontSize: 16, color: props.primaryColor}} >{props.item.user.city}{" / " + props.item.user.state}</BigText>
+                        </Row>
+                        }
+                        {props.item.proffisional && 
+                        <Row style={{width: '100%'}}>
+                            <BigText textStyles={{fontSize: 16, color: props.primaryColor}} >{props.item.proffisional.city}{" / " + props.item.proffisional.state}</BigText>
+                        </Row>
+                        }
                         {props.item.user  &&
                         <>
                             <Row style={{width: '100%'}}>
                                 <BigText textStyles={{fontSize: 20, color: props.primaryColor, marginVertical: 10, fontWeight: 'bold'}} >Localização</BigText>
                             </Row>
-                            <Row style={{width: '100%', backgroundColor: props.secondColor, height: 200,  borderRadius: 10, marginBottom: 10}}>
+                            <Row style={{width: '100%', backgroundColor: props.secondColor, height: 185,  borderRadius: 10}}>
                                 <StyledImage source={{uri: 'https://imagens.circuit.inf.br/maps.jpeg'}} />
                             </Row>
                             {status === "" &&  
                             <RegularButton 
-                                    btnStyles={{alignSelf: 'center', backgroundColor:  props.secondColor, width: '45%', borderRadius: 5, padding: 10, display: 'flex', justifyContent:'center', alignItems: 'center', marginBottom: 20}}
+                                    btnStyles={{alignSelf: 'center', backgroundColor:  props.primaryColor, width: '45%', borderRadius: 5, padding: 10, display: 'flex', justifyContent:'center', alignItems: 'center'}}
                                     textStyles={{color: props.secondColor, fontSize: 24, fontWeight: '500'}}
                                     onPress={props.onPress}>
                                         Rota
@@ -223,18 +311,24 @@ const ModalScheduling: React.FC<ButtonProps> = (props) => {
                             </Row>
                             <RegularInputArea
                                 ViewStyles={{borderColor: props.primaryColor, borderTopWidth: 1,  borderLeftWidth: 1,   borderRadius: 5, borderRightWidth: 1,  borderBottomWidth: 1 ,backgroundColor: props.secondColor}}
-                                inputStyles={{textAlignVertical: 'top'}}
+                                inputStyles={{textAlignVertical: 'top', color: props.primaryColor}}
                                 multiline={true}
                                 maxLength={50}
                                 numberOfLines={4}
+                                editable={!temComment}
+                                value={commentary}
+                                
+                                onChangeText={setCommentary}
                             />
-                            <Stars isSave={true} onPress={(e) => handleSetSatrValue(e)}  value={startValue} showNumber={false} width="40" height='40' startStyle={{marginTop: 10, marginBottom: 10, alignSelf: 'center'}}/>
-                            <RegularButton 
-                                    btnStyles={{alignSelf: 'center', backgroundColor:  props.primaryColor, width: '45%', borderRadius: 5, padding: 10, display: 'flex', justifyContent:'center', alignItems: 'center', marginBottom: 20}}
-                                    textStyles={{color: props.secondColor, fontSize: 24, fontWeight: '500'}}
-                                    onPress={props.onPress}>
-                                        Salvar
-                            </RegularButton>
+                            <Stars isSave={!temComment} onPress={(e) => handleSetSatrValue(e)}  value={startValue} showNumber={false} width="40" height='40' startStyle={{marginTop: 10, marginBottom: 10, alignSelf: 'center'}} color={props.primaryColor}/>
+                            {!temComment && 
+                                <RegularButton 
+                                        btnStyles={{alignSelf: 'center', backgroundColor:  props.primaryColor, width: '45%', borderRadius: 5, padding: 10, display: 'flex', justifyContent:'center', alignItems: 'center', marginBottom: 20}}
+                                        textStyles={{color: props.secondColor, fontSize: 24, fontWeight: '500'}}
+                                        onPress={handleComment}>
+                                            Salvar
+                                </RegularButton>
+                            }
                         </>
                         }
                     </ModalView>
@@ -246,7 +340,6 @@ const ModalScheduling: React.FC<ButtonProps> = (props) => {
                 secondColor={props.secondColor} 
                 viewStyles={{backgroundColor: props.secondColor}}
                 visible={visibleMessage} 
-                setVisible={setVisibleMessage} 
                 heading={messageHeadding} 
                 message={messageModal} 
                 btnTitle={modalButtonText} 

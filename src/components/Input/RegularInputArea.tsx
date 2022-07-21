@@ -38,6 +38,7 @@ interface InputProps{
     value?: string | undefined;
     isPassword?: boolean | undefined;
     multiline?: boolean;
+    editable?: boolean;
     numberOfLines?: number;
 }
 
@@ -56,6 +57,7 @@ const RegularInputArea: React.FC<InputProps> = (props) => {
                 autoCapitalize={props.autoCapitalize}
                 value={props.value}         
                 multiline={props.multiline}     
+                editable={props.editable}
                 numberOfLines={props.numberOfLines}    
                 secureTextEntry={props.isPassword && hidePassword}    
             />

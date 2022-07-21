@@ -328,7 +328,8 @@ export type TServices = {
     proffisional : TUser,
     user : TUser,
     createAt : string,
-    updateAt : string
+    updateAt : string,
+    comment: TComment
 }
 
 export type TFavoritesSectionProps = {

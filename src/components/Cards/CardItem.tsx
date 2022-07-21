@@ -3,7 +3,7 @@ import { Avatar, CardBackground, CardRow, CardTouchable, TouchableView } from '.
 
 //import card_bd from "../../assets/images/background_transparent.png";
 import RegularText from '../Texts/RegularText';
-import { View } from 'react-native';
+import { Alert, View } from 'react-native';
 import SmallText from '../Texts/SmallText';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ModalScheduling from '../Modals/ModalScheduling';
@@ -20,7 +20,7 @@ const CardItem: React.FC<CardItemType> = (props) => {
     const [visibleScheduling , setVisibleScheduling ] = React.useState(false);
 
     const showModalScheduling  = () => {
-        setVisibleScheduling(true);
+        setVisibleScheduling(true);        
     }
 
     return(
