@@ -70,7 +70,7 @@ export const fetchCancelAgendamento = async (
 export const fetchAgendamentoComment = async (
     params: TComment
 ): Promise<ICommentResult> => {    
-    //console.log(`/User/GetTaker/${params.id}/${params.appid}`);    
+    console.log(params);    
     const response = await api
         .post<any>("/Comment", params )
         .then(({ data }) => data)

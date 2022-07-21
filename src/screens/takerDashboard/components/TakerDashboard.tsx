@@ -150,7 +150,7 @@ const TakerDashboard: React.FC<ScreensProps> = ({navigation}) => {
                 userName={name.split(" ")[0]}  
                 primaryColor={primaryColor} 
                 secondColor={secondColor} 
-                avatar={avatar}
+                avatar={avatar + '?'+Math.random().toString(36).substring(9)}
                 showIcon={true}
                 onPress={() => 
                     navigation.reset({

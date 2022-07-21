@@ -110,8 +110,8 @@ export type TComment = {
     appId: string,
     commentary: string,
     stars: number,
-    service: TServices,
-    createAt: string
+    service?: TServices,
+    createAt?: string
 }
 
 export type TUser = {

@@ -30,7 +30,7 @@ const ModalView = styled.View`
 `;
 
 interface ButtonProps{
-    onPress?: ((event:GestureResponderEvent) => void | undefined);
+    onPress: () => void;
     textStyles?: StyleProp<TextStyle>;
     children?: React.ReactNode;
     visible?:boolean | undefined;

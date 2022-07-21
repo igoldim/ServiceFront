@@ -2,12 +2,12 @@ import React from 'react';
 import ScreenHead from '../../../components/Head/ScreenHead';
 import { Container, Row } from '../../../components/Shared';
 import { cleanData, useAppData } from '../../../services';
-import { Alert, StatusBar } from "react-native";
+import { ActivityIndicator, Alert, StatusBar } from "react-native";
 import RegularButton from '../../../components/Buttons/RegularButton';
 import BigText from '../../../components/Texts/BigText';
 import RegularText from '../../../components/Texts/RegularText';
 import RegularInputArea from '../../../components/Input/RegularInputArea';
-import { fetchCancelAgendamento, fetchGetAgendamentoProvider, fetchUpgendamento } from '../../takerDashboard/service';
+import { fetchAgendamentoComment, fetchCancelAgendamento, fetchGetAgendamentoProvider, fetchUpgendamento } from '../../takerDashboard/service';
 import Stars from '../../../components/Stars';
 import { useNavigation } from '@react-navigation/native';
 import { ScreensProps, TServices } from '../../../types/AppType';
@@ -21,8 +21,7 @@ const ScheduleDatailsProvider: React.FC<ScreensProps> = (props)  => {
     const [secondColor, setSecondColor] = React.useState("#000");
 
     const [service, setService ] = React.useState<TServices | null>(null);
-    const [commentary, setCommentary] = React.useState('');     
-    const [status, setStatus] = React.useState('');     
+    const [commentary, setCommentary] = React.useState<string>("");     
     const [startValue, setStarValue] = React.useState(0);
 
     const [messageHeadding, setMessageHeadding] = React.useState('');
@@ -41,6 +40,7 @@ const ScheduleDatailsProvider: React.FC<ScreensProps> = (props)  => {
     },[]);
 
     const loadData = async () => {
+        setLoading(true);
         const {primaryColor:strPrimaryColor, secondColor: strSecondColor, userId, appKey: appId } = await useAppData();
         setPrimaryColor(strPrimaryColor); 
         setSecondColor(strSecondColor); 
@@ -53,17 +53,19 @@ const ScheduleDatailsProvider: React.FC<ScreensProps> = (props)  => {
             setTemConnection(true);
             const {sucessful, data, message} = reponse;
             if (sucessful){
-                setService(data);   
-                setCommentary(data?.comments?.commentary as string);    
+                setService(data);
+                
+                if (data?.comments)  setCommentary(data?.comments?.commentary as string);    
+
                 setStarValue(data?.comments?.stars);
                 setLoading(false);
             }
         }
         else{
-            //setTemConnection(false);
+            setTemConnection(false);
             setLoading(false);
             showModal("Segurança", "suas credênciais expiraram, precisamos que você efetue novamente seu login.", "erro");
-            //cleanData();
+            cleanData();
         }
         //console.log(serviceId);
     };
@@ -122,7 +124,6 @@ const ScheduleDatailsProvider: React.FC<ScreensProps> = (props)  => {
 
                             if (sucessful){
                                 showModal("Sucesso", "Atendimento concluído com sucesso!", "success");
-                                setStatus("Concluído");
                                 loadData();
                             }
                             else{
@@ -150,7 +151,6 @@ const ScheduleDatailsProvider: React.FC<ScreensProps> = (props)  => {
                     text: "Sim",
                     onPress: () => {
                         showModal("Sucesso", "Atendimento concluído com sucesso!", "succes");
-                        setStatus("Concluído");
                     },
                 },
                 // The "No" button
@@ -194,7 +194,6 @@ const ScheduleDatailsProvider: React.FC<ScreensProps> = (props)  => {
 
                                 if (sucessful){
                                     showModal("Obrigado", "Atendimento cancelado com sucesso!", "success");
-                                    setStatus("Cancelado");                                   
                                 }
                                 else{
                                     showModal("Cancelamento", message, "erro");
@@ -215,15 +214,38 @@ const ScheduleDatailsProvider: React.FC<ScreensProps> = (props)  => {
         setStarValue(startValue !== newValue ? newValue : 0);
     };
 
-    const handleComment = () => {
+    const handleComment = async () => {
+        setLoading(true);
+        if (commentary === "") {
+            setLoading(false);
+            showModal("Comentário", "Faça algum comentário, ele nos ajuda e melhorar cada vez mais nosso serviços", "erro");
+            return false;
+        }
+        else{
+            var reponse = await fetchAgendamentoComment({serviceId: service?.id as string,  appId: service?.appId as string, commentary: commentary , stars: startValue}); 
+            if (reponse){
+                setTemConnection(true);
+                const {sucessful, data, message} = reponse;
+                if (sucessful){
+                    setLoading(false);
+                    showModal("Comentário", "obrigado pela sua avaliação, ela torna nosso serviço cada vez melhor.", "success");
+                    loadData();   
+                }
+            }
+            else{
+                setTemConnection(false);
+                setLoading(false);
+                showModal("Segurança", "suas credênciais expiraram, precisamos que você efetue novamente seu login.", "erro");
+                cleanData();
+            }
+        }       
     }
 
     const handleBack = async () => {
-        const {UserType} = await useAppData();
         navigation.reset({
             index: 1,
             routes: [
-            { name:  UserType === '0' ? "TakerDashboard" : "ProviderDashboard" },
+            { name: "TakerDashboard"},
             ],
         });
     }
@@ -231,7 +253,8 @@ const ScheduleDatailsProvider: React.FC<ScreensProps> = (props)  => {
     return (
           <Container style={{backgroundColor: primaryColor}}>
             <ModalPressableContainer style={{backgroundColor: primaryColor}}>
-                    <ModalView style={{backgroundColor: secondColor}}>
+                  {isLoading  &&  <ActivityIndicator size={30} color="#fff" />}
+                  {!isLoading  && <ModalView style={{backgroundColor: secondColor}}>
                         <ScreenHead screenName='Agendamento' showIcon={true} onPress={() => handleBack()} primaryColor={secondColor} secondColor={primaryColor}/>
                         <StatusBar barStyle="light-content" backgroundColor={primaryColor} />
                         {service?.status === "S" &&                        
@@ -267,35 +290,25 @@ const ScheduleDatailsProvider: React.FC<ScreensProps> = (props)  => {
                             <BigText textStyles={{textAlign: 'left', fontSize: 20, color: primaryColor, marginVertical: 2, fontWeight: 'bold'}} >Cliente</BigText>
                             <BigText textStyles={{textAlign: 'left', fontSize: 20, color: primaryColor, marginVertical: 2, fontWeight: 'bold'}} >Valor</BigText>
                         </Row>
-                        {service?.proffisional && 
-                            <Row style={{width: '100%'}}>
-                                <RegularText textStyles={{fontSize: 16, color: primaryColor}} >{service?.proffisional.name.split(' ')[0] + ' ' + service?.proffisional.name.split(' ')[service?.proffisional.name.split(' ').length-1]}</RegularText>
-                                <RegularText textStyles={{fontSize: 16, color: primaryColor}} >{service?.amountValue && service?.amountValue}</RegularText>
-                            </Row>
-                        }
+                        <Row style={{width: '100%'}}>
+                            <RegularText textStyles={{fontSize: 16, color: primaryColor}} >{service?.proffisional.name.split(' ')[0] + ' ' + service?.proffisional.name.split(' ')[service?.proffisional.name.split(' ').length-1]}</RegularText>
+                            <RegularText textStyles={{fontSize: 16, color: primaryColor}} >{service?.amountValue && service?.amountValue}</RegularText>
+                        </Row>
                         <Row style={{width: '100%'}}>
                             <BigText textStyles={{fontSize: 20, color: primaryColor, marginVertical: 2, fontWeight: 'bold'}} >Endereço</BigText>
                         </Row>
-                        {service?.proffisional && 
                         <Row style={{width: '100%'}}>
                             <BigText textStyles={{fontSize: 16, color: primaryColor}} >{service?.proffisional.address}{service?.proffisional.number && ', ' + service?.proffisional.number}</BigText>
                         </Row>
-                        }
-                        {service?.proffisional && 
                         <Row style={{width: '100%'}}>
                             <BigText textStyles={{fontSize: 16, color: primaryColor}} >{service?.proffisional.district}</BigText>
                         </Row>
-                        }
-                        {service?.proffisional?.complement != null && 
                         <Row style={{width: '100%'}}>
                             <BigText textStyles={{fontSize: 16, color: primaryColor}} >{service?.proffisional.complement}</BigText>
                         </Row>
-                        }
-                        {service?.proffisional && 
                         <Row style={{width: '100%'}}>
                             <BigText textStyles={{fontSize: 16, color: primaryColor}} >{service?.proffisional.city}{" / " + service?.proffisional.state}</BigText>
                         </Row>
-                        }                        
 
                         {service?.status === "E" &&
                         <>
@@ -313,17 +326,26 @@ const ScheduleDatailsProvider: React.FC<ScreensProps> = (props)  => {
                                 onChangeText={setCommentary}
                             />
                             <Stars isSave={service?.comments === null} onPress={(e) => handleSetSatrValue(e)}  value={startValue} showNumber={false} width="40" height='40' startStyle={{marginTop: 10, marginBottom: 10, alignSelf: 'center'}} color={primaryColor}/>
-                            {service?.comments === null && 
-                                <RegularButton 
-                                        btnStyles={{alignSelf: 'center', backgroundColor:  primaryColor, width: '45%', borderRadius: 5, padding: 10, display: 'flex', justifyContent:'center', alignItems: 'center', marginBottom: 20}}
+                            
+                            {service?.comments === null &&  isLoading && <RegularButton 
+                                    btnStyles={{backgroundColor: primaryColor, borderRadius: 5, padding: 10, display: 'flex', justifyContent:'center', alignItems: 'center', marginTop: 15}}
+                                    textStyles={{color: secondColor, fontSize: 24, fontWeight: '500'}}
+                                    disabled={true}>
+                                        <ActivityIndicator size={30} color="#fff" />
+                                    </RegularButton>
+                            }            
+                            
+                            {service?.comments === null && !isLoading &&
+                                <RegularButton            
+                                        btnStyles={{backgroundColor: primaryColor, borderRadius: 5, padding: 10, display: 'flex', justifyContent:'center', alignItems: 'center', marginTop: 15}}
                                         textStyles={{color: secondColor, fontSize: 24, fontWeight: '500'}}
                                         onPress={handleComment}>
-                                            Salvar
-                                </RegularButton>
-                            }
+                                        Salvar
+                                </RegularButton>}
                         </>
                         }
                     </ModalView>
+                   } 
                 </ModalPressableContainer>
                 <MessageAlertModal 
                     visible={visible} 
