@@ -78,7 +78,6 @@ const TakerDashboard: React.FC<ScreensProps> = ({navigation}) => {
 
     const modalButtonHandle = () =>{
         setVisible(false);
-        loadData();
         if (!temConnection){
             navigation.reset({
                 index: 1,
@@ -86,6 +85,9 @@ const TakerDashboard: React.FC<ScreensProps> = ({navigation}) => {
                   { name: 'SignIn' },
                 ],
               });
+        }
+        else{
+            loadData();
         }
     }
 
@@ -148,7 +150,7 @@ const TakerDashboard: React.FC<ScreensProps> = ({navigation}) => {
     return (
         <Container style={{backgroundColor: primaryColor}}>
             <ScreenHeadUser 
-                userName={name && name.split(" ")[0]}  
+                userName={name ? name.split(" ")[0] : ""}  
                 primaryColor={primaryColor} 
                 secondColor={secondColor} 
                 avatar={avatar + '?'+Math.random().toString(36).substring(9)}

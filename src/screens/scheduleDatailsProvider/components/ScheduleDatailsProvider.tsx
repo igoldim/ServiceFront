@@ -243,7 +243,7 @@ const ScheduleDatailsProvider: React.FC<ScreensProps> = (props)  => {
 
     const handleBack = async () => {
         const rota = await AsyncStorage.getItem("rota") as string;
-
+        console.log(rota);
         navigation.reset({
             index: 1,
             routes: [

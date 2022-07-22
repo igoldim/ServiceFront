@@ -9,6 +9,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { TServices, TUser } from '../../types/AppType';
 import AsyncStorage from '@react-native-community/async-storage';
 import { useNavigation } from '@react-navigation/native';
+import { useAppData } from '../../services';
 
 type CardItemType = {
     item: TServices,
@@ -19,10 +20,12 @@ type CardItemType = {
 const CardItem: React.FC<CardItemType> = (props) => {
 
     const navigation = useNavigation();
-
+    
     const handleDetails = async () => {
 
+        const {UserType} = await useAppData();
         await AsyncStorage.setItem("serviceId", props.item.id);
+        await AsyncStorage.setItem("rota", UserType === "0" ? "TakerDashboard" : "ProviderDashboard" );
 
         navigation.reset({
             index: 1,

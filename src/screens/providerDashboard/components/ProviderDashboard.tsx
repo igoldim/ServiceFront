@@ -18,11 +18,8 @@ const ProviderDashboard: React.FC<ScreensProps> = ({navigation}) => {
     const [name, setName] = React.useState("Usuário");
     const [data, setData] = React.useState<TUser>();
 
-
     const [dataSchedule, setDataSchedule] = React.useState<Array<TServices> | null>( []);
     const [dataServices, setDataServices] = React.useState<Array<TServices> | null>( [] );
-
-
 
     const [avatar, setAvar] = React.useState("https://imagens.circuit.inf.br/noAvatar.png");
 
@@ -35,6 +32,7 @@ const ProviderDashboard: React.FC<ScreensProps> = ({navigation}) => {
     const [type, setType] = React.useState("erro");
 
     const [isLoading, setLoading] = React.useState(false);
+    const [temConnection, setTemConnection] = React.useState(false);
 
     React.useEffect(() =>{
         loadData();
@@ -62,6 +60,7 @@ const ProviderDashboard: React.FC<ScreensProps> = ({navigation}) => {
         if (reponse){
             const {sucessful, data, message} = reponse;
             if (sucessful){
+                setTemConnection(true);
                 setAvar(data?.avatar as string);
                 await AsyncStorage.setItem("Avatar", data?.avatar as string);
                 setData(data);      
@@ -71,6 +70,7 @@ const ProviderDashboard: React.FC<ScreensProps> = ({navigation}) => {
             }
         }
         else{
+            setTemConnection(false);
             setLoading(false);
             showModal("Segurança", "suas credênciais expiraram, precisamos que você efetue novamente seu login.", "erro");
             cleanData();
@@ -100,18 +100,19 @@ const ProviderDashboard: React.FC<ScreensProps> = ({navigation}) => {
         }  
     }
 
-    const showModalScheduling = (item:TUser) =>{
-
-    };
-
     const modalButtonHandle = () =>{
         setVisible(false);
-        navigation.reset({
-            index: 1,
-            routes: [
-              { name: 'SignIn' },
-            ],
-          });
+        if (!temConnection){
+            navigation.reset({
+                index: 1,
+                routes: [
+                  { name: 'SignIn' },
+                ],
+              });
+        }
+        else{
+            loadData();
+        }
 
     }
 
@@ -125,7 +126,7 @@ const ProviderDashboard: React.FC<ScreensProps> = ({navigation}) => {
     return (
         <Container style={{backgroundColor: primaryColor}}>
             <ScreenHeadUser 
-                userName={name && name.split(" ")[0]} 
+                userName={name ? name.split(" ")[0] : ""}  
                 primaryColor={primaryColor} 
                 secondColor={secondColor} 
                 showIcon={true} 

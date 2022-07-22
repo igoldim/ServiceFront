@@ -27,8 +27,8 @@ const TransactionTakerItem: React.FC<TServices> = ( props ) => {
     };
 
     const handleDetails = async () => {
-
         await AsyncStorage.setItem("serviceId", props.id);
+        await AsyncStorage.removeItem("rota");
 
         navigation.reset({
             index: 1,

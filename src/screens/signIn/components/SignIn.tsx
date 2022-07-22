@@ -30,30 +30,26 @@ const SignIn: React.FC<ScreensProps> = ({navigation}) => {
     const [isLoading, setLoading] = React.useState(false);
 
     React.useEffect(() =>{
-    
-      const loadData = async () => {
-        var isLogado = await AsyncStorage.getItem("isLogged");
-        var userType = await AsyncStorage.getItem("userType");
-        
-        if (isLogado == "true"){
-          if (userType == "0"){
-            navigation.navigate('TakerDashboard');
-          }
-          else if (userType == "1"){
-              navigation.navigate('ProviderDashboard');
-          } 
-        }
-        
-        const {appKey: appId, primaryColor:strPrimaryColor, secondColor: strSecondColor } = await useAppData();        
-        setAppId(appId);
-        setPrimaryColor(strPrimaryColor); 
-        setSecondColor(strSecondColor); 
-
-      };
-      
       loadData();
-
     },[]);
+
+    const loadData = async () => {
+     
+      const {appKey: appId, primaryColor:strPrimaryColor, secondColor: strSecondColor, IsLogado, UserType } = await useAppData();        
+
+      if (IsLogado == "true"){
+        if (UserType == "0"){
+          navigation.navigate('TakerDashboard');
+        }
+        else if (UserType == "1"){
+            navigation.navigate('ProviderDashboard');
+        } 
+      }
+      setAppId(appId);
+      setPrimaryColor(strPrimaryColor); 
+      setSecondColor(strSecondColor); 
+
+    };    
 
     const handleLogin = async () =>{
       try {

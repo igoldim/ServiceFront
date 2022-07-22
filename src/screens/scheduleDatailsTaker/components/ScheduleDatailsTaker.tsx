@@ -73,11 +73,6 @@ const ScheduleDatailsTaker: React.FC<ScreensProps> = (props)  => {
         setVisible(true);
     }
 
-    const handleSetStarValue = (value : number) => {
-
-    };
-
-
     const modalButtonHandle = async () =>{
         if (!temConnection){
             navigation.reset({
