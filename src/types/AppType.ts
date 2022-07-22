@@ -342,3 +342,11 @@ export type TFavoritesSectionProps = {
     onPress: (item : TFavoriteData) => void,
     secondColor: string    
 }
+
+
+export type Coordinates = {
+    latitude: number,
+    longitude: number,
+    latitudeDelta: number,
+    longitudeDelta: number
+}

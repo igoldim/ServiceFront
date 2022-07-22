@@ -26,11 +26,11 @@ const CardItem: React.FC<CardItemType> = (props) => {
         const {UserType} = await useAppData();
         await AsyncStorage.setItem("serviceId", props.item.id);
         await AsyncStorage.setItem("rota", UserType === "0" ? "TakerDashboard" : "ProviderDashboard" );
-
+        
         navigation.reset({
             index: 1,
             routes: [
-            { name: "ScheduleDatailsProvider" },
+            { name:  UserType === "0" ? "ScheduleDatailsTaker" : "ScheduleDatailsProvider" },
             ],
         });
 
@@ -100,7 +100,7 @@ const CardItem: React.FC<CardItemType> = (props) => {
                     {props.item.user &&
                         <Avatar 
                             source={{uri: props.item.user.avatar ? props.item.user.avatar + '?'+Math.random().toString(36).substring(9) : 'https://imagens.circuit.inf.br/noAvatar.png'}} 
-                            style={{backgroundColor: props.primaryColor, borderRadius: 100, width: 40, height: 45}}  
+                            style={{backgroundColor: props.primaryColor, borderRadius: 100, width: 60, height: 60}}  
                         />
                     }
                     {props.item.proffisional &&

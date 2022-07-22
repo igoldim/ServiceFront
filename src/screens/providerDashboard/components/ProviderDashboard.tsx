@@ -35,7 +35,6 @@ const ProviderDashboard: React.FC<ScreensProps> = ({navigation}) => {
     const [temConnection, setTemConnection] = React.useState(false);
 
     React.useEffect(() =>{
-        loadData();
         handleCheckPayments();
     },[]);
 
@@ -131,13 +130,14 @@ const ProviderDashboard: React.FC<ScreensProps> = ({navigation}) => {
                 secondColor={secondColor} 
                 showIcon={true} 
                 avatar={avatar}
-                onPress={() => 
+                onPress={() =>
+                    !isLoading ? 
                     navigation.reset({
                         index: 1,
                         routes: [
                           { name: 'Menu' },
                         ],
-                      })}
+                      }): null }
                 />
             <View style={{display: "flex", flexDirection: "row", justifyContent:'space-between',  marginTop: 75}}>
                 <BigText textStyles={{color: secondColor, fontSize: 28, fontWeight: '800'}}>Saldo</BigText>  

@@ -7,7 +7,7 @@ import RegularButton from '../../../components/Buttons/RegularButton';
 import BigText from '../../../components/Texts/BigText';
 import RegularText from '../../../components/Texts/RegularText';
 import RegularInputArea from '../../../components/Input/RegularInputArea';
-import { fetchAgendamentoComment, fetchCancelAgendamento, fetchUpgendamento } from '../../takerDashboard/service';
+import { fetchAgendamentoComment, fetchCancelAgendamento, fetchGetAgendamentoProvider, fetchUpgendamento } from '../../takerDashboard/service';
 import Stars from '../../../components/Stars';
 import { useNavigation } from '@react-navigation/native';
 import { ScreensProps, TServices } from '../../../types/AppType';
@@ -15,7 +15,6 @@ import { ModalPressableContainer, ModalView, StyledImage } from './ScheduleDatai
 import AsyncStorage from '@react-native-community/async-storage';
 import MessageAlertModal from '../../../components/Modals/MessageAlertModal';
 import { fetchGetAgendamentoTaker } from '../../providerDashboard/service';
-
 
 const ScheduleDatailsTaker: React.FC<ScreensProps> = (props)  => {
     const [primaryColor, setPrimaryColor] = React.useState("#000");
@@ -49,7 +48,7 @@ const ScheduleDatailsTaker: React.FC<ScreensProps> = (props)  => {
         //carrega dados da api
         const serviceId = await AsyncStorage.getItem("serviceId") as string;
 
-        var reponse = await fetchGetAgendamentoTaker({id: serviceId,  userId,  appId}); 
+        var reponse = await fetchGetAgendamentoProvider({id: serviceId,  userId,  appId}); 
         if (reponse){
             setTemConnection(true);
             const {sucessful, data, message} = reponse;
@@ -244,7 +243,7 @@ const ScheduleDatailsTaker: React.FC<ScreensProps> = (props)  => {
 
     const handleBack = async () => {
         const rota = await AsyncStorage.getItem("rota") as string;
-        console.log(rota);
+        //console.log(rota);
         navigation.reset({
             index: 1,
             routes: [
@@ -290,27 +289,27 @@ const ScheduleDatailsTaker: React.FC<ScreensProps> = (props)  => {
                             <RegularText textStyles={{fontSize: 18, color: primaryColor}} > {service?.schedule && service?.schedule.scheduleDateTime?.split("T")[1]}</RegularText>
                         </Row>
                         <Row style={{width: '100%'}}>
-                            <BigText textStyles={{textAlign: 'left', fontSize: 20, color: primaryColor, marginVertical: 2, fontWeight: 'bold'}} >Cliente</BigText>
+                            <BigText textStyles={{textAlign: 'left', fontSize: 20, color: primaryColor, marginVertical: 2, fontWeight: 'bold'}} >Nome</BigText>
                             <BigText textStyles={{textAlign: 'left', fontSize: 20, color: primaryColor, marginVertical: 2, fontWeight: 'bold'}} >Valor</BigText>
                         </Row>
                         <Row style={{width: '100%'}}>
-                            <RegularText textStyles={{fontSize: 16, color: primaryColor}} >{service?.user.name.split(' ')[0] + ' ' + service?.user.name.split(' ')[service?.user.name.split(' ').length-1]}</RegularText>
+                            <RegularText textStyles={{fontSize: 16, color: primaryColor}} >{service?.proffisional.name.split(' ')[0] + ' ' + service?.proffisional.name.split(' ')[service?.proffisional.name.split(' ').length-1]}</RegularText>
                             <RegularText textStyles={{fontSize: 16, color: primaryColor}} >{service?.amountValue && service?.amountValue}</RegularText>
                         </Row>
                         <Row style={{width: '100%'}}>
                             <BigText textStyles={{fontSize: 20, color: primaryColor, marginVertical: 2, fontWeight: 'bold'}} >Endereço</BigText>
                         </Row>
                         <Row style={{width: '100%'}}>
-                            <BigText textStyles={{fontSize: 16, color: primaryColor}} >{service?.user.address}{service?.user.number && ', ' + service?.user.number}</BigText>
+                            <BigText textStyles={{fontSize: 16, color: primaryColor}} >{service?.proffisional.address}{service?.proffisional.number && ', ' + service?.proffisional.number}</BigText>
                         </Row>
                         <Row style={{width: '100%'}}>
-                            <BigText textStyles={{fontSize: 16, color: primaryColor}} >{service?.user.district}</BigText>
+                            <BigText textStyles={{fontSize: 16, color: primaryColor}} >{service?.proffisional.district}</BigText>
                         </Row>
                         <Row style={{width: '100%'}}>
-                            <BigText textStyles={{fontSize: 16, color: primaryColor}} >{service?.user.complement}</BigText>
+                            <BigText textStyles={{fontSize: 16, color: primaryColor}} >{service?.proffisional.complement}</BigText>
                         </Row>
                         <Row style={{width: '100%'}}>
-                            <BigText textStyles={{fontSize: 16, color: primaryColor}} >{service?.user.city}{" / " + service?.user.state}</BigText>
+                            <BigText textStyles={{fontSize: 16, color: primaryColor}} >{service?.proffisional.city}{" / " + service?.proffisional.state}</BigText>
                         </Row>
 
                         {service?.status === "E" &&

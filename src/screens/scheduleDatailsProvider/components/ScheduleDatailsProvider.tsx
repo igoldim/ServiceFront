@@ -1,27 +1,36 @@
-import React from 'react';
+import React, { LegacyRef, MutableRefObject } from 'react';
 import ScreenHead from '../../../components/Head/ScreenHead';
 import { Container, Row } from '../../../components/Shared';
 import { cleanData, useAppData } from '../../../services';
-import { ActivityIndicator, Alert, StatusBar } from "react-native";
+import { ActivityIndicator, Alert, Dimensions, StatusBar, StyleSheet } from "react-native";
 import RegularButton from '../../../components/Buttons/RegularButton';
 import BigText from '../../../components/Texts/BigText';
 import RegularText from '../../../components/Texts/RegularText';
-import RegularInputArea from '../../../components/Input/RegularInputArea';
-import { fetchAgendamentoComment, fetchCancelAgendamento, fetchGetAgendamentoProvider, fetchUpgendamento } from '../../takerDashboard/service';
-import Stars from '../../../components/Stars';
+import { fetchCancelAgendamento, fetchUpgendamento } from '../../takerDashboard/service';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useNavigation } from '@react-navigation/native';
-import { ScreensProps, TServices } from '../../../types/AppType';
+import { Coordinates, ScreensProps, TServices } from '../../../types/AppType';
 import { ModalPressableContainer, ModalView, StyledImage } from './ScheduleDatailsProvider.s';
 import AsyncStorage from '@react-native-community/async-storage';
 import MessageAlertModal from '../../../components/Modals/MessageAlertModal';
+import { fetchGetAgendamentoTaker } from '../../providerDashboard/service';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { getBoundsOfDistance, isPointInPolygon } from 'geolib';
+
+import flagPinkImg from "../../../assets/images/flag-pink.png";
+import flagBlueImg from "../../../assets/images/flag-blue.png";
+import { TouchableOpacity } from 'react-native-gesture-handler';
+
 
 
 const ScheduleDatailsProvider: React.FC<ScreensProps> = (props)  => {
+    const map = React.useRef<MapView>();
+
     const [primaryColor, setPrimaryColor] = React.useState("#000");
     const [secondColor, setSecondColor] = React.useState("#000");
 
     const [service, setService ] = React.useState<TServices | null>(null);
-    const [commentary, setCommentary] = React.useState<string>("");     
+    const [userName, setUserName] = React.useState<string>("");     
     const [startValue, setStarValue] = React.useState(0);
 
     const [messageHeadding, setMessageHeadding] = React.useState('');
@@ -32,8 +41,20 @@ const ScheduleDatailsProvider: React.FC<ScreensProps> = (props)  => {
 
     const [isLoading, setLoading] = React.useState(false);
 
-
     const navigation = useNavigation();
+
+    const [latitude, setLatitude] = React.useState(0);
+    const [longitude, setLongitude] = React.useState(0);
+
+    const [latitudeD, setLatitudeD] = React.useState(0);
+    const [longitudeD, setLongitudeD] = React.useState(0);
+   
+    const {width, height} = Dimensions.get('window');
+    const ASPECT_RATIO = width / height;
+    const radius = 10;
+
+    const [latitudeDelta, setLatitudeDelta] = React.useState(0.025);
+    const [longitudeDelta, setLongitudeDelta] = React.useState(0.025 * ASPECT_RATIO);
 
     React.useEffect(() =>{
       loadData();
@@ -41,23 +62,38 @@ const ScheduleDatailsProvider: React.FC<ScreensProps> = (props)  => {
 
     const loadData = async () => {
         setLoading(true);
-        const {primaryColor:strPrimaryColor, secondColor: strSecondColor, userId, appKey: appId } = await useAppData();
+        const {primaryColor:strPrimaryColor, secondColor: strSecondColor, userId, appKey: appId, Latitude, Longitude, Name } = await useAppData();
         setPrimaryColor(strPrimaryColor); 
         setSecondColor(strSecondColor); 
+        setUserName(Name);
 
         //carrega dados da api
         const serviceId = await AsyncStorage.getItem("serviceId") as string;
 
-        var reponse = await fetchGetAgendamentoProvider({id: serviceId,  userId,  appId}); 
+        var reponse = await fetchGetAgendamentoTaker({id: serviceId,  userId,  appId}); 
         if (reponse){
             setTemConnection(true);
             const {sucessful, data, message} = reponse;
             if (sucessful){
                 setService(data);
-                
-                if (data?.comments)  setCommentary(data?.comments?.commentary as string);    
 
+                var coord = getRegion(parseFloat(Latitude), parseFloat(Longitude), 10);
+
+                setLatitude(parseFloat(Latitude));
+                setLongitude(parseFloat(Longitude));
+
+                setLatitudeD(parseFloat(data.user.latitude as string));
+                setLongitudeD(parseFloat(data.user.longitude as string));
+
+                setLatitudeDelta(coord.latitudeDelta);
+                setLongitudeDelta(coord.latitudeDelta);
+                
                 setStarValue(data?.comments?.stars);
+
+
+                //map?.fitToSuppliedMarkers(['taker', 'provider']);
+                map.current?.fitToCoordinates([{latitude: latitude, longitude: latitude}, {latitude: latitudeD, longitude: latitudeD}]);
+
                 setLoading(false);
             }
         }
@@ -210,40 +246,23 @@ const ScheduleDatailsProvider: React.FC<ScreensProps> = (props)  => {
             } 
     }
 
-    const handleSetSatrValue = (newValue : number) =>{
-        setStarValue(startValue !== newValue ? newValue : 0);
+    const handlePosition = () =>{
+        const coordinates = {latitude, longitude};
+        const radiusBoundaries = getBoundsOfDistance(coordinates, radius * 1000);
+    
+        map.current?.fitToCoordinates(radiusBoundaries, {
+          edgePadding: {
+            top: 20,
+            right: 20,
+            bottom: 20,
+            left: 20,
+          },
+        });
     };
-
-    const handleComment = async () => {
-        setLoading(true);
-        if (commentary === "") {
-            setLoading(false);
-            showModal("Comentário", "Faça algum comentário, ele nos ajuda e melhorar cada vez mais nosso serviços", "erro");
-            return false;
-        }
-        else{
-            var reponse = await fetchAgendamentoComment({serviceId: service?.id as string,  appId: service?.appId as string, commentary: commentary , stars: startValue}); 
-            if (reponse){
-                setTemConnection(true);
-                const {sucessful, data, message} = reponse;
-                if (sucessful){
-                    setLoading(false);
-                    showModal("Comentário", "obrigado pela sua avaliação, ela torna nosso serviço cada vez melhor.", "success");
-                    loadData();   
-                }
-            }
-            else{
-                setTemConnection(false);
-                setLoading(false);
-                showModal("Segurança", "suas credênciais expiraram, precisamos que você efetue novamente seu login.", "erro");
-                cleanData();
-            }
-        }       
-    }
 
     const handleBack = async () => {
         const rota = await AsyncStorage.getItem("rota") as string;
-        console.log(rota);
+        //console.log(rota);
         navigation.reset({
             index: 1,
             routes: [
@@ -251,6 +270,55 @@ const ScheduleDatailsProvider: React.FC<ScreensProps> = (props)  => {
             ],
         });
     }
+
+
+    const getDelta = (lat: number, lon: number, distance: number): Coordinates  => {
+        const oneDegreeOfLatitudeInMeters = 111.32 * 1000;
+ 
+        const latitudeDelta  = distance / oneDegreeOfLatitudeInMeters;
+        const longitudeDelta = distance / (oneDegreeOfLatitudeInMeters * Math.cos(lat * (Math.PI / 180)));
+ 
+        return {
+            latitude: lat,
+            longitude: lon,
+            latitudeDelta,
+            longitudeDelta,
+        }
+    }
+
+    const regionFrom = (lat: number, lon: number, distance: number): Coordinates => {
+        distance = distance/2
+        const circumference = 40075
+        const oneDegreeOfLatitudeInMeters = 111.32 * 1000
+        const angularDistance = distance/circumference
+
+        const latitudeDelta = distance / oneDegreeOfLatitudeInMeters
+        const longitudeDelta = Math.abs(Math.atan2(
+                Math.sin(angularDistance)*Math.cos(lat),
+                Math.cos(angularDistance) - Math.sin(lat) * Math.sin(lat)))
+
+        return {
+            latitude: lat,
+            longitude: lon,
+            latitudeDelta,
+            longitudeDelta,
+        }
+    }
+
+    const getRegion = (lat: number, lon: number, accuracy: number): Coordinates => {
+        const oneDegreeOfLongitudeInMeters = 111.32 * 1000;
+        const circumference = (40075 / 360) * 1000;
+    
+        const latDelta = accuracy * (1 / (Math.cos(lat) * circumference));
+        const lonDelta = (accuracy / oneDegreeOfLongitudeInMeters);
+    
+        return {
+          latitude: lat,
+          longitude: lon,
+          latitudeDelta: Math.max(0, latDelta),
+          longitudeDelta: Math.max(0, lonDelta)
+        };
+      }
 
     return (
           <Container style={{backgroundColor: primaryColor}}>
@@ -289,63 +357,68 @@ const ScheduleDatailsProvider: React.FC<ScreensProps> = (props)  => {
                             <RegularText textStyles={{fontSize: 18, color: primaryColor}} > {service?.schedule && service?.schedule.scheduleDateTime?.split("T")[1]}</RegularText>
                         </Row>
                         <Row style={{width: '100%'}}>
-                            <BigText textStyles={{textAlign: 'left', fontSize: 20, color: primaryColor, marginVertical: 2, fontWeight: 'bold'}} >Cliente</BigText>
+                            <BigText textStyles={{textAlign: 'left', fontSize: 20, color: primaryColor, marginVertical: 2, fontWeight: 'bold'}} >Nome</BigText>
                             <BigText textStyles={{textAlign: 'left', fontSize: 20, color: primaryColor, marginVertical: 2, fontWeight: 'bold'}} >Valor</BigText>
                         </Row>
                         <Row style={{width: '100%'}}>
-                            <RegularText textStyles={{fontSize: 16, color: primaryColor}} >{service?.proffisional.name.split(' ')[0] + ' ' + service?.proffisional.name.split(' ')[service?.proffisional.name.split(' ').length-1]}</RegularText>
+                            <RegularText textStyles={{fontSize: 16, color: primaryColor}} >{service?.user.name.split(' ')[0] + ' ' + service?.user.name.split(' ')[service?.user.name.split(' ').length-1]}</RegularText>
                             <RegularText textStyles={{fontSize: 16, color: primaryColor}} >{service?.amountValue && service?.amountValue}</RegularText>
                         </Row>
                         <Row style={{width: '100%'}}>
                             <BigText textStyles={{fontSize: 20, color: primaryColor, marginVertical: 2, fontWeight: 'bold'}} >Endereço</BigText>
                         </Row>
                         <Row style={{width: '100%'}}>
-                            <BigText textStyles={{fontSize: 16, color: primaryColor}} >{service?.proffisional.address}{service?.proffisional.number && ', ' + service?.proffisional.number}</BigText>
+                            <BigText textStyles={{fontSize: 16, color: primaryColor}} >{service?.user.address}{service?.user.number && ', ' + service?.user.number}</BigText>
                         </Row>
                         <Row style={{width: '100%'}}>
-                            <BigText textStyles={{fontSize: 16, color: primaryColor}} >{service?.proffisional.district}</BigText>
+                            <BigText textStyles={{fontSize: 16, color: primaryColor}} >{service?.user.district}</BigText>
                         </Row>
                         <Row style={{width: '100%'}}>
-                            <BigText textStyles={{fontSize: 16, color: primaryColor}} >{service?.proffisional.complement}</BigText>
+                            <BigText textStyles={{fontSize: 16, color: primaryColor}} >{service?.user.complement}</BigText>
                         </Row>
                         <Row style={{width: '100%'}}>
-                            <BigText textStyles={{fontSize: 16, color: primaryColor}} >{service?.proffisional.city}{" / " + service?.proffisional.state}</BigText>
+                            <BigText textStyles={{fontSize: 16, color: primaryColor}} >{service?.user.city}{" / " + service?.user.state}</BigText>
                         </Row>
 
-                        {service?.status === "E" &&
-                        <>
-                            <Row style={{width: '100%'}}>
-                                <BigText textStyles={{fontSize: 20, color: primaryColor, marginVertical: 10, fontWeight: 'bold'}} >Comentário</BigText>
-                            </Row>
-                            <RegularInputArea
-                                ViewStyles={{borderColor: primaryColor, borderTopWidth: 1,  borderLeftWidth: 1,   borderRadius: 5, borderRightWidth: 1,  borderBottomWidth: 1 ,backgroundColor: secondColor}}
-                                inputStyles={{textAlignVertical: 'top', color: primaryColor}}
-                                multiline={true}
-                                maxLength={50}
-                                numberOfLines={4}
-                                editable={service?.comments === null}
-                                value={commentary}                                
-                                onChangeText={setCommentary}
-                            />
-                            <Stars isSave={service?.comments === null} onPress={(e) => handleSetSatrValue(e)}  value={startValue} showNumber={false} width="40" height='40' startStyle={{marginTop: 10, marginBottom: 10, alignSelf: 'center'}} color={primaryColor}/>
-                            
-                            {service?.comments === null &&  isLoading && <RegularButton 
-                                    btnStyles={{backgroundColor: primaryColor, borderRadius: 5, padding: 10, display: 'flex', justifyContent:'center', alignItems: 'center', marginTop: 15}}
-                                    textStyles={{color: secondColor, fontSize: 24, fontWeight: '500'}}
-                                    disabled={true}>
-                                        <ActivityIndicator size={30} color="#fff" />
-                                    </RegularButton>
-                            }            
-                            
-                            {service?.comments === null && !isLoading &&
-                                <RegularButton            
-                                        btnStyles={{backgroundColor: primaryColor, borderRadius: 5, padding: 10, display: 'flex', justifyContent:'center', alignItems: 'center', marginTop: 15}}
-                                        textStyles={{color: secondColor, fontSize: 24, fontWeight: '500'}}
-                                        onPress={handleComment}>
-                                        Salvar
-                                </RegularButton>}
-                        </>
-                        }
+                        <Row style={{width: '100%'}}>
+                            <BigText textStyles={{fontSize: 20, color: primaryColor, marginVertical: 10, fontWeight: 'bold'}} >Localização</BigText>                            
+                            <TouchableOpacity 
+                                onPress={handlePosition}><Icon name='locate' color={primaryColor} size={40} /></TouchableOpacity>
+                        </Row>
+                        {!isLoading && <>
+                        <MapView
+                            ref={map}
+                            provider={PROVIDER_GOOGLE} // remove if not using Google Maps
+                            style={{ height: 220, width: "100%", borderRadius: 5, overflow: 'hidden' }}
+                            region={{
+                                latitude,
+                                longitude,
+                                latitudeDelta: latitudeDelta,
+                                longitudeDelta: longitudeDelta,
+                            }}
+                            >
+                                 <Marker
+                                    identifier='taker'
+                                    title={service?.user.name}
+                                    image={flagPinkImg}
+                                    key={service?.user.id}
+                                    coordinate={{latitude, longitude}}
+                                />
+                                 <Marker
+                                    identifier='provider'
+                                    title={userName}
+                                    image={flagBlueImg}
+                                    key={"provider"}
+                                    coordinate={{latitude: latitudeD, longitude: longitudeD }}
+                                />
+                            </MapView>                     
+                        <RegularButton            
+                                btnStyles={{backgroundColor: primaryColor, borderRadius: 5, padding: 10, display: 'flex', justifyContent:'center', alignItems: 'center', marginTop: 15}}
+                                textStyles={{color: secondColor, fontSize: 24, fontWeight: '500'}}
+                                onPress={() => {}}>
+                                Rota
+                        </RegularButton></>
+                    }
                     </ModalView>
                    } 
                 </ModalPressableContainer>
