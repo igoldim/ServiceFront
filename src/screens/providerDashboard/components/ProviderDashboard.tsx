@@ -35,7 +35,7 @@ const ProviderDashboard: React.FC<ScreensProps> = ({navigation}) => {
     const [temConnection, setTemConnection] = React.useState(false);
 
     React.useEffect(() =>{
-        handleCheckPayments();
+        loadData();
     },[]);
 
     const loadData = async () => {
@@ -53,6 +53,8 @@ const ProviderDashboard: React.FC<ScreensProps> = ({navigation}) => {
         setPrimaryColor(strPrimaryColor); 
         setSecondColor(strSecondColor); 
         setName(Name);
+
+        handleCheckPayments();
 
         var reponse = await fetchData({id: userId,  appid: appKey}); 
 
@@ -77,8 +79,8 @@ const ProviderDashboard: React.FC<ScreensProps> = ({navigation}) => {
     };  
     
     const handleCheckPayments = async () => {
-        setLoading(true);
-        // consulta pagamento         
+        // consulta pagamento    
+        setLoading(true);     
         const {userId, appKey: appId } = await useAppData();    
         const response = await fetchConsultaPagamentos({userId, appId});
         if (response){
@@ -89,7 +91,6 @@ const ProviderDashboard: React.FC<ScreensProps> = ({navigation}) => {
                     showModal("Pix", "Obrigado, pagamento confirmado", "success");
                 }
             }
-            loadData();
             setLoading(false);
         }
         else{
