@@ -27,7 +27,7 @@ import Confirmar from '../../screens/confirmar/components/Confirmar';
 import ValidandoDocumentos from '../../screens/documentos/components/ValidandoDocumentos';
 import ProviderTransaction from '../../screens/providerTransaction/components/ProviderTransaction';
 import ScheduleDatailsProvider from '../../screens/scheduleDatailsProvider/components/ScheduleDatailsProvider';
-//
+import ScheduleDatailsTaker from '../../screens/scheduleDatailsTaker/components/ScheduleDatailsTaker';
 
 import Menu from '../Menu/Menu';
 
@@ -58,6 +58,7 @@ export type RootStackParamList = {
     ValidandoDocumentos: undefined;
     ProviderTransaction: undefined;
     ScheduleDatailsProvider: undefined;
+    ScheduleDatailsTaker: undefined;
 }
 
 
@@ -184,6 +185,11 @@ const RootStack: React.FC = () => {
                     name="ScheduleDatailsProvider"
                     component={ScheduleDatailsProvider}
                     options={{headerShown:false }} />
+
+                <Stack.Screen
+                    name="ScheduleDatailsTaker"
+                    component={ScheduleDatailsTaker}
+                    options={{headerShown:false }} />                    
 
                 <Stack.Screen
                     name="ValidandoDocumentos"

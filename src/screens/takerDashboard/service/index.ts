@@ -29,19 +29,6 @@ export const fetchGetAgendamentoProvider = async (
     return response
 }
 
-
-export const fetchGetAgendamentoTaker = async (
-    params: IScheduleDelete
-): Promise<IServiceResult> => {    
-    //console.log(`/Service/GetScheduleDatailsTaker/${params.id}/${params.userId}/${params.appId}`);    
-    const response = await api
-        .get<any>(`/Service/GetScheduleDatailsTaker/${params.id}/${params.userId}/${params.appId}`)
-        .then(({ data }) => data)
-        .catch(({ error }) => error );
-    //console.log(response);  
-    return response
-}
-
 export const fetchUpgendamento = async (
     params: IScheduleDelete
 ): Promise<IScheduleResult> => {    

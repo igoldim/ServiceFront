@@ -1,3 +1,5 @@
+import AsyncStorage from '@react-native-community/async-storage';
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { View } from 'react-native';
 import { useAppData } from '../../services';
@@ -8,6 +10,9 @@ import TransactionAvi from './TransactionAvi';
 import { LeftRow, RightRow, TransactionRow } from './TransactionItem.s';
 
 const TransactionProviderItem: React.FC<TServices> = ( props ) => {
+    const navigation = useNavigation();
+
+
     const [primaryColor, setPrimaryColor] = React.useState("#000");
     const [secondColor, setSecondColor] = React.useState("#000");
 
@@ -21,8 +26,22 @@ const TransactionProviderItem: React.FC<TServices> = ( props ) => {
         setSecondColor(strSecondColor); 
     };
 
+    
+    const handleDetails = async () => {
+        await AsyncStorage.setItem("serviceId", props.id);
+        await AsyncStorage.removeItem("rota");
+
+        navigation.reset({
+            index: 1,
+            routes: [
+            { name: "ScheduleDatailsTaker" },
+            ],
+        });
+
+    }
+
     return (
-        <TransactionRow>
+        <TransactionRow onPress={handleDetails}>
             <LeftRow>
                 <TransactionAvi primaryColor={primaryColor} secondColor={secondColor} icon='checkmark-done'/>
                 <View style={{marginLeft: 10}}>

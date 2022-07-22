@@ -1,5 +1,5 @@
 import { Extrapolation } from "react-native-reanimated";
-import { IDefaultUserGet, ILogin, ILoginResult, IRecargaResult, TLoadData } from "../../../interfaces"
+import { IDefaultUserGet, ILogin, ILoginResult, IRecargaResult, IScheduleDelete, IServiceResult, TLoadData } from "../../../interfaces"
 import { api } from "../../../server"
 
 //valida email
@@ -22,5 +22,18 @@ export const fetchConsultaPagamentos = async (
         .get<any>(`/Pix/ConsultaPayments/${params.userId}/${params.appId}`)
         .then(({ data }) => data)
         .catch(({ error }) => error )
+    return response
+}
+
+
+export const fetchGetAgendamentoTaker = async (
+    params: IScheduleDelete
+): Promise<IServiceResult> => {    
+    //console.log(`/Service/GetScheduleDatailsTaker/${params.id}/${params.userId}/${params.appId}`);    
+    const response = await api
+        .get<any>(`/Service/GetScheduleDatailsTaker/${params.id}/${params.userId}/${params.appId}`)
+        .then(({ data }) => data)
+        .catch(({ error }) => error );
+    //console.log(response);  
     return response
 }

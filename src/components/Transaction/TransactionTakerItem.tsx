@@ -33,7 +33,7 @@ const TransactionTakerItem: React.FC<TServices> = ( props ) => {
         navigation.reset({
             index: 1,
             routes: [
-            { name: "ScheduleDatailsProvider" },
+            { name: "ScheduleDatailsTaker" },
             ],
         });
 
