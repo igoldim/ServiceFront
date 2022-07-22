@@ -2,7 +2,7 @@ import React, { LegacyRef, MutableRefObject } from 'react';
 import ScreenHead from '../../../components/Head/ScreenHead';
 import { Container, Row } from '../../../components/Shared';
 import { cleanData, useAppData } from '../../../services';
-import { ActivityIndicator, Alert, Dimensions, StatusBar, StyleSheet } from "react-native";
+import { ActivityIndicator, Alert, Dimensions, Linking, StatusBar, StyleSheet } from "react-native";
 import RegularButton from '../../../components/Buttons/RegularButton';
 import BigText from '../../../components/Texts/BigText';
 import RegularText from '../../../components/Texts/RegularText';
@@ -20,7 +20,7 @@ import { getBoundsOfDistance, isPointInPolygon } from 'geolib';
 import flagPinkImg from "../../../assets/images/flag-pink.png";
 import flagBlueImg from "../../../assets/images/flag-blue.png";
 import { TouchableOpacity } from 'react-native-gesture-handler';
-
+import { showLocation } from 'react-native-map-link'
 
 
 const ScheduleDatailsProvider: React.FC<ScreensProps> = (props)  => {
@@ -31,7 +31,6 @@ const ScheduleDatailsProvider: React.FC<ScreensProps> = (props)  => {
 
     const [service, setService ] = React.useState<TServices | null>(null);
     const [userName, setUserName] = React.useState<string>("");     
-    const [startValue, setStarValue] = React.useState(0);
 
     const [messageHeadding, setMessageHeadding] = React.useState('');
     const [messageModal, setMessageModal] = React.useState('');
@@ -89,7 +88,6 @@ const ScheduleDatailsProvider: React.FC<ScreensProps> = (props)  => {
                 setLatitudeDelta(coord.latitudeDelta);
                 setLongitudeDelta(coord.latitudeDelta);
                 
-                setStarValue(data?.comments?.stars);
                 setLoading(false);
             }
         }
@@ -314,7 +312,36 @@ const ScheduleDatailsProvider: React.FC<ScreensProps> = (props)  => {
           latitudeDelta: Math.max(0, latDelta),
           longitudeDelta: Math.max(0, lonDelta)
         };
-      }
+    }
+
+    const handleRota = async () => {
+        const canOpenURL = await Linking.canOpenURL(`waze://ul?ll=${latitude}%2C${longitude}&navigate=yes&zoom=17`);
+
+        if(canOpenURL) {
+            showLocation({
+                latitude: latitude,
+                longitude: longitude,
+                //sourceLatitude: latitudeD,  // optionally specify starting location for directions
+                //sourceLongitude: longitudeD,  // not optional if sourceLatitude is specified
+                //googleForceLatLon: false,  // optionally force GoogleMaps to use the latlon for the query instead of the title
+                //googlePlaceId: 'ChIJGVtI4by3t4kRr51d_Qm_x58',  // optionally specify the google-place-id
+                //alwaysIncludeGoogle: true, // optional, true will always add Google Maps to iOS and open in Safari, even if app is not installed (default: false)
+                //dialogTitle: 'This is the dialog Title', // optional (default: 'Open in Maps')
+                //dialogMessage: 'This is the amazing dialog Message', // optional (default: 'What app would you like to use?')
+                //cancelText: 'This is the cancel button text', // optional (default: 'Cancel')
+                //appsWhiteList: ['google-maps'], // optionally you can set which apps to show (default: will show all supported apps installed on device)
+                naverCallerName: 'br.inf.circuit.multiservice', // to link into Naver Map You should provide your appname which is the bundle ID in iOS and applicationId in android.
+                // appTitles: { 'google-maps': 'My custom Google Maps title' }, // optionally you can override default app titles
+                app: 'waze',  // optionally specify specific app to use
+                directionsMode: 'car' // optional, accepted values are 'car', 'walk', 'public-transport' or 'bike'
+            });
+        }
+        else{
+            Alert.alert("Você precisa do aplicativo Waze para gerar a rota");
+        }
+
+        //console.log(canOpenURL);
+    }
 
     return (
           <Container style={{backgroundColor: primaryColor}}>
@@ -411,7 +438,7 @@ const ScheduleDatailsProvider: React.FC<ScreensProps> = (props)  => {
                         <RegularButton            
                                 btnStyles={{backgroundColor: primaryColor, borderRadius: 5, padding: 10, display: 'flex', justifyContent:'center', alignItems: 'center', marginTop: 15}}
                                 textStyles={{color: secondColor, fontSize: 24, fontWeight: '500'}}
-                                onPress={() => {}}>
+                                onPress={handleRota}>
                                 Rota
                         </RegularButton></>
                     }
