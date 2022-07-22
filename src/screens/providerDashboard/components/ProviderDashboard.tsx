@@ -125,7 +125,7 @@ const ProviderDashboard: React.FC<ScreensProps> = ({navigation}) => {
     return (
         <Container style={{backgroundColor: primaryColor}}>
             <ScreenHeadUser 
-                userName={name.split(" ")[0]} 
+                userName={name && name.split(" ")[0]} 
                 primaryColor={primaryColor} 
                 secondColor={secondColor} 
                 showIcon={true} 

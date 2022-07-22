@@ -3,8 +3,28 @@ import { TServicesProps } from '../../types/AppType';
 import RegularText from '../Texts/RegularText';
 import { ServiceButton, ServiceDate, ServiceFooter, ServiceFooterItem, ServiceHead, ServicesRow, ServiceStatus, ServiceValor } from './Scheduling.s';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const SchedulingItem: React.FC<TServicesProps> = ( props ) => {
+
+    const navigation = useNavigation();
+
+    const handleDetails = async () => {
+
+        await AsyncStorage.setItem("serviceId", props.id);
+        await AsyncStorage.setItem("rota", "Scheduling");
+
+        navigation.reset({
+            index: 1,
+            routes: [
+            { name: "ScheduleDatailsProvider" },
+            ],
+        });
+
+    }
+
+
     return (
         <ServicesRow style={{backgroundColor: props.secondColor}}>
             <ServiceHead>
@@ -57,7 +77,7 @@ const SchedulingItem: React.FC<TServicesProps> = ( props ) => {
                         </RegularText>
                 </ServiceValor>                
                </ServiceFooterItem>               
-               <ServiceButton  style={{backgroundColor: props.primaryColor}}>
+               <ServiceButton  style={{backgroundColor: props.primaryColor}} onPress={handleDetails}>
                  <Icon name="arrow-right-thick"  size={30} color={props.secondColor} />
                </ServiceButton>      
             </ServiceFooter>           

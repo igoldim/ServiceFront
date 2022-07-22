@@ -51,6 +51,7 @@ const TakerDashboard: React.FC<ScreensProps> = ({navigation}) => {
         setSecondColor(strSecondColor); 
         setName(Name);
         setAvatar(Avatar);
+        setTemConnection(false);
 
         await AsyncStorage.removeItem('q');
 
@@ -147,7 +148,7 @@ const TakerDashboard: React.FC<ScreensProps> = ({navigation}) => {
     return (
         <Container style={{backgroundColor: primaryColor}}>
             <ScreenHeadUser 
-                userName={name.split(" ")[0]}  
+                userName={name && name.split(" ")[0]}  
                 primaryColor={primaryColor} 
                 secondColor={secondColor} 
                 avatar={avatar + '?'+Math.random().toString(36).substring(9)}
