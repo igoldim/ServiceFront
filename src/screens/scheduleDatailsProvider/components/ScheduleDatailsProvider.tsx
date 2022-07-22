@@ -58,6 +58,7 @@ const ScheduleDatailsProvider: React.FC<ScreensProps> = (props)  => {
 
     React.useEffect(() =>{
       loadData();
+      handlePosition();
     },[]);
 
     const loadData = async () => {
@@ -89,11 +90,6 @@ const ScheduleDatailsProvider: React.FC<ScreensProps> = (props)  => {
                 setLongitudeDelta(coord.latitudeDelta);
                 
                 setStarValue(data?.comments?.stars);
-
-
-                //map?.fitToSuppliedMarkers(['taker', 'provider']);
-                map.current?.fitToCoordinates([{latitude: latitude, longitude: latitude}, {latitude: latitudeD, longitude: latitudeD}]);
-
                 setLoading(false);
             }
         }
