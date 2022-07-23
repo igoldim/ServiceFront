@@ -112,7 +112,7 @@ const SignIn: React.FC<ScreensProps> = ({navigation}) => {
             }
           }
           else{
-            await AsyncStorage.setItem("userId", data?.id);
+            if (data?.id) await AsyncStorage.setItem("userId", data?.id);
             await AsyncStorage.setItem("Email", email);
             await AsyncStorage.setItem("isLogged", "false");
             

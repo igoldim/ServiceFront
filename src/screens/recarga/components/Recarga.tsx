@@ -6,7 +6,6 @@ import ImageButton from "../../../components/Buttons/ImageButton";
 import RegularButton from "../../../components/Buttons/RegularButton";
 import ScreenHead from "../../../components/Head/ScreenHead";
 import MaskedInput from "../../../components/Input/MaskedInput";
-import RegularInput from "../../../components/Input/RegularInput";
 import MessageAlertModal from "../../../components/Modals/MessageAlertModal";
 import { Row } from "../../../components/Shared";
 import BigText from "../../../components/Texts/BigText";
@@ -20,9 +19,10 @@ const Recarga: React.FC<ScreensProps> = ({navigation}) =>{
     const [secondColor, setSecondColor] = React.useState("#000");
     const [formaPagamento, setFormaPagamento] = React.useState("D");
 
-    const [amountRecarga, setamountRecarga] = React.useState("null");
+    const [amountRecarga, setamountRecarga] = React.useState("");
 
     const [isLoading, setLoading] = React.useState(false);
+    const [temInternet, setTemInternet] = React.useState(true);
 
     const [visible, setVisible] = React.useState(false);
     const [messageHeadding, setMessageHeadding] = React.useState('');
@@ -44,6 +44,22 @@ const Recarga: React.FC<ScreensProps> = ({navigation}) =>{
     },[]);
 
     const handlePayment = () => {
+
+        if (amountRecarga == ""){
+            showModal("Valor", "informe o valor desejado, o mínimo é de R$ 30,00.", "erro");
+            return false;
+        }
+
+        if (parseFloat(amountRecarga) == 0){
+            showModal("Valor", "informe o valor desejado, o mínimo é de R$ 30,00.", "erro");
+            return false;
+        }
+
+        if (parseFloat(amountRecarga) < 30){
+            showModal("Valor", "o valor mínimo é de R$ 30,00.", "erro");
+            return false;
+        }
+
         return Alert.alert(
             "Recarga",
             "Deseja realmente efetuar nova recarga?",
@@ -58,6 +74,7 @@ const Recarga: React.FC<ScreensProps> = ({navigation}) =>{
                         if (formaPagamento === "D"){
                             const response = await fetchRecarregar({userId, appId, valor: amountRecarga});
                             if (response){
+                                setTemInternet(true);
                                 const {sucessful, data, message} = response;
                                 if (sucessful){
                                     //console.log(data.qrcode);
@@ -70,6 +87,7 @@ const Recarga: React.FC<ScreensProps> = ({navigation}) =>{
                                 }
                             }
                             else{
+                                setTemInternet(false);
                                 setLoading(false);
                                 showModal("Segurança", "suas credênciais expiraram, precisamos que você efetue novamente seu login.", "erro");
                                 cleanData();
@@ -95,7 +113,7 @@ const Recarga: React.FC<ScreensProps> = ({navigation}) =>{
 
     const modalButtonHandle = () =>{
         setVisible(false);
-        navigation.navigate("SignIn");
+        if (!temInternet) navigation.navigate("SignIn");
     }
 
     return (
